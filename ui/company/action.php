@@ -52,13 +52,13 @@ switch($action) {
 		}
 		break;
 		
-	case "change" :
+	case "update" :
 		$mUser = new User();
 		
-		$muCom = new Company($mUser->getCompany());
+		$mCompany = new Company($mUser->getCompany());
 	
-		$name = $_POST['name'];
-		$tin_number = $_POST['tin_number'];
+		//$name = $_POST['name'];
+		//$tin_number = $_POST['tin_number'];
 		$address_1 = $_POST['address_1'];
 		$address_2 = $_POST['address_2'];
 		$landmark = $_POST['landmark'];
@@ -69,15 +69,17 @@ switch($action) {
 		$fax = $_POST['fax'];
 		$phone = $_POST['phone'];
 		$website = $_POST['website'];
-		$description = $_POST['description'];
+		$description = "";
 		
 		
-		if($muCom->change($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
-			echo 'changes completed..';
-			echo "<script>window.location.href = '../user/'</script>";
-		}else
-			die('error');
-		
+		if($mCompany->update(/*$name, $tin_number, */$address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
+			//echo 'changes completed..';
+			echo "<script>alert('Updated Successfully!!!')</script>";
+			echo "<script>window.location.href = '../company/'</script>";			
+		}else {
+			echo "<script>alert('Some problem occured!!!')</script>";
+			echo "<script>window.location.href = '../company/'</script>";
+		}
 		break;
 }
 ?>

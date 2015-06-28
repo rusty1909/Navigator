@@ -158,7 +158,7 @@ class Company {
 
     }
     
-    public function change($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
+    public function update(/*$name, $tin_number, */$address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
         // opening db connection
         $db = new Connection();
         $conn = $db->connect();
@@ -166,7 +166,7 @@ class Company {
         $mUser = new User();
         $comid = $mUser->getCompany();
         $id = $mUser->getId();
-        $sql = "UPDATE `company` SET `name`='$name', `tin_number`='$tin_number', `address_1`='$address_1', `address_2`='$address_2', `landmark`='$landmark', `city`='$city', `state`='$state' , `pincode`='$pincode', `phone`='$phone', `fax`='$fax', `email`='$email', `website`='$website', `description`='$description' WHERE admin_user= '$id' AND id='$comid'";
+        $sql = "UPDATE `company` SET `address_1`='$address_1', `address_2`='$address_2', `landmark`='$landmark', `city`='$city', `state`='$state' , `pincode`='$pincode', `phone`='$phone', `fax`='$fax', `email`='$email', `website`='$website', `description`='$description' WHERE admin_user= '$id' AND id='$comid'";
 
         if (mysqli_query($conn, $sql)) {
             return true;
@@ -210,6 +210,30 @@ class Company {
 	
 	function getTINNumber(){
 		return $this->tinNumber;
+	}
+	
+	function getLandmark(){
+		return $this->landmark;
+	}
+	
+	function getAddress1(){
+		return $this->address1;
+	}
+
+	function getAddress2(){
+		return $this->address2;
+	}
+	
+	function getCity(){
+		return $this->city;
+	}
+
+	function getState(){
+		return $this->state;
+	}
+
+	function getPincode(){
+		return $this->pincode;
 	}
 	
 	function getAddress(){

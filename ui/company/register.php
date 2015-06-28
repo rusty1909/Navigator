@@ -164,7 +164,7 @@ ini_set('display_errors', 1);
 			
 			<div class="content-box">				
 				<div class="content-box-header">					
-					<h3 style="cursor: s-resize;"> Update Company Details</h3>					
+					<h3 style="cursor: s-resize;">Register Company</h3>					
 				</div> <!-- End .content-box-header -->				
 				<div class="content-box-content">					
 					<div style="display: block;" class="tab-content default-tab">					

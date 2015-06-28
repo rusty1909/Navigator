@@ -143,6 +143,12 @@ ini_set('display_errors', 1);
 				}
 			//}
 		}
+		
+		$("#edit_button").click(function(){
+			alert("clock");
+			$("#basic").hide();
+			$("#edit").show();
+		});
 		</script>
 </head>
   
@@ -168,8 +174,8 @@ ini_set('display_errors', 1);
 					<h3 style="cursor: s-resize;"><?php echo $mCompany->getName(); ?></h3>
 					
 					<ul class="content-box-tabs">
-						<li><a href="#basic" class="default-tab current">Basic Information</a></li> <!-- href must be unique and match the id of target div -->
-						<li><a href="#edit">Staff</a></li>
+						<li><a href="#info" class="default-tab current">Basic Information</a></li> <!-- href must be unique and match the id of target div -->
+						<li><a href="#staff">Staff</a></li>
 						<li><a href="#payment">Payments</a></li>
 						<li><a href="#setting">Settings</a></li>
 					</ul>
@@ -178,26 +184,29 @@ ini_set('display_errors', 1);
 					
 				</div>
 				<div class="content-box-content">
-					<div style="display: block;" class="tab-content default-tab" id="basic">
-					<form><fieldset>
-						<p class="column-left">
-							<input class="button" value="   Edit   " type="button">
-							<br><br>
-							<b>TIN Number</b><br>
-							<?php echo $mCompany->getTINNumber(); ?>
-							<br><br>
-							<b>Address</b><br>
-							<?php echo $mCompany->getAddress(); ?>
-							<br><br>
-							<b>Contact Details</b><br>
-							<b>Phone : </b><?php echo $mCompany->getPhone(); ?><br>
-							<b>Fax : </b><?php echo $mCompany->getFax(); ?><br>
-							<b>Email : </b><?php echo $mCompany->getEmail(); ?><br>
-							<b>Website : </b><?php echo $mCompany->getWebsite(); ?><br>
-						</p>
+					<div style="display: block;" class="tab-content default-tab" id="info">
+						<div id="basic">
+							<form action="edit.php"><fieldset>
+								<p class="column-left">
+									<input class="button" value="   Edit   " type="submit" id="edit_button">
+									<br><br>
+									<b>TIN Number</b><br>
+									<?php echo $mCompany->getTINNumber(); ?>
+									<br><br>
+									<b>Address</b><br>
+									<?php echo $mCompany->getAddress(); ?>
+									<br><br>
+									<b>Contact Details</b><br>
+									<b>Phone : </b><?php if($mCompany->getPhone() != 0) echo $mCompany->getPhone(); ?><br>
+									<b>Fax : </b><?php if($mCompany->getFax() != 0) echo $mCompany->getFax(); ?><br>
+									<b>Email : </b><?php echo $mCompany->getEmail(); ?><br>
+									<b>Website : </b><?php echo $mCompany->getWebsite(); ?><br>
+								</p>
+								
+								
+							</fieldset></form>
+						</div>
 						
-						
-					</fieldset></form>
 					</div>
 					<!-- PROFILE ENDS -->
 
