@@ -4,6 +4,8 @@ if(!isset($mUser)) {
 	$mUser = new User();
 }
 
+//prateek
+
 $companyId = $mUser->getCompany();
 if($companyId == 0) {
 	header('Location:/navigator/ui/company/register.php');
