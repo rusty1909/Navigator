@@ -195,6 +195,10 @@ ini_set('display_errors', 1);
 									<br><br>
 									<b>Address</b><br>
 									<?php echo $mCompany->getAddress(); ?>
+									
+								</p>
+								
+								<p class="column-right">
 									<br><br>
 									<b>Contact Details</b><br>
 									<b>Phone : </b><?php if($mCompany->getPhone() != 0) echo $mCompany->getPhone(); ?><br>
