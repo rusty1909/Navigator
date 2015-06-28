@@ -9,6 +9,8 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 //print_r($url);
 // ] END
 
+//github
+
 
 require_once "../../framework/Company.php";
 $mIsCompanyRegistered =  Company::isCompanyRegistered($mUser->getCompany());
