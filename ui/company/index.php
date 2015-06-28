@@ -169,7 +169,7 @@ ini_set('display_errors', 1);
 					
 					<ul class="content-box-tabs">
 						<li><a href="#basic" class="default-tab current">Basic Information</a></li> <!-- href must be unique and match the id of target div -->
-						<li><a href="#staff">Staff</a></li>
+						<li><a href="#edit">Staff</a></li>
 						<li><a href="#payment">Payments</a></li>
 						<li><a href="#setting">Settings</a></li>
 					</ul>
@@ -178,13 +178,31 @@ ini_set('display_errors', 1);
 					
 				</div>
 				<div class="content-box-content">
-					<div style="display: block;" class="tab-content default-tab" id="basic">					
-
+					<div style="display: block;" class="tab-content default-tab" id="basic">
+					<form><fieldset>
+						<p class="column-left">
+							<input class="button" value="   Edit   " type="button">
+							<br><br>
+							<b>TIN Number</b><br>
+							<?php echo $mCompany->getTINNumber(); ?>
+							<br><br>
+							<b>Address</b><br>
+							<?php echo $mCompany->getAddress(); ?>
+							<br><br>
+							<b>Contact Details</b><br>
+							<b>Phone : </b><?php echo $mCompany->getPhone(); ?><br>
+							<b>Fax : </b><?php echo $mCompany->getFax(); ?><br>
+							<b>Email : </b><?php echo $mCompany->getEmail(); ?><br>
+							<b>Website : </b><?php echo $mCompany->getWebsite(); ?><br>
+						</p>
+						
+						
+					</fieldset></form>
 					</div>
 					<!-- PROFILE ENDS -->
 
 					<div style="display: block;" class="tab-content" id="edit">					
-<form action="action.php?action=register" method="POST" onSubmit="return validate()">
+						<form action="action.php?action=register" method="POST" onSubmit="return validate()">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 							

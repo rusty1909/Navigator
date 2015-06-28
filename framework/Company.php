@@ -195,5 +195,32 @@ class Company {
     function getPhone(){
 		return $this->phone;
 	}
+	
+    function getFax(){
+		return $this->fax;
+	}
+
+    function getEmail(){
+		return $this->email;
+	}
+
+    function getWebsite(){
+		return $this->website;
+	}
+	
+	function getTINNumber(){
+		return $this->tinNumber;
+	}
+	
+	function getAddress(){
+		$address = "";
+		if($this->address1 != "") $address.= $this->address1;
+		if($this->address2 != "") $address.= "<br>".$this->address2;
+		if($this->landmark != "") $address.= "<br><b>Near </b>".$this->landmark;
+		if($this->city != "") $address.= "<br>".$this->city;
+		if($this->state != "") $address.= ", ".$this->state;
+		if($this->pincode != "") $address.= "<br>".$this->pincode;
+		return $address;
+	}
 }
 ?>
