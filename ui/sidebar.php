@@ -60,7 +60,7 @@ if($mIsCompanyRegistered){
 					</a>
 					<ul style="display: block;">
 						<li><a class="<?php if(($url[3] == 'vehicle') && ($url[4] == '' || $url[4] == 'index.php' || $url[4] == 'edit.php' || explode("?", $url[4])[0] == 'detail.php')) echo 'current'; ?>" href="/navigator/ui/vehicle/">Manage Vehicles</a></li>
-						<li><a href="#">Servicing Details</a></li>
+						<!--<li><a href="#">Servicing Details</a></li>-->
 					</ul>
 				</li>
 				
@@ -70,7 +70,7 @@ if($mIsCompanyRegistered){
 					</a>
 					<ul style="display: none;">
 						<li><a href="/navigator/ui/driver/">Manage Drivers</a></li>
-						<li><a href="#">Previous Drivers</a></li>
+						<!--<li><a href="#">Previous Drivers</a></li>-->
 					</ul>
 				</li>  
 				
