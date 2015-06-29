@@ -203,8 +203,8 @@ ini_set('display_errors', 1);
 									<b>Contact Details</b><br>
 									<b>Phone : </b><?php if($mCompany->getPhone() != 0) echo $mCompany->getPhone(); ?><br>
 									<b>Fax : </b><?php if($mCompany->getFax() != 0) echo $mCompany->getFax(); ?><br>
-									<b>Email : </b><?php echo $mCompany->getEmail(); ?><br>
-									<b>Website : </b><?php echo $mCompany->getWebsite(); ?><br>
+									<b>Email : </b><a target="_mail" href='mailto:<?php echo $mCompany->getEmail(); ?>'><?php echo $mCompany->getEmail(); ?></a><br>
+									<b>Website : </b><a target="_website" href='http://<?php echo $mCompany->getWebsite(); ?>'><?php echo $mCompany->getWebsite(); ?></a><br>
 								</p>
 								
 								
