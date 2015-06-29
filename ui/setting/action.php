@@ -14,25 +14,28 @@ $mUser = User::getCurrentUser();
 //if($mUser()==null) $mUser = new User("");
 
 switch($action) {
-	case "change" : $username = $_POST['username'];
-		$password = $_POST['password'];
-		if($mUser->login($username, $password)) {
-			header('Location:index.php');
+	case "change" : $old = $_POST['old'];
+		$new = $_POST['new'];
+		echo $old."     ";
+		echo $new;
+		if($mUser->updatePassword($old, $new)) {
+			echo "<script>alert('Updated Successfully!!!')</script>";
+			
 		} else {
-			header('Location:login.php?err=wrongpassword');
+			echo "<script>alert('Some problem occured!!!')</script>";
 		}
+		..echo $_SESSION['user']['password'];
+		//echo "<script>window.location.href = 'index.php'</script>";	
 		break;
-	case "update" : $firstname = $_POST['firstname'];
-		$lastname = $_POST['lastname'];
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-		$phone_m = $_POST['phone_m'];
+	case "update_contact" : $phone_m = $_POST['phone_m'];
 		$phone_o = $_POST['phone_o'];
 		$email = $_POST['email'];
-		if(User::add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email)) {
-			header('Location:index.php');
+		if($mUser->updateContact($phone_m, $phone_o, $email)) {
+			echo "<script>alert('Updated Successfully!!!')</script>";
+			echo "<script>window.location.href = 'index.php'</script>";	
 		} else {
-			header('Location:abc.php');
+			echo "<script>alert('Some problem occured!!!')</script>";
+			echo "<script>window.location.href = 'abc.php'</script>";	
 		}
 		break;
     default : header('Location:index.php');

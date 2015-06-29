@@ -254,17 +254,21 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+		if($oldPassword != $_SESSION['user']['password']) return false;
+		
 		$sql = "UPDATE user SET password = '$newPassword' WHERE id = '$this->id' AND password = '$oldPassword'";
-		$action = mysqli_query($conn, $sql);
+		print_r($sql);
+		//$action = mysqli_query($conn, $sql);
 
 		if (mysqli_query($conn, $sql)) {
+			$_SESSION['user']['password'] = $newPassword;
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	function updateProfile($phone_m, $phone_o, $email) {
+	function updateContact($phone_m, $phone_o, $email) {
 		//require_once '../framework/DBConnect.php';
 //		session_start();
 		
@@ -274,8 +278,8 @@ class User {
 		
 		$user_id = $_SESSION['user']['id'];
 		
-		$sql = "UPDATE vehicle SET phone_m = '$phone_m', phone_o = '$phone_o', email = '$email' WHERE id= '$this->id'";
-		print_r($sql);
+		$sql = "UPDATE user SET phone_m = '$phone_m', phone_o = '$phone_o', email = '$email' WHERE id= '$this->id'";
+		//print_r($sql);
 
 		if (mysqli_query($conn, $sql)) {
 			return true;
