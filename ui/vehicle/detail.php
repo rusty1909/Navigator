@@ -11,7 +11,7 @@ if(!isset($_SESSION['user']))
 
 	$mUser = new User();
 	
-	$mDriverList = $mUser->getDriverList();
+	$mDriverList = $mUser->getCurrentDriverList();
 	
 	if(!isset($_GET['id'])) {
 		header("Location:index.php");

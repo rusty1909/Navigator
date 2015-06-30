@@ -9,9 +9,9 @@ if(!isset($_SESSION['user']))
 
 	$mUser = new User();
 	
-    $mDriverList = $mUser->getDriverList();
-	$mAllDriverList = $mUser->getAllDriverList();
-	$mDeployedDriverList = $mDriverList;
+    $mCurrentDriverList = $mUser->getCurrentDriverList();
+	//$mAllDriverList = $mUser->getAllDriverList();
+	//$mDeployedDriverList = $mDriverList;
 	//$mAllDriverList = $mUser->getAllDriverList();
 	$mPreviousDriverList = $mUser->getPreviousDriverList();
 
@@ -125,7 +125,7 @@ if(!isset($_SESSION['user']))
 					<h3 style="cursor: s-resize;">Driver List</h3>
 					
 					<ul class="content-box-tabs">
-						<li><a href="#current" title="List of all drivers registered" class="default-tab current">Current Drivers (<?php echo sizeof($mDriverList); ?>)</a></li> <!-- href must be unique and match the id of target div -->
+						<li><a href="#current" title="List of all drivers registered" class="default-tab current">Current Drivers (<?php echo sizeof($mCurrentDriverList); ?>)</a></li> <!-- href must be unique and match the id of target div -->
 						<li><a href="#prev">Previous Drivers (<?php echo sizeof($mPreviousDriverList); ?>)</a></li>
 					</ul>
 					
@@ -137,7 +137,7 @@ if(!isset($_SESSION['user']))
 					
 					<div style="display: none;" class="tab-content default-tab" id="current"> <!-- This is the target div. id must match the href of this div's tab -->
 						<?php
-						$mDriverList = $mAllDriverList;
+						$mDriverList = $mCurrentDriverList;
 						if(sizeof($mDriverList) == 0) {
 						?>
 						<div class="notification attention png_bg">
@@ -187,10 +187,10 @@ if(!isset($_SESSION['user']))
 										<div class="pagination">
 											<?php
 											//echo sizeof($mAllDriverList)/10;
-											if((sizeof($mAllDriverList)/10) > 1) {
+											if((sizeof($mDriverList)/10) > 1) {
 												echo "<a href='#' title='First Page'>« First</a><a href='#' title='Previous Page'>« Previous</a>";
 											
-												for($i=0; $i<(sizeof($mAllDriverList)/10);$i++) {
+												for($i=0; $i<(sizeof($mDriverList)/10);$i++) {
 													$k = $i+1;
 													echo "<a href='#' class='number current' title='".$k."'>".$k."</a>";
 												}
@@ -209,16 +209,16 @@ if(!isset($_SESSION['user']))
 							</tfoot>
 						 
 							<tbody>
-								<tr>
+<!--								<tr>
 								<div id="search" style="display: none;" class="tab-content">
 								<td><input type="text" id="type"></td>
 								<td><input type="text" id="job"></td>
 								<td><input type="text" id="driver"></td>
 								<td><input type="button" id="search" value="Search"></td>
 								</div>
-								</tr>
+								</tr> -->
 								<?php
-								$mDriverList = $mAllDriverList;
+								//$mDriverList = $mAllDriverList;
 								for($i=0; $i<sizeof($mDriverList); $i++) {
 									$mDriver = new Driver($mDriverList[$i]);
 									$mJob = new Job($mDriver->getCurrentJob());

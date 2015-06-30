@@ -550,7 +550,7 @@ class User {
 		return $result;
 	}
 	
-	function getDriverList() {
+	function getCurrentDriverList() {
 		//require_once '../framework/DBConnect.php';
 		
 		// opening db connection
@@ -560,7 +560,30 @@ class User {
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
-		$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId'";
+		$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '1'";
+		//echo "--->".$sql;
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+		while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}
+		//echo sizeof($result)."    < size";
+		return $result;
+	}
+
+	function getPreviousDriverList() {
+		//require_once '../framework/DBConnect.php';
+		
+		// opening db connection
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$company_id = $_SESSION['user']['company'];
+		$result = array();
+		
+		$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '0'";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
