@@ -321,6 +321,23 @@ class Vehicle {
             return false;
 		}
 	}
+	
+    function setDriver($driver) {
+		//require_once '../framework/DBConnect.php';
+		// opening db connection
+		$db = new Connection();
+		$conn = $db->connect();
+		$sql = "UPDATE vehicle SET driver = '$driver' WHERE id = '$this->id'";
+		//print_r($sql);
+
+		if (mysqli_query($conn, $sql)) {
+			//print_r("<br>Record updated successfully");
+            return true;
+		} else {
+			//print_r("<br>Error updating record: " . mysqli_error($conn));
+            return false;
+		}
+	}
     
     function addTrack($lattitude, $longitude, $address){
         $db = new Connection();

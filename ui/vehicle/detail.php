@@ -11,6 +11,8 @@ if(!isset($_SESSION['user']))
 
 	$mUser = new User();
 	
+	$mDriverList = $mUser->getDriverList();
+	
 	if(!isset($_GET['id'])) {
 		header("Location:index.php");
 		return;
@@ -59,7 +61,37 @@ if(!isset($_SESSION['user']))
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script src="http://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&key=AIzaSyBcmYGGYTH1hGEEr31Odpiou8thwx55f_o&sensor=false&libraries=places,geometry,drawing"></script>
 	<!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,geometry,drawing"></script>-->
+
+  <!--  //modal box jquery -->
+    <link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    
 	<script>
+	
+	function setDriver(id, driver_id){
+		//alert(id+" "+driver_id);
+        jQuery.ajax({
+            type: 'POST',
+            url: 'action.php?action=set_driver&id='+ id + '&driverid='+driver_id,
+            cache: false,
+            success: function(response){
+				//alert(response);
+                if(response == 1){
+					$('#driver_info').load(document.URL +  ' #driver_info');
+					if(driver_id == 0) {
+						alert("Driver removed successfully!!!");
+					}else {
+						closeModal();
+						alert("Driver updated successfully!!!");   
+					}
+                }
+                else {
+					alert("Some problem occured!!!");					
+                }
+            }
+        });
+	}
 
 	$(document).ready(function() {
 		$("#from_date, #to_date").datepicker({
@@ -446,27 +478,110 @@ if(!isset($_SESSION['user']))
 								
 							</div>
 						</div>
+
+<!-- //Modal Box Functionality  -->
+<script>
+function OpenModal()
+{
+ $("#driver_form_div" ).dialog({
+   width: 460,
+/*      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "clip",
+        duration: 500
+      */
+    });
+}
+
+function closeModal()
+{
+ $("#driver_form_div" ).dialog({
+   width: 0,
+/*      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "clip",
+        duration: 500
+      */
+    });
+}
+</script>
+ <style>
+#driver_form_div ul {
+	list-style-type: none;
+	margin: 20px 0px 0px;
+	padding: 0;
+}
+ 
+#driver_form_div li {
+  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+}
+ 
+#driver_form_div li:last-child {
+  border: none;
+}
+ 
+#driver_form_div li a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  width: 100%;
+ 
+  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+  transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+ 
+#driver_form_div li a:hover {
+  
+  background: #f6f6f6;
+  
+}
+</style>
+
+						<div id="driver_form_div" title="Select Driver ( <?php  echo sizeof($mDriverList);?> )" style="display:none;" width='60%'>
+						
+							<!--Driver Count : <?php  echo sizeof($mDriverList);?>-->
+						   <ul>
+							<?php
+								for($i=0; $i<sizeof($mDriverList); $i++){
+									$mDriver = new Driver($mDriverList[$i]);
+									echo "<li><a href='#' onClick='setDriver(".$mVehicle->getId().",".$mDriver->getId().")'>".$mDriver->getName()."</a></li>";
+								}
+							?>
+						  </ul>  
+					   
+						</div>
 						
 						<div class="content-box" style="margin:5px 5px 5px 5px" id="driver_info_block">
 							<div style="display: block;" class="content-box-content-no-border">
 						
-								<div style="display: block;" class="tab-content default-tab">
+								<div style="display: block;" class="tab-content default-tab" id="driver_info">
 									<b> Current Driver : </b><br><br>
                                     <?php
+										$mVehicle1 = new Vehicle($mId);
                                         //echo $mVehicle->getCurrentDriver();
-                                        if($mVehicle->getCurrentDriver() == 0){
+                                        if($mVehicle1->getCurrentDriver() == 0){
                                     ?>
                                             <div id="driver_view">
                                             No Driver Set!!!
                                             </div><br>
-                                            <a href="#" style="font-size:11px">Assign driver</a>
+                                            <a href="#" style="font-size:11px" onClick="OpenModal();">Assign driver</a>
                                     <?php } else{
-                                            $mDriver = new Driver($mVehicle->getCurrentDriver());
+                                            $mDriver = new Driver($mVehicle1->getCurrentDriver());
                                             ?>
                                             <div id="driver_view">
                                              <?php echo $mDriver->getName();?>
                                             </div><br>
-                                            <a href="action.php?action=removedriver&id=<?php echo $mVehicle->getId() ?>" style="font-size:11px">Remove Driver</a>
+                                            <a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);">Remove Driver</a>
                                     <?php    } ?>
 
 								</div>        

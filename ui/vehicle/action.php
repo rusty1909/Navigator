@@ -1,9 +1,9 @@
 <?php
 require_once '../../framework/Vehicle.php';
-if(!isset($_SESSION['user'])){
+/*if(!isset($_SESSION['user'])){
 	echo "<script>window.location.href = '../user/login.php'</script>";
 	//header('Location:../user/login.php');
-}
+}*/
 if(isset($_GET['action'])) {
 	//die "q";
 	$action = $_GET['action'];
@@ -31,6 +31,17 @@ switch($action) {
 			header('Location:index.php');
 		else {}
 			//header('Location:abc.php');
+        break;
+
+	case "set_driver" : $id = $_GET['id'];
+		$driver_id = $_GET['driverid'];
+		//echo $_GET['id'];
+		$mVehicle = new Vehicle($id);
+		if($mVehicle->setDriver($driver_id)){
+			echo 1;
+		} else {
+			echo 0;
+		}
         break;
     
     case "removedriver" : $id = $_GET['id'];
