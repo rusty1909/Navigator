@@ -83,6 +83,23 @@ class Driver {
 			return false;
 		}
 	}
+
+    function getCurrentVehicle(){
+		
+		// opening db connection
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$sql = "SELECT id FROM vehicle WHERE driver = '$this->id'";
+		$action = mysqli_query($conn, $sql);		
+
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				return $row['id'];
+			}
+		}
+		return 0;
+	}
 	
 	function getCurrentJob() {
 		//require_once '../framework/DBConnect.php';

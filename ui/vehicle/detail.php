@@ -11,7 +11,7 @@ if(!isset($_SESSION['user']))
 
 	$mUser = new User();
 	
-	$mDriverList = $mUser->getCurrentDriverList();
+	$mDriverList = $mUser->getAvailableDriverList();
 	
 	if(!isset($_GET['id'])) {
 		header("Location:index.php");
@@ -79,6 +79,8 @@ if(!isset($_SESSION['user']))
 				//alert(response);
                 if(response == 1){
 					$('#driver_info').load(document.URL +  ' #driver_info');
+					//$('#driver_form_div').load(document.URL +  ' #driver_form_div');
+					
 					if(driver_id == 0) {
 						alert("Driver removed successfully!!!");
 					}else {
@@ -567,6 +569,7 @@ function closeModal()
 								<div style="display: block;" class="tab-content default-tab" id="driver_info">
 									<b> Current Driver : </b><br><br>
                                     <?php
+										$mDriverList = $mUser->getAvailableDriverList();
 										$mVehicle1 = new Vehicle($mId);
                                         //echo $mVehicle->getCurrentDriver();
                                         if($mVehicle1->getCurrentDriver() == 0){
