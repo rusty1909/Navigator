@@ -496,7 +496,7 @@ function OpenModal()
       hide: {
         effect: "clip",
         duration: 500
-      
+      }
     });
 }
 
