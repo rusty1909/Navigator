@@ -93,6 +93,8 @@ if(!isset($_SESSION['user']))
                 }
             }
         });
+        
+        $('#driver_form_div').dialog('close');
 	}
 
 	$(document).ready(function() {
@@ -487,14 +489,14 @@ function OpenModal()
 {
  $("#driver_form_div" ).dialog({
    width: 460,
-/*      show: {
+      show: {
         effect: "blind",
         duration: 1000
       },
       hide: {
         effect: "clip",
         duration: 500
-      */
+      
     });
 }
 
@@ -534,7 +536,8 @@ function closeModal()
   color: #000;
   display: block;
   width: 100%;
- 
+  padding-top: 10px;
+    
   -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
   -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
   -o-transition: font-size 0.3s ease, background-color 0.3s ease;
