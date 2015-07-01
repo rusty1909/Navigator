@@ -24,8 +24,8 @@ switch($action) {
 		} else {
 			echo "<script>alert('Some problem occured!!!')</script>";
 		}
-		//echo $_SESSION['user']['password'];
-		echo "<script>window.location.href = 'index.php'</script>";	
+		..echo $_SESSION['user']['password'];
+		//echo "<script>window.location.href = 'index.php'</script>";	
 		break;
 	case "update_contact" : $phone_m = $_POST['phone_m'];
 		$phone_o = $_POST['phone_o'];
