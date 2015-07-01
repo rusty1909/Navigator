@@ -468,25 +468,31 @@ if(!isset($_SESSION['user']))
 						<div id="vehicle_number" style="margin:15px 5px 20px 5px">
 						<b style="font-size:30px"><?php echo $mVehicle->getVehicleNumber(); ?> </b>
 						<span style="font-size:12px">(<?php echo $mVehicle->getType();?>)</span>	
-						<br><br><input type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input type='button' value='Notifications'>					
+						<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>					
 						</div>
 						
 					 
 					
 						<div class="content-box" style="margin:5px 5px 5px 5px" id="address_block">
-							<div style="display: block;" class="content-box-content-no-border">
+							<div class="content-box-header">								
+								<h3 style="cursor: s-resize;">Current Location</h3>								
+								<div class="clear"></div>								
+							</div>
+							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab">
-									<b> Current Location : </b><br><br>
+									<!--<b> Current Location : </b><br><br>-->
 									<div id="address_view">
 									Locating...
 									</div><br>
 									<span style="font-size:9px">Last updated <b id='last_updated'> -- -- -- </b></span><br><br>
-									<input type="button" value="Locate" onClick="locatePosition()">
+									<input class="button" type="button" value="Locate" onClick="locatePosition()">
+									<!--<input class="button" value="Submit" type="submit">-->
 								</div> <!-- End #tab3 -->        
 								
 							</div>
 						</div>
+						
 
 <!-- //Modal Box Functionality  -->
 <script>
@@ -572,10 +578,14 @@ function closeModal()
 						</div>
 						
 						<div class="content-box" style="margin:5px 5px 5px 5px" id="driver_info_block">
-							<div style="display: block;" class="content-box-content-no-border">
+							<div class="content-box-header">								
+								<h3 style="cursor: s-resize;">Current Driver</h3>								
+								<div class="clear"></div>								
+							</div>
+							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab" id="driver_info">
-									<b> Current Driver : </b><br><br>
+									<!--<b> Current Driver : </b><br><br>-->
                                     <?php
 										$mDriverList = $mUser->getAvailableDriverList();
 										$mVehicle1 = new Vehicle($mId);
@@ -601,15 +611,19 @@ function closeModal()
 						</div>
 						
 						<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
-							<div style="display: block;" class="content-box-content-no-border">
+							<div class="content-box-header">								
+								<h3 style="cursor: s-resize;"> Track Vehicle Path</h3>								
+								<div class="clear"></div>								
+							</div>
+							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab">
-									<b> Track Vehicle Path : </b><br><br>
-									
+									<!--<b> Track Vehicle Path : </b><br><br>
+									-->
 									<table>
 									<tr><td style="width:20px;padding:7px;">From</td><td><input type='text' id='from_date'> <br></td></tr>
 									<tr><td style="width:20px;padding:7px;">To</td><td> <input type='text' id='to_date'> <br></td></tr>
-									<tr><td colspan='2' style="width:20px;padding:7px;"><input type="submit" value="Show Route" onClick="showTrack(<?php echo $mId; ?>)"><td><tr>
+									<tr><td colspan='2' style="width:20px;padding:7px;"><input class="button" type="submit" value="Show Route" onClick="showTrack(<?php echo $mId; ?>)"><td><tr>
 									</table>
 									
 									
@@ -618,7 +632,7 @@ function closeModal()
 							</div>
 						</div>
 						
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="latest_news_block">
+						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="latest_news_block">
 							<div style="display: block;" class="content-box-content-no-border">
 						
 								<div style="display: block;" class="tab-content default-tab">
@@ -636,10 +650,10 @@ function closeModal()
 									?>
 									</tbody>
 									</table>
-								</div> <!-- End #tab3 -->        
+								</div>
 								
 							</div>
-						</div>
+						</div>-->
 						
 					</div> 
 					</div>
