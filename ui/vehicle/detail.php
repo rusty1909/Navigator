@@ -82,9 +82,14 @@ if(!isset($_SESSION['user']))
 					//$('#driver_form_div').load(document.URL +  ' #driver_form_div');
 					
 					if(driver_id == 0) {
+						/*
+						* in case driver is removed, refresh whole page...
+						* temp fix
+						*/
+						location.reload(true);
 						alert("Driver removed successfully!!!");
 					}else {
-						closeModal();
+						//closeModal();
 						alert("Driver updated successfully!!!");   
 					}
                 }
@@ -489,14 +494,14 @@ function OpenModal()
 {
  $("#driver_form_div" ).dialog({
    width: 460,
-      show: {
+    /*  show: {
         effect: "blind",
         duration: 1000
       },
       hide: {
         effect: "clip",
         duration: 500
-      }
+      } */
     });
 }
 
