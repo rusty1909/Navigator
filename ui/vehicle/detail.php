@@ -350,7 +350,7 @@ if(!isset($_SESSION['user']))
 		snappedPolyline = new google.maps.Polyline({
 			path: snappedCoordinates,
 			strokeColor: 'blue',
-			strokeWeight: 5,
+			strokeWeight: 3,
 			icons: [{
 				icon: lineSymbol,
 				offset: '100%'
