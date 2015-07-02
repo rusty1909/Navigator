@@ -465,10 +465,27 @@ if(!isset($_SESSION['user']))
 					?>
 					<div class="content-box-content-detail" style="width:30%;height:100%;float:right;overflow-y:auto">
 					
-						<div id="vehicle_number" style="margin:15px 5px 20px 5px">
-						<b style="font-size:30px"><?php echo $mVehicle->getVehicleNumber(); ?> </b>
-						<span style="font-size:12px">(<?php echo $mVehicle->getType();?>)</span>	
-						<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>					
+						<div id="vehicle_number" style="margin:15px 5px 20px 10px">
+							<img id="type" height="45" width="45" src="../../res/vehicle_types/<?php echo $mVehicle->getType();?>.png" title="<?php echo $mVehicle->getType()." : ".$mVehicle->getModel();?>" alt="<?php echo $mVehicle->getType();?>"> <span style="vertical-align:12px;"><b style="font-size:30px;"><?php echo $mVehicle->getVehicleNumber(); ?> </b>	</span>	
+							<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>
+							<br><br>
+							<div id="driver_info">
+								<img id="driver_icon" height="15" width="15" src="../../res/driver_icon.png" title="Driver" alt="Driver">&nbsp;
+								<?php
+									$mDriverList = $mUser->getAvailableDriverList();
+									$mVehicle1 = new Vehicle($mId);
+									//echo $mVehicle->getCurrentDriver();
+									if($mVehicle1->getCurrentDriver() == 0){
+								?>									
+								<b><span style='vertical-align:2px;'>Click</span> <a href="#" style="font-size:11px" onClick="OpenModal();"><img id="add" height="15" width="15" src="../../res/add.png" title="Add Driver" alt="Add Driver"></a> <span style='vertical-align:2px;'>to set driver</span></b>
+								<?php 
+									} else{
+										$mDriver = new Driver($mVehicle1->getCurrentDriver());
+										echo "<span style='vertical-align:2px;'><b>".$mDriver->getName()."</b></span>";
+								?>				
+								<a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);"><img id="add" height="15" width="15" src="../../res/delete.png" title="Remove Driver" alt="Remove Driver"></a>
+								<?php    } ?>
+							</div>
 						</div>
 						
 					 
@@ -577,7 +594,7 @@ function closeModal()
 					   
 						</div>
 						
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="driver_info_block">
+						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="driver_info_block">
 							<div class="content-box-header">								
 								<h3 style="cursor: s-resize;">Current Driver</h3>								
 								<div class="clear"></div>								
@@ -585,7 +602,7 @@ function closeModal()
 							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab" id="driver_info">
-									<!--<b> Current Driver : </b><br><br>-->
+									
                                     <?php
 										$mDriverList = $mUser->getAvailableDriverList();
 										$mVehicle1 = new Vehicle($mId);
@@ -605,10 +622,10 @@ function closeModal()
                                             <a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);">Remove Driver</a>
                                     <?php    } ?>
 
-								</div>        
+								</div>   
 								
 							</div>
-						</div>
+						</div> -->
 						
 						<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
 							<div class="content-box-header">								
