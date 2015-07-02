@@ -469,6 +469,19 @@ if(!isset($_SESSION['user']))
 							<img id="type" height="45" width="45" src="../../res/vehicle_types/<?php echo $mVehicle->getType();?>.png" title="<?php echo $mVehicle->getType()." : ".$mVehicle->getModel();?>" alt="<?php echo $mVehicle->getType();?>"> <span style="vertical-align:12px;"><b style="font-size:30px;"><?php echo $mVehicle->getVehicleNumber(); ?> </b>	</span>	
 							<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>
 							<br><br>
+							<div id="location_info">
+								<table>
+								<tr><td><img id="location_icon" height="15" width="15" src="../../res/location_icon.png" title="Location" alt="Location">&nbsp;</td>
+									<td><b><span id="address_view" style='vertical-align:2px;'>
+									Locating...
+									</span><br></b>									
+									<a href="#" style="font-size:11px" onClick="locatePosition()"><img id="add" height="15" width="15" src="../../res/locate.png" title="Locate Vehicle" alt="Locate Vehicle"></a>&nbsp;&nbsp;<span style="font-size:9px;vertical-align:2px;">Last updated <b id='last_updated'> -- -- -- </b></span>
+									<!--<input class="button" type="button" value="Locate" onClick="locatePosition()">-->
+									</td>
+									</tr>
+								</table>
+							</div>
+							<br>
 							<div id="driver_info">
 								<img id="driver_icon" height="15" width="15" src="../../res/driver_icon.png" title="Driver" alt="Driver">&nbsp;
 								<?php
@@ -483,14 +496,15 @@ if(!isset($_SESSION['user']))
 										$mDriver = new Driver($mVehicle1->getCurrentDriver());
 										echo "<span style='vertical-align:2px;'><b>".$mDriver->getName()."</b></span>";
 								?>				
-								<a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);"><img id="add" height="15" width="15" src="../../res/delete.png" title="Remove Driver" alt="Remove Driver"></a>
+								&nbsp;&nbsp;&nbsp; <a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);"><img id="add" height="15" width="15" src="../../res/delete.png" title="Remove Driver" alt="Remove Driver"></a>
 								<?php    } ?>
 							</div>
+
 						</div>
 						
 					 
 					
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="address_block">
+						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="address_block">
 							<div class="content-box-header">								
 								<h3 style="cursor: s-resize;">Current Location</h3>								
 								<div class="clear"></div>								
@@ -498,17 +512,17 @@ if(!isset($_SESSION['user']))
 							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab">
-									<!--<b> Current Location : </b><br><br>-->
+									
 									<div id="address_view">
 									Locating...
 									</div><br>
 									<span style="font-size:9px">Last updated <b id='last_updated'> -- -- -- </b></span><br><br>
 									<input class="button" type="button" value="Locate" onClick="locatePosition()">
-									<!--<input class="button" value="Submit" type="submit">-->
-								</div> <!-- End #tab3 -->        
+									
+								</div>  
 								
 							</div>
-						</div>
+						</div>-->
 						
 
 <!-- //Modal Box Functionality  -->
@@ -593,39 +607,7 @@ function closeModal()
 						  </ul>  
 					   
 						</div>
-						
-						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="driver_info_block">
-							<div class="content-box-header">								
-								<h3 style="cursor: s-resize;">Current Driver</h3>								
-								<div class="clear"></div>								
-							</div>
-							<div style="display: block;" class="content-box-content">
-						
-								<div style="display: block;" class="tab-content default-tab" id="driver_info">
-									
-                                    <?php
-										$mDriverList = $mUser->getAvailableDriverList();
-										$mVehicle1 = new Vehicle($mId);
-                                        //echo $mVehicle->getCurrentDriver();
-                                        if($mVehicle1->getCurrentDriver() == 0){
-                                    ?>
-                                            <div id="driver_view">
-                                            No Driver Set!!!
-                                            </div><br>
-                                            <a href="#" style="font-size:11px" onClick="OpenModal();">Assign driver</a>
-                                    <?php } else{
-                                            $mDriver = new Driver($mVehicle1->getCurrentDriver());
-                                            ?>
-                                            <div id="driver_view">
-                                             <?php echo $mDriver->getName();?>
-                                            </div><br>
-                                            <a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);">Remove Driver</a>
-                                    <?php    } ?>
 
-								</div>   
-								
-							</div>
-						</div> -->
 						
 						<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
 							<div class="content-box-header">								
@@ -648,29 +630,29 @@ function closeModal()
 								
 							</div>
 						</div>
-						
-						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="latest_news_block">
-							<div style="display: block;" class="content-box-content-no-border">
+
+						<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
+							<div class="content-box-header">								
+								<h3 style="cursor: s-resize;">Notifications</h3>								
+								<div class="clear"></div>								
+							</div>
+							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab">
-								
+									<!--<b> Track Vehicle Path : </b><br><br>
+									-->
 									<table>
-									<thead>
-									<tr></tr>
-									</thead>
-									<tbody>
-									<?php
-										echo "<tr></tr>";
-										echo "<tr><td>Total Vehicles</td><td></td></tr>";
-										echo "<tr><td>Already Deployed</td><td></td></tr>";
-										echo "<tr><td>Waiting Deployement</td><td></td></tr>";
-									?>
-									</tbody>
+									<tr><td style="width:20px;padding:7px;">From</td><td><input type='text' id='from_date'> <br></td></tr>
+									<tr><td style="width:20px;padding:7px;">To</td><td> <input type='text' id='to_date'> <br></td></tr>
+									<tr><td colspan='2' style="width:20px;padding:7px;"><input class="button" type="submit" value="Show Route" onClick="showTrack(<?php echo $mId; ?>)"><td><tr>
 									</table>
-								</div>
+									
+									
+								</div>      
 								
 							</div>
-						</div>-->
+						</div>
+
 						
 					</div> 
 					</div>
