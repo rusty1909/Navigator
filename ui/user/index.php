@@ -72,20 +72,25 @@ if(!isset($_SESSION['user']))
 			</noscript>
 			
 			<div class="clear"></div> <!-- End .clear -->
-			
-			<!--<div class="content-box column-left">				
-				<div class="content-box-header">					
-					<h3 style="cursor: s-resize;">Reminders</h3>					
-				</div> <!-- End .content-box-header -- >				
-				<div class="content-box-content">					
-					<div style="display: block;" class="tab-content default-tab">					
+			<div style="width:48%;height:88%;float:left">
+				<div class="content-box column-left" style="width:100%;height:49%">				
+					<div class="content-box-header">					
+						<h3 style="cursor: s-resize;">Reminders</h3>					
+					</div> <!-- End .content-box-header -->				
+					<div class="content-box-content">										
+					</div> <!-- End .content-box-content -->				
+				</div> <!-- End .content-box -->
+				<br>
+				<div class="content-box column-left" style="width:100%;height:49%">				
+					<div class="content-box-header">					
+						<h3 style="cursor: s-resize;">Reminders</h3>					
+					</div> <!-- End .content-box-header -->				
+					<div class="content-box-content">										
+					</div> <!-- End .content-box-content -->				
+				</div> <!-- End .content-box -->
+			</div>
 
-					</div> <!-- End #tab3 -- >					
-				</div> <!-- End .content-box-content -- >				
-			</div> <!-- End .content-box -->
-			
-
-			<div class="content-box column-right" style="width:70%;height:88%">
+			<div class="content-box column-right" style="width:49%;height:88%">
 			
 				
 				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
@@ -117,7 +122,7 @@ if(!isset($_SESSION['user']))
 				
 			</div> <!-- End .content-box -->
 			<div class="clear"></div>
-<?php include("../footer.php")?>
+			<?php include("../footer.php")?>
 			
 		</div> <!-- End #main-content -->
 		
