@@ -60,6 +60,7 @@ if(!isset($_SESSION['user']))
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script src="http://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&key=AIzaSyBcmYGGYTH1hGEEr31Odpiou8thwx55f_o&sensor=false&libraries=places,geometry,drawing"></script>
+
 	<!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,geometry,drawing"></script>-->
 
   <!--  //modal box jquery -->
@@ -122,6 +123,8 @@ if(!isset($_SESSION['user']))
     var marker;
 	var track_marker;
     var contentString;
+	
+	var distance = 0;
 	
 	var trace;
         
@@ -237,13 +240,16 @@ if(!isset($_SESSION['user']))
 			alert("clearing map 2");
 			snappedPolyline.setMap(null);
 		}
+
         var start = $('#from_date').val();
         var end = $('#to_date').val();
 		//alert(start + " "+ end);
-        if(start=="" && end=="") {
+        if(start=="" || end=="") {
             alert("Enter start and end date.");
             return;
         }
+				document.getElementById("from_date").disabled = true; 
+		document.getElementById("to_date").disabled = true; 
         
         jQuery.ajax({
             type: 'POST',
@@ -259,11 +265,22 @@ if(!isset($_SESSION['user']))
                 }
             }
         });
+		document.getElementById("distance").innerHTML = "Calculating...";
     }
+	
+	function reload(){
+		//location.reload(true);
+		$('#trace_info').load(document.URL +  ' #trace_info');
+		initialize();
+		//$('#googleMap').load(document.URL +  ' #googleMap');
+	}
 	
 	function drawPath(i) {
 		console.log(i+", time = "+new Date().getTime());
-		if(i == trace.track.length-1)  return;
+		if(i == trace.track.length-1)  {
+			document.getElementById("distance").innerHTML = "Distance travelled : "+distance+" KM&nbsp;<a href='#' onClick='reload()'><img id='add' height='15' width='15' src='../../res/delete.png' title='Clear' alt='Clear' ></a>";
+			return;
+		}
 		nlat = trace.track[i].lattitude;
 		nlong = trace.track[i].longitude;
 		naddress = trace.track[i].address;
@@ -273,9 +290,15 @@ if(!isset($_SESSION['user']))
 			map.panTo(track_marker.getPosition());
 		}
 		
-		first = nlat+","+nlong;		
+		first = nlat+","+nlong;
+
+		var loc_first = new google.maps.LatLng(nlat, nlong);
+				
 		nextlat = trace.track[i+1].lattitude;
 		nextlong = trace.track[i+1].longitude;
+		
+		var loc_sec = new google.maps.LatLng(nextlat, nextlong);
+		
 		next = nextlat+","+nextlong;
 		pathPair = first+"|"+next;
 		runSnapToRoad(pathPair);
@@ -283,6 +306,8 @@ if(!isset($_SESSION['user']))
 			function(){
 				drawPath(i+1)
 			}, 1000);
+		distance = parseFloat(distance) + parseFloat((google.maps.geometry.spherical.computeDistanceBetween(loc_first, loc_sec) / 1000).toFixed(2));
+			
 	}
 	
 	function createCORSRequest(method, url) {
@@ -437,13 +462,14 @@ if(!isset($_SESSION['user']))
 			</noscript>
 			
 			<div class="clear"></div> <!-- End .clear -->
-			
+			<!--<div class="content-box" style="margin: 0 0 0 0;padding: 0 0 0 0;border:0px;height:10%px;background-color:#444444">
+			<img id="type" height="45" width="45" src="../../res/vehicle_types/<?php echo $mVehicle->getType();?>.png" title="<?php echo $mVehicle->getType()." : ".$mVehicle->getModel();?>" alt="<?php echo $mVehicle->getType();?>"> <span style="vertical-align:12px;"><b style="font-size:30px;"><?php echo $mVehicle->getVehicleNumber(); ?> </b>	</span>	
+							<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>
+			</div>-->
 
 			<div class="clear"></div>
 			
-			<div class="content-box" style="margin: 0 0 0 0;padding: 0 0 0 0;border:0px"><!-- Start Content Box -->
-				
-
+			<div class="content-box" style="margin: 0 0 0 0;padding: 0 0 0 0;border:0px;height:100%px"><!-- Start Content Box -->
 				
 				<div class="content-box-content-map" style="padding:0;width:100%">
 					
@@ -468,7 +494,7 @@ if(!isset($_SESSION['user']))
 						<div id="vehicle_number" style="margin:15px 5px 20px 10px">
 							<img id="type" height="45" width="45" src="../../res/vehicle_types/<?php echo $mVehicle->getType();?>.png" title="<?php echo $mVehicle->getType()." : ".$mVehicle->getModel();?>" alt="<?php echo $mVehicle->getType();?>"> <span style="vertical-align:12px;"><b style="font-size:30px;"><?php echo $mVehicle->getVehicleNumber(); ?> </b>	</span>	
 							<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>
-							<br><br>
+							<br><br><br>
 							<div id="location_info">
 								<table>
 								<tr><td><img id="location_icon" height="15" width="15" src="../../res/location_icon.png" title="Location" alt="Location">&nbsp;</td>
@@ -498,6 +524,18 @@ if(!isset($_SESSION['user']))
 								?>				
 								&nbsp;&nbsp;&nbsp; <a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);"><img id="add" height="15" width="15" src="../../res/delete.png" title="Remove Driver" alt="Remove Driver"></a>
 								<?php    } ?>
+							</div>
+							<br>
+							<!--<img id="track_icon" height="2" width="70%" src="../../res/separator.png">-->
+							<br>
+							<div id="trace_info">
+								<table>
+								<tr><td rowspan='3'><img id="track_icon" height="15" width="15" src="../../res/track_icon.png" title="Trace" alt="Trace">&nbsp;</td>									
+									<td>&nbsp;<input class="text-input" placeholder="Start Date" type='text' id='from_date' size='8' style="vertical-align:3px;"><br></td>
+									<td style="width:25px;"><img height="15" width="15" src="../../res/to_from.png"></td>
+									<td><input class="text-input" placeholder="End Date" type='text' id='to_date' size='8' style="vertical-align:3px;"> <br></td></tr>
+								<tr><td colspan='3' style="width:20px;padding:7px;"><b><span id="distance" style='vertical-align:2px;'><input class="button" type="submit" value="Show Route" onClick="showTrack(<?php echo $mId; ?>)"></span></b><td><tr>
+								</table>
 							</div>
 
 						</div>
@@ -609,7 +647,7 @@ function closeModal()
 						</div>
 
 						
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
+						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
 							<div class="content-box-header">								
 								<h3 style="cursor: s-resize;"> Track Vehicle Path</h3>								
 								<div class="clear"></div>								
@@ -617,8 +655,6 @@ function closeModal()
 							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab">
-									<!--<b> Track Vehicle Path : </b><br><br>
-									-->
 									<table>
 									<tr><td style="width:20px;padding:7px;">From</td><td><input type='text' id='from_date'> <br></td></tr>
 									<tr><td style="width:20px;padding:7px;">To</td><td> <input type='text' id='to_date'> <br></td></tr>
@@ -629,9 +665,9 @@ function closeModal()
 								</div>      
 								
 							</div>
-						</div>
+						</div>-->
 
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
+						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
 							<div class="content-box-header">								
 								<h3 style="cursor: s-resize;">Notifications</h3>								
 								<div class="clear"></div>								
@@ -639,8 +675,7 @@ function closeModal()
 							<div style="display: block;" class="content-box-content">
 						
 								<div style="display: block;" class="tab-content default-tab">
-									<!--<b> Track Vehicle Path : </b><br><br>
-									-->
+									
 									<table>
 									<tr><td style="width:20px;padding:7px;">From</td><td><input type='text' id='from_date'> <br></td></tr>
 									<tr><td style="width:20px;padding:7px;">To</td><td> <input type='text' id='to_date'> <br></td></tr>
@@ -651,7 +686,7 @@ function closeModal()
 								</div>      
 								
 							</div>
-						</div>
+						</div>-->
 
 						
 					</div> 
