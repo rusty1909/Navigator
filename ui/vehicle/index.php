@@ -154,14 +154,14 @@ if(!isset($_SESSION['user']))
 			
 			<div class="clear"></div> <!-- End .clear -->
 			
-			<div class="content-box"><!-- Start Content Box -->
+			<div class="content-box column-left" style="width:63%"><!-- Start Content Box -->
 				
 				<div class="content-box-header">
 					
 					<h3 style="cursor: s-resize;">Vehicle List</h3>
 					
 					<ul class="content-box-tabs">
-						<li><a href="#all" title="List of all vehicles registered">All (<?php echo sizeof($mAllVehicleList); ?>)</a></li> <!-- href must be unique and match the id of target div -->
+						<!--<li><a href="#all" title="List of all vehicles registered">All (<?php echo sizeof($mAllVehicleList); ?>)</a></li> <!-- href must be unique and match the id of target div -->
 						<li><a href="#deployed" title="List of online vehicles" class="default-tab current">Online<!--Deployed alias--> (<?php echo sizeof($mDeployedVehicleList); ?>)</a></li>
 						<!--<li><a href="#onjob">On-Job (<?php echo sizeof($mOnJobVehicleList); ?>)</a></li>
 						<li><a href="#free">Free (<?php echo sizeof($mFreeVehicleList); ?>)</a></li>
@@ -203,12 +203,10 @@ if(!isset($_SESSION['user']))
 							
 							<thead>
 								<tr>
-								   <th>Vehicle Type</th>
+								   <th></th>
 								   <th>Model</th>
 								   <th>Vehicle Number</th>
-								   <th>Current Job</th>
 								   <th>Current Driver</th>
-								   <th>Action</th>
 								</tr>
 								
 							</thead>
@@ -217,16 +215,16 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<select name="dropdown">
+											<!--<select name="dropdown">
 												<option selected="selected" value="option1">Choose an action...</option>
 												<option value="option2">Edit</option>
 												<option value="option3">Delete</option>
 											</select>
-											<a class="button" href="#">Apply to selected</a>
+											<a class="button" href="#">Apply to selected</a> -->
 											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
-										<div class="pagination">
+										<!--<div class="pagination">
 											<?php
 											//echo sizeof($mAllVehicleList)/10;
 											if((sizeof($mAllVehicleList)/10) > 1) {
@@ -236,31 +234,17 @@ if(!isset($_SESSION['user']))
 													$k = $i+1;
 													echo "<a href='#' class='number current' title='".$k."'>".$k."</a>";
 												}
-											
-											//<a href="#" class="number" title="1">1</a>
-											//<a href="#" class="number" title="2">2</a>
-											//<a href="#" class="number current" title="3">3</a>
-											//<a href="#" class="number" title="4">4</a>
 												echo "<a href='#' title='Next Page'>Next »</a><a href='#' title='Last Page'>Last »</a>";
 											}
 											?>
-										</div> <!-- End .pagination -->
+										</div> -->
 										<div class="clear"></div>
 									</td>
 								</tr>
 							</tfoot>   
 						 
 							<tbody>
-<!--								<tr>
-								<div id="search" style="display: none;" class="tab-content">
-								<td><input type="text" id="type"></td>
-								<td><input type="text" id="model"></td>
-								<td><input type="text" id="number"></td>
-								<td><input type="text" id="job"></td>
-								<td><input type="text" id="driver"></td>
-								<td><input type="button" id="search" value="Search"></td>
-								</div>
-								</tr>   -->
+
 								<?php
 								$mVehicleList = $mAllVehicleList;
 								for($i=0; $i<sizeof($mVehicleList); $i++) {
@@ -268,15 +252,10 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
 									echo "<tr>";
-									echo "<td>".$mVehicle->getType()."</td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
-									echo "<td>".$mJob->getCode()."</td>";
 									echo "<td>".$mDriver->getName()."</td>";
-									echo "<td>
-										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>&nbsp;&nbsp;
-										 <a href='#' title='Locate'><img src='../../res/hammer_screwdriver.png' alt='Locate'></a>&nbsp;&nbsp;
-									</td>";
 									echo "</tr>";	
 								}
 								?>
@@ -325,12 +304,10 @@ if(!isset($_SESSION['user']))
 							
 							<thead>
 								<tr>
-								   <th>Vehicle Type</th>
+								   <th></th>
 								   <th>Model</th>
 								   <th>Vehicle Number</th>
-								   <th>Current Job</th>
 								   <th>Current Driver</th>
-								   <th>Action</th>
 								</tr>
 								
 							</thead>
@@ -339,27 +316,33 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<select name="dropdown">
+											<!--<select name="dropdown">
 												<option selected="selected" value="option1">Choose an action...</option>
 												<option value="option2">Edit</option>
 												<option value="option3">Delete</option>
 											</select>
-											<a class="button" href="#">Apply to selected</a>
+											<a class="button" href="#">Apply to selected</a> -->
 											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
-										<div class="pagination">
-											<a href="#" title="First Page">« First</a><a href="#" title="Previous Page">« Previous</a>
-											<a href="#" class="number" title="1">1</a>
-											<a href="#" class="number" title="2">2</a>
-											<a href="#" class="number current" title="3">3</a>
-											<a href="#" class="number" title="4">4</a>
-											<a href="#" title="Next Page">Next »</a><a href="#" title="Last Page">Last »</a>
-										</div> <!-- End .pagination -->
+										<!--<div class="pagination">
+											<?php
+											//echo sizeof($mAllVehicleList)/10;
+											if((sizeof($mAllVehicleList)/10) > 1) {
+												echo "<a href='#' title='First Page'>« First</a><a href='#' title='Previous Page'>« Previous</a>";
+											
+												for($i=0; $i<(sizeof($mAllVehicleList)/10);$i++) {
+													$k = $i+1;
+													echo "<a href='#' class='number current' title='".$k."'>".$k."</a>";
+												}
+												echo "<a href='#' title='Next Page'>Next »</a><a href='#' title='Last Page'>Last »</a>";
+											}
+											?>
+										</div> -->
 										<div class="clear"></div>
 									</td>
 								</tr>
-							</tfoot>
+							</tfoot> 
 						 
 							<tbody>
 								<?php
@@ -369,16 +352,10 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
 									echo "<tr>";
-									echo "<td>".$mVehicle->getType()."</td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
-									echo "<td>".$mJob->getCode()."</td>";
 									echo "<td>".$mDriver->getName()."</td>";
-									echo "									<td>
-										<!-- Icons -->
-										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
-										 <a href='#' title='Edit Meta'><img src='../../res/hammer_screwdriver.png' alt='Edit Meta'></a>
-									</td>";
 									echo "</tr>";	
 								}
 								?>
@@ -407,41 +384,45 @@ if(!isset($_SESSION['user']))
 							
 							<thead>
 								<tr>
-								   <th>Vehicle Type</th>
+								   <th></th>
 								   <th>Model</th>
 								   <th>Vehicle Number</th>
-								   <th>Current Job</th>
-								   <th>Current Driver</th>
 								   <th>Action</th>
 								</tr>
 								
 							</thead>
 						 
-							<tfoot>
+<tfoot>
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<select name="dropdown">
+											<!--<select name="dropdown">
 												<option selected="selected" value="option1">Choose an action...</option>
 												<option value="option2">Edit</option>
 												<option value="option3">Delete</option>
 											</select>
-											<a class="button" href="#">Apply to selected</a>
+											<a class="button" href="#">Apply to selected</a> -->
 											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
-										<div class="pagination">
-											<a href="#" title="First Page">« First</a><a href="#" title="Previous Page">« Previous</a>
-											<a href="#" class="number" title="1">1</a>
-											<a href="#" class="number" title="2">2</a>
-											<a href="#" class="number current" title="3">3</a>
-											<a href="#" class="number" title="4">4</a>
-											<a href="#" title="Next Page">Next »</a><a href="#" title="Last Page">Last »</a>
-										</div> <!-- End .pagination -->
+										<!--<div class="pagination">
+											<?php
+											//echo sizeof($mAllVehicleList)/10;
+											if((sizeof($mAllVehicleList)/10) > 1) {
+												echo "<a href='#' title='First Page'>« First</a><a href='#' title='Previous Page'>« Previous</a>";
+											
+												for($i=0; $i<(sizeof($mAllVehicleList)/10);$i++) {
+													$k = $i+1;
+													echo "<a href='#' class='number current' title='".$k."'>".$k."</a>";
+												}
+												echo "<a href='#' title='Next Page'>Next »</a><a href='#' title='Last Page'>Last »</a>";
+											}
+											?>
+										</div> -->
 										<div class="clear"></div>
 									</td>
 								</tr>
-							</tfoot>
+							</tfoot> 
 						 
 							<tbody>
 								<?php
@@ -451,17 +432,15 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
 									echo "<tr>";
-									echo "<td>".$mVehicle->getType()."</td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
-									echo "<td>".$mJob->getCode()."</td>";
-									echo "<td>".$mDriver->getName()."</td>";
-									echo "									<td>
+									/*echo "									<td>
 										<!-- Icons -->
 										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
 										 <a href='#' title='Delete' onClick='onDelete(".$mVehicle->getId().")'><img src='../../res/cross.png' alt='Delete'></a>&nbsp;&nbsp;
 										 <a href='#' title='Edit Meta'><img src='../../res/hammer_screwdriver.png' alt='Edit Meta'></a>
-									</td>";
+									</td>";*/
 									echo "</tr>";	
 								}
 								?>
@@ -489,7 +468,7 @@ if(!isset($_SESSION['user']))
 							
 							<thead>
 								<tr>
-								   <th>Vehicle Type</th>
+								   <th></th>
 								   <th>Model</th>
 								   <th>Vehicle Number</th>
 								   <th>Current Job</th>
@@ -533,7 +512,7 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
 									echo "<tr>";
-									echo "<td>".$mVehicle->getType()."</td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "<td>".$mJob->getCode()."</td>";
@@ -571,7 +550,7 @@ if(!isset($_SESSION['user']))
 							
 							<thead>
 								<tr>
-								   <th>Vehicle Type</th>
+								   <th></th>
 								   <th>Model</th>
 								   <th>Vehicle Number</th>
 								   <th>Current Job</th>
@@ -615,7 +594,7 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
 									echo "<tr>";
-									echo "<td>".$mVehicle->getType()."</td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "<td>".$mJob->getCode()."</td>";
@@ -673,11 +652,9 @@ if(!isset($_SESSION['user']))
 							
 							<thead>
 								<tr>
-								   <th>Vehicle Type</th>
+								   <th></th>
 								   <th>Model</th>
 								   <th>Vehicle Number</th>
-								   <th>Current Job</th>
-								   <th>Current Driver</th>
 								   <th>Action</th>
 								</tr>
 								
@@ -687,27 +664,33 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<select name="dropdown">
+											<!--<select name="dropdown">
 												<option selected="selected" value="option1">Choose an action...</option>
 												<option value="option2">Edit</option>
 												<option value="option3">Delete</option>
 											</select>
-											<a class="button" href="#">Apply to selected</a>
+											<a class="button" href="#">Apply to selected</a> -->
 											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
-										<div class="pagination">
-											<a href="#" title="First Page">« First</a><a href="#" title="Previous Page">« Previous</a>
-											<a href="#" class="number" title="1">1</a>
-											<a href="#" class="number" title="2">2</a>
-											<a href="#" class="number current" title="3">3</a>
-											<a href="#" class="number" title="4">4</a>
-											<a href="#" title="Next Page">Next »</a><a href="#" title="Last Page">Last »</a>
-										</div> <!-- End .pagination -->
+										<!--<div class="pagination">
+											<?php
+											//echo sizeof($mAllVehicleList)/10;
+											if((sizeof($mAllVehicleList)/10) > 1) {
+												echo "<a href='#' title='First Page'>« First</a><a href='#' title='Previous Page'>« Previous</a>";
+											
+												for($i=0; $i<(sizeof($mAllVehicleList)/10);$i++) {
+													$k = $i+1;
+													echo "<a href='#' class='number current' title='".$k."'>".$k."</a>";
+												}
+												echo "<a href='#' title='Next Page'>Next »</a><a href='#' title='Last Page'>Last »</a>";
+											}
+											?>
+										</div> -->
 										<div class="clear"></div>
 									</td>
 								</tr>
-							</tfoot>
+							</tfoot> 
 						 
 							<tbody>
 								<?php
@@ -717,16 +700,12 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
 									echo "<tr>";
-									echo "<td>".$mVehicle->getType()."</td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
-									echo "<td>".$mJob->getCode()."</td>";
-									echo "<td>".$mDriver->getName()."</td>";
 									echo "<td>
 										<!-- Icons -->
-										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
-										 <a href='#' title='Delete' onClick='onDelete(".$mVehicle->getId().")'><img src='../../res/cross.png' alt='Delete'></a>&nbsp;&nbsp;
-										 <a href='#' title='Edit Meta'><img src='../../res/hammer_screwdriver.png' alt='Edit Meta'></a>
+										 <a href='#' title='Delete' onClick='onDelete(".$mVehicle->getId().")'><img src='../../res/cross.png' alt='Delete'></a>
 									</td>";
 									echo "</tr>";	
 								}
@@ -743,6 +722,39 @@ if(!isset($_SESSION['user']))
 				</div> <!-- End .content-box-content -->
 	
 			</div> <!-- End .content-box -->
+			
+			<div class="content-box column-right" style="width:35%">
+			
+				
+				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
+					
+					<h3 style="cursor: s-resize;">Notifications</h3>
+					
+				</div> <!-- End .content-box-header -->
+				
+				<div style="display: block;" class="content-box-content">
+					
+					<div style="display: block;" class="tab-content default-tab">
+					
+						<table>
+						<thead>
+						<tr></tr>
+						</thead>
+						<tbody>
+						<?php
+							echo "<tr></tr>";
+							echo "<tr><td>Total Vehicles</td><td>".sizeof($mAllVehicleList)."</td></tr>";
+							echo "<tr><td>Already Deployed</td><td>".sizeof($mDeployedVehicleList)."</td></tr>";
+							echo "<tr><td>Waiting Deployement</td><td>".sizeof($mWaitingVehicleList)."</td></tr>";
+						?>
+						</tbody>
+						</table>
+					</div> <!-- End #tab3 -->        
+					
+				</div> <!-- End .content-box-content -->
+				
+			</div>
+			<div class="clear"></div>
 			
 <?php include("../footer.php")?>
 			
