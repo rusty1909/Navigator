@@ -404,7 +404,49 @@ ul.content-box-tabs li a.current {
 #main-content table tfoot td .bulk-actions select {
                 padding: 4px;
 				border: 1px solid #ccc;
-                }      
+                }
+				
+/************ Item List ************/
+
+                
+#item-list table {
+                width: 100%;
+                border-collapse: collapse;
+                }
+                
+#item-list table thead th {
+                font-weight: bold;
+                font-size: 15px;
+                border-bottom: 1px solid #ddd;
+                }
+                
+#item-list tbody {
+                border-bottom: 1px solid #ddd;
+                }
+                
+#item-list tbody tr {
+                background: #fff;
+				border-bottom: 1px solid #ddd;
+                }
+              
+#item-list tbody tr.alt-row {
+                background: #fff;
+                }
+                
+#item-list table td,
+#item-list table th {
+                padding: 7px;
+                line-height: 1em;
+                }        
+				
+#item-list table tfoot td .bulk-actions {
+                padding: 15px 0 5px 0;
+                } 
+				
+#item-list table tfoot td .bulk-actions select {
+                padding: 4px;
+				border: 1px solid #ccc;
+                }
 				
 /*************** Pagination ***************/
 
@@ -888,3 +930,76 @@ div.wysiwyg ul.panel li a.removeFormat { background-position: -80px -64px; }
 div.wysiwyg ul.panel li a.empty { background-position: -64px -80px; }
 
 div.wysiwyg iframe { border: 0; margin: 5px 0 0 0; clear: left; width: 97.5% !important; }
+
+/*********************************** MODAL BOX **********************************/
+.modal-box {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  width: 28%;
+  background: white;
+  border-bottom: 1px solid #aaa;
+  border-radius: 4px;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-clip: padding-box;
+}
+
+.modal-box header,
+.modal-box .modal-header {
+  padding: 1em 1em;
+  border-bottom: 1px solid #ddd;
+  background: #444444;
+  
+}
+
+.modal-box header h3,
+.modal-box header h4,
+.modal-box .modal-header h3,
+.modal-box .modal-header h4 { 
+	margin-bottom: -5px;
+	color: #fff;
+	text-transform:uppercase;
+}
+
+.modal-body {
+	overflow: auto;
+}
+
+.modal-box footer,
+.modal-footer {
+  padding: 1em;
+  border-top: 1px solid #ddd;
+  background: rgba(0, 0, 0, 0.02);
+  text-align: right;
+}
+
+.modal-overlay {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 900;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+a.close {
+  line-height: 1;
+  font-size: 1.5em;
+  position: absolute;
+  top: 5%;
+  right: 2%;
+  font-weight:bold;
+  text-decoration: none;
+  color: #bbb;
+}
+
+a.close:hover {
+  color: #222;
+  -webkit-transition: color 1s ease;
+  -moz-transition: color 1s ease;
+  transition: color 1s ease;
+}

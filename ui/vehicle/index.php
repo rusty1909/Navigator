@@ -229,7 +229,7 @@ if(!isset($_SESSION['user']))
 										<div class="clear"></div>
 									</td>
 								</tr>
-							</tfoot>    -->
+							</tfoot>   
 						 
 							<tbody>
 <!--								<tr>

@@ -55,6 +55,8 @@ if(!isset($_SESSION['user']))
 		
 		<!-- jQuery Datepicker Plugin -->
 		<script type="text/javascript" src="../../res/jquery.htm"></script>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<script type="text/javascript" src="../../res/jquery.js"></script>
 		  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -516,7 +518,7 @@ if(!isset($_SESSION['user']))
 									//echo $mVehicle->getCurrentDriver();
 									if($mVehicle1->getCurrentDriver() == 0){
 								?>									
-								<b><span style='vertical-align:2px;'>Click</span> <a href="#" style="font-size:11px" onClick="OpenModal();"><img id="add" height="15" width="15" src="../../res/add.png" title="Add Driver" alt="Add Driver"></a> <span style='vertical-align:2px;'>to set driver</span></b>
+								<b><span style='vertical-align:2px;'>Click</span> <a class="js-open-modal" href="#" data-modal-id="popup" style="font-size:11px" ><img id="add" height="15" width="15" src="../../res/add.png" title="Add Driver" alt="Add Driver"></a> <span style='vertical-align:2px;'>to set driver</span></b>
 								<?php 
 									} else{
 										$mDriver = new Driver($mVehicle1->getCurrentDriver());
@@ -538,99 +540,50 @@ if(!isset($_SESSION['user']))
 								</table>
 							</div>
 
-						</div>
-						
-					 
-					
-						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="address_block">
-							<div class="content-box-header">								
-								<h3 style="cursor: s-resize;">Current Location</h3>								
-								<div class="clear"></div>								
-							</div>
-							<div style="display: block;" class="content-box-content">
-						
-								<div style="display: block;" class="tab-content default-tab">
-									
-									<div id="address_view">
-									Locating...
-									</div><br>
-									<span style="font-size:9px">Last updated <b id='last_updated'> -- -- -- </b></span><br><br>
-									<input class="button" type="button" value="Locate" onClick="locatePosition()">
-									
-								</div>  
-								
-							</div>
-						</div>-->
-						
+						</div>						
 
 <!-- //Modal Box Functionality  -->
 <script>
-function OpenModal()
-{
- $("#driver_form_div" ).dialog({
-   width: 460,
-    /*  show: {
-        effect: "blind",
-        duration: 1000
-      },
-      hide: {
-        effect: "clip",
-        duration: 500
-      } */
-    });
-}
+$(document).ready(function () {
+	//$('#dialog').dialog(); 
+	$('#dialog_link').click(function () {
+		$('#dialog').dialog('open');
+		return false;
+	});
+});
 
-function closeModal()
-{
- $("#driver_form_div" ).dialog({
-   width: 0,
-/*      show: {
-        effect: "blind",
-        duration: 1000
-      },
-      hide: {
-        effect: "clip",
-        duration: 500
-      */
-    });
-}
+$(function(){
+
+var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+  $('a[data-modal-id]').click(function(e) {
+	e.preventDefault();
+	$("body").append(appendthis);
+	$(".modal-overlay").fadeTo(500, 0.7);
+	//$(".js-modalbox").fadeIn(500);
+	var modalBox = $(this).attr('data-modal-id');
+	$('#'+modalBox).fadeIn($(this).data());
+  });  
+  
+
+$(".js-modal-close, .modal-overlay").click(function() {
+  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+	$(".modal-overlay").remove();
+  });
+});
+
+$(window).resize(function() {
+  $(".modal-box").css({
+	top: ($(window).height() - $(".modal-box").outerHeight()) / 2,
+	left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+  });
+});
+ 
+$(window).resize();
+ 
+});
 </script>
- <style>
-#driver_form_div ul {
-	list-style-type: none;
-	margin: 20px 0px 0px;
-	padding: 0;
-}
- 
-#driver_form_div li {
-  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
-  border-bottom: 1px solid #ccc;
-}
- 
-#driver_form_div li:last-child {
-  border: none;
-}
- 
-#driver_form_div li a {
-  text-decoration: none;
-  color: #000;
-  display: block;
-  width: 100%;
-  padding-top: 10px;
-    
-  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
-  transition: font-size 0.3s ease, background-color 0.3s ease;
-}
- 
-#driver_form_div li a:hover {
-  
-  background: #f6f6f6;
-  
-}
-</style>
+
 
 						<div id="driver_form_div" title="Select Driver ( <?php  echo sizeof($mDriverList);?> )" style="display:none;" width='60%'>
 						
@@ -703,5 +656,25 @@ function closeModal()
 			
 		</div> <!-- End #main-content -->
 		
+	</div>
+		<div id="popup" class="modal-box">  
+	  <header>
+		<h3>Select Driver</h3>
+	  </header>
+	  <div class="modal-body" id="item-list">
+	  
+		<table><tbody>
+			<?php
+				for($i=0; $i<sizeof($mDriverList); $i++){
+					$mDriver = new Driver($mDriverList[$i]);
+					echo "<tr><td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='#' style='text-transform:uppercase;vertical-align:2px;' class='js-modal-close' onClick='setDriver(".$mVehicle->getId().",".$mDriver->getId().")'>".$mDriver->getName()."</a><span style='float:right;'><img height='20' width='20' src='../../res/phone_icon.png'><span style='vertical-align:5px;'>+91-".$mDriver->getPhone()."</span></span></b></td></tr>";
+				}
+			?>
+		</tbody></table>
+		
+	  </div>
+	  <footer>
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
+	  </footer>
 	</div>
 </body></html>
