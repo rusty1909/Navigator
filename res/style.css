@@ -75,12 +75,14 @@ p {
 .button {
 				font-family: Verdana, Arial, sans-serif;
                 display: inline-block;
-                background: #459300 url('../images/bg-button-green.gif') top left repeat-x !important;
+                background: #85B84F !important;
                 border: 1px solid #459300 !important;
                 padding: 4px 7px 4px 7px !important;
                 color: #fff !important;
-                font-size: 11px !important;
+                font-size: 12px !important;
                 cursor: pointer;
+				text-transform:uppercase;
+				font-weight:bold;
                 }
                 
 .button:hover {
@@ -519,8 +521,9 @@ ul.shortcut-buttons-set li {
 
 form label {
                 display: block;
-                padding: 0 0 10px;
+                padding: 0 0 2px;
                 font-weight: bold;
+				margin-left:11px;
                 }
              
 form fieldset legend {
@@ -530,8 +533,9 @@ form fieldset legend {
                 }
                 
 form p small {
-                font-size: 0.75em;
+                font-size: 0.8em;
                 color: #777;
+				margin-left:11px;
                 }
 				
 				
@@ -539,11 +543,12 @@ form input.text-input,
 form select,
 form textarea,
 form .wysiwyg {
-                padding: 6px;
+                padding: 5px;
                 font-size: 13px;
-                background: #fff url('../images/bg-form-field.gif') top left repeat-x;
-                border: 1px solid #d5d5d5;
+                background: #fff;
+                border: 1.5px solid #d5d5d5;
 				color: #333;
+				margin-left:11px;
                 }
             
 form .small-input {
@@ -557,7 +562,7 @@ form .medium-input {
 form .large-input {
                 width: 97.5% !important;
 				font-size: 16px !important;
-				padding: 8px !important;
+				padding: 6px !important;
                 }
                 
 form textarea {
@@ -572,11 +577,11 @@ form select {
 				
 form input[type="checkbox"],
 form input[type="radio"] {
+				margin-left:11px;
 				padding: 0;
                 background: none;
 				border: 0;
                 }
-
 
 /*************** Notifications ***************/
 
@@ -808,69 +813,7 @@ body#login {
   z-index: 99;
 }
 
-/****************** dialog-box ******************************/
-.dialog-box {
-  display: none;
-  position: absolute;
-  z-index: 1000;
-  width: 28%;
-  background: white;
-  border-bottom: 1px solid #aaa;
-  border-radius: 4px;
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background-clip: padding-box;
-}
 
-.dialog-box header,
-.dialog-box .dialog-header {
-  padding: 1.25em 1.5em;
-  border-bottom: 1px solid #ddd;
-}
-
-.dialog-box header h3,
-.dialog-box header h4,
-.dialog-box .dialog-header h3,
-.dialog-box .dialog-header h4 { margin: 0; }
-
-.dialog-box .dialog-body { padding: 2em 1.5em; }
-
-.dialog-box footer,
-.dialog-box .dialog-footer {
-  padding: 1em;
-  border-top: 1px solid #ddd;
-  background: rgba(0, 0, 0, 0.02);
-  text-align: right;
-}
-
-.dialog-overlay {
-  opacity: 0;
-  filter: alpha(opacity=0);
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 900;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3) !important;
-}
-
-a.close {
-  line-height: 1;
-  font-size: 1.5em;
-  position: absolute;
-  top: 5%;
-  right: 2%;
-  text-decoration: none;
-  color: #bbb;
-}
-
-a.close:hover {
-  color: #222;
-  -webkit-transition: color 1s ease;
-  -moz-transition: color 1s ease;
-  transition: color 1s ease;
-}
 
 /*************** jQuery WYSIWYG ***************/
 

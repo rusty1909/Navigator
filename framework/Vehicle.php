@@ -379,6 +379,22 @@ class Vehicle {
         }
 		return $result;
     }
+
+	public static function isExists($col, $value) {
+		//require_once '../framework/DBConnect.php';
+		// opening db connection
+		$db = new Connection();
+		$conn = $db->connect();
+		$sql = "SELECT id FROM vehicle WHERE $col = '$value'";
+		//echo "--->".$sql;
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+			return true;
+		}
+		//echo sizeof($result)."    < size";
+		return false;
+	}
 	
 	function updateExpenses($driver, $latitude, $longitude, $address, $reason, $amount, $filename) {
 		$db = new Connection();

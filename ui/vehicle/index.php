@@ -16,22 +16,7 @@ if(!isset($_SESSION['user']))
 	$mOnJobVehicleList = $mUser->getOnJobVehicleList();
 	$mFreeVehicleList = $mUser->getFreeVehicleList();
 	$mWaitingVehicleList = $mUser->getWaitingVehicleList();
-	//echo "------------------------------------------------------------------------------------->".sizeof($mWaitingVehicleList);
-	
-/*    if(!isset($_GET['list']))
-		$mAllVehicleList = $mUser->getVehicleList();
-	else {
-		$list = $_GET['list'];
-		switch($list) {
-			case "prev" : $mPreviousVehicleList = $mUser->getPreviousVehicleList(); break;
-			case "deployed" : $mDeployedVehicleList = $mUser->getDeployedVehicleList(); break;
-			case "onjob" : $mOnJobVehicleList = $mUser->getOnJobVehicleList(); break;
-			case "free" : $mFreeVehicleList = $mUser->getFreeVehicleList(); break;
-			case "wait" : $mWaitingVehicleList = $mUser->getWaitingVehicleList(); break;
-			default : $mVehicleList = $mUser->getVehicleList(); break;
-		}
-	} */
-	//echo sizeof($mVehicleList);
+
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 		
@@ -66,22 +51,89 @@ if(!isset($_SESSION['user']))
 		<script type="text/javascript" src="../../res/jquery.htm"></script>
 		<script type="text/javascript" src="../../res/jquery.js"></script>
 		<!--[if IE]><script type="text/javascript" src="resources/scripts/jquery.bgiframe.js"></script><![endif]-->
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	  <!--  //modal box jquery -->
+		<link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
-		
-		<!-- Internet Explorer .png-fix -->
-		
-		<!--[if IE 6]>
-			<script type="text/javascript" src="resources/scripts/DD_belatedPNG_0.0.7a.js"></script>
-			<script type="text/javascript">
-				DD_belatedPNG.fix('.png_bg, img, li');
-			</script>
-		<![endif]-->
 	
     <script type="text/javascript">
 	function onDelete(id){
 		if(confirm("You really want to delete this vehicle?"))
 			window.location.href = "action.php?action=delete&id="+id;
 	}
+	</script>
+<!-- //Modal Box Functionality  -->
+	<script>
+		$(document).ready(function () {
+			console.log("clicked");
+			$('#dialog_link').click(function () {
+				$('#dialog').dialog('open');
+				return false;
+			});
+			
+			//$("#edit-form").load("edit.php");
+		});
+
+		$(function(){
+		console.log("started");
+		var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+		  $('a[data-modal-id]').click(function(e) {
+			e.preventDefault();
+			$("body").append(appendthis);
+			$(".modal-overlay").fadeTo(500, 0.7);
+			//$(".js-modalbox").fadeIn(500);
+			var modalBox = $(this).attr('data-modal-id');
+			$('#'+modalBox).fadeIn($(this).data());
+		  });  
+		  
+
+		$(".js-modal-close, .modal-overlay").click(function() {
+		  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+			$(".modal-overlay").remove();
+		  });
+		});
+
+		$(window).resize(function() {
+		  $(".modal-box").css({
+			top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
+			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+		  });
+		});
+		 
+		$(window).resize();
+		 
+		});
+		/* ************************** */
+		$(document).ready(function(){
+			$('#vehicle_number').blur(checkNumber); //use keyup,blur, or change
+		});
+		function checkNumber(){
+			var vehicle_number = $('#vehicle_number').val();
+			//alert(vehicle_number);
+			if(vehicle_number == "") return;
+			jQuery.ajax({
+					type: 'POST',
+					url: 'checkDuplicates.php',
+					data: 'vehicle_number='+ vehicle_number,
+					cache: false,
+					success: function(response){
+						//alert(response);
+						if(response == 0){
+							document.getElementById("number_error").innerHTML = "";
+							document.getElementById("number_success").innerHTML = "<b>available ! ! !<b>";
+						}
+						else {
+							document.getElementById("vehicle_number").value = "";
+							document.getElementById("number_success").innerHTML = "";
+							document.getElementById("number_error").innerHTML = "<b><i>'"+vehicle_number+"'</i></b>  already exists!";	
+						}
+					}
+				});
+		}
 	</script>
 		
 	</head>
@@ -99,39 +151,6 @@ if(!isset($_SESSION['user']))
 					</div>
 				</div>
 			</noscript>
-			
-			<!-- Page Head -- >
-			<h2>Welcome John</h2>
-			<p id="page-intro">What would you like to do?</p>
-			
-			<ul class="shortcut-buttons-set">
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/pencil_48.png" alt="icon"><br>
-					Write an Article
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/paper_content_pencil_48.png" alt="icon"><br>
-					Create a New Page
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/image_add_48.png" alt="icon"><br>
-					Upload an Image
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/clock_48.png" alt="icon"><br>
-					Add an Event
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#messages" rel="modal"><span>
-					<img src="../../res/comment_48.png" alt="icon"><br>
-					Open Modal
-				</span></a></li>
-				
-			</ul><! -- End .shortcut-buttons-set -->
 			
 			<div class="clear"></div> <!-- End .clear -->
 			
@@ -171,7 +190,7 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										<div class="clear"></div>
 									</td>
@@ -204,7 +223,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
 										<div class="pagination">
@@ -284,7 +303,7 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										<div class="clear"></div>
 									</td>
@@ -326,7 +345,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
 										<div class="pagination">
@@ -408,7 +427,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
 										<div class="pagination">
@@ -490,7 +509,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
 										<div class="pagination">
@@ -572,7 +591,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
 										<div class="pagination">
@@ -632,7 +651,7 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										<div class="clear"></div>
 									</td>
@@ -674,7 +693,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Vehicle</a>
+											<a class="button js-open-modal" href="#" data-modal-id="popup">Add Vehicle</a>
 										</div>
 										
 										<div class="pagination">
@@ -722,12 +741,75 @@ if(!isset($_SESSION['user']))
 
 					
 				</div> <!-- End .content-box-content -->
-				
+	
 			</div> <!-- End .content-box -->
 			
 <?php include("../footer.php")?>
 			
 		</div> <!-- End #main-content -->
-		
+
 	</div>
+
+	<div id="popup" class="modal-box" style="width:50%;">  
+	  <header>
+		<h3>Add Vehicle</h3>
+	  </header>
+	  <div class="modal-body" id="item-list">
+	  
+
+				
+<!-------------------------------------------------------------------------------------------------------------------------->
+						<form action="action.php?action=add" method="POST">
+							
+							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+							
+								<p>
+									<label>Vehicle Type</label>
+									<input name="type" value="Truck" type="radio" id="type"> <img id="type" height="25" width="25" src="../../res/vehicle_types/Truck.png" title="Truck" alt="Truck" style='vertical-align:-5px;'> &nbsp;&nbsp;
+									<input name="type" value="Car" type="radio"><img id="type" height="25" width="25" src="../../res/vehicle_types/Car.png" title="Car" alt="Car" style='vertical-align:-5px;'> &nbsp;&nbsp;
+									<input name="type" value="Bus" type="radio"><img id="type" height="25" width="25" src="../../res/vehicle_types/Bus.png" title="Bus" alt="Bus" style='vertical-align:-5px;'> &nbsp;&nbsp;
+								</p>
+								
+								<p class="column-left">
+									<label>Vehicle Model</label>
+										<input class="text-input medium-input" id="model" name="model" type="text"> <!--<span class="input-notification success png_bg">Successful message</span>  Classes for input-notification: success, error, information, attention 
+										<br><small>A small description of the field</small>-->
+								</p>
+								
+								<p class="column-right">
+									<label>Make Year</label>
+										<input class="text-input medium-input" name="make_year" id="make_year" type="text"> <!--<span class="input-notification success png_bg">Successful message</span>  Classes for input-notification: success, error, information, attention 
+										<br><small>A small description of the field</small>-->
+								</p>
+
+								<p>
+									<label>Vehicle Number</label>
+										<input class="text-input small-input" name="vehicle_number" id="vehicle_number" type="text"> <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
+								</p>
+								
+								<p>
+									<label>Description</label>
+									<input class="text-input large-input" name="description" id="description" type="text">
+									<br><small>A small description of the vehicle which will help in identifying the vehicle with ease.</small>
+								</p>
+								
+								
+								
+							</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->
+							
+						
+<!----------------------------------------------------------------------------------------------------------------------------->
+
+	  <footer>
+		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
+	  </footer>
+	  </form>
+	  </div>
+	</div>
+	
+	
+
 </body></html>

@@ -464,10 +464,7 @@ if(!isset($_SESSION['user']))
 			</noscript>
 			
 			<div class="clear"></div> <!-- End .clear -->
-			<!--<div class="content-box" style="margin: 0 0 0 0;padding: 0 0 0 0;border:0px;height:10%px;background-color:#444444">
-			<img id="type" height="45" width="45" src="../../res/vehicle_types/<?php echo $mVehicle->getType();?>.png" title="<?php echo $mVehicle->getType()." : ".$mVehicle->getModel();?>" alt="<?php echo $mVehicle->getType();?>"> <span style="vertical-align:12px;"><b style="font-size:30px;"><?php echo $mVehicle->getVehicleNumber(); ?> </b>	</span>	
-							<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>
-			</div>-->
+
 
 			<div class="clear"></div>
 			
@@ -540,108 +537,7 @@ if(!isset($_SESSION['user']))
 								</table>
 							</div>
 
-						</div>						
-
-<!-- //Modal Box Functionality  -->
-<script>
-$(document).ready(function () {
-	//$('#dialog').dialog(); 
-	$('#dialog_link').click(function () {
-		$('#dialog').dialog('open');
-		return false;
-	});
-});
-
-$(function(){
-
-var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
-
-  $('a[data-modal-id]').click(function(e) {
-	e.preventDefault();
-	$("body").append(appendthis);
-	$(".modal-overlay").fadeTo(500, 0.7);
-	//$(".js-modalbox").fadeIn(500);
-	var modalBox = $(this).attr('data-modal-id');
-	$('#'+modalBox).fadeIn($(this).data());
-  });  
-  
-
-$(".js-modal-close, .modal-overlay").click(function() {
-  $(".modal-box, .modal-overlay").fadeOut(500, function() {
-	$(".modal-overlay").remove();
-  });
-});
-
-$(window).resize(function() {
-  $(".modal-box").css({
-	top: ($(window).height() - $(".modal-box").outerHeight()) / 2,
-	left: ($(window).width() - $(".modal-box").outerWidth()) / 2
-  });
-});
- 
-$(window).resize();
- 
-});
-</script>
-
-
-						<div id="driver_form_div" title="Select Driver ( <?php  echo sizeof($mDriverList);?> )" style="display:none;" width='60%'>
-						
-							<!--Driver Count : <?php  echo sizeof($mDriverList);?>-->
-						   <ul>
-							<?php
-								for($i=0; $i<sizeof($mDriverList); $i++){
-									$mDriver = new Driver($mDriverList[$i]);
-									echo "<li><a href='#' onClick='setDriver(".$mVehicle->getId().",".$mDriver->getId().")'>".$mDriver->getName()."</a></li>";
-								}
-							?>
-						  </ul>  
-					   
-						</div>
-
-						
-						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
-							<div class="content-box-header">								
-								<h3 style="cursor: s-resize;"> Track Vehicle Path</h3>								
-								<div class="clear"></div>								
-							</div>
-							<div style="display: block;" class="content-box-content">
-						
-								<div style="display: block;" class="tab-content default-tab">
-									<table>
-									<tr><td style="width:20px;padding:7px;">From</td><td><input type='text' id='from_date'> <br></td></tr>
-									<tr><td style="width:20px;padding:7px;">To</td><td> <input type='text' id='to_date'> <br></td></tr>
-									<tr><td colspan='2' style="width:20px;padding:7px;"><input class="button" type="submit" value="Show Route" onClick="showTrack(<?php echo $mId; ?>)"><td><tr>
-									</table>
-									
-									
-								</div>      
-								
-							</div>
-						</div>-->
-
-						<!--<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
-							<div class="content-box-header">								
-								<h3 style="cursor: s-resize;">Notifications</h3>								
-								<div class="clear"></div>								
-							</div>
-							<div style="display: block;" class="content-box-content">
-						
-								<div style="display: block;" class="tab-content default-tab">
-									
-									<table>
-									<tr><td style="width:20px;padding:7px;">From</td><td><input type='text' id='from_date'> <br></td></tr>
-									<tr><td style="width:20px;padding:7px;">To</td><td> <input type='text' id='to_date'> <br></td></tr>
-									<tr><td colspan='2' style="width:20px;padding:7px;"><input class="button" type="submit" value="Show Route" onClick="showTrack(<?php echo $mId; ?>)"><td><tr>
-									</table>
-									
-									
-								</div>      
-								
-							</div>
-						</div>-->
-
-						
+						</div>											
 					</div> 
 					</div>
 					
@@ -657,7 +553,51 @@ $(window).resize();
 		</div> <!-- End #main-content -->
 		
 	</div>
-		<div id="popup" class="modal-box">  
+
+	<!-- //Modal Box Functionality  -->
+	<script>
+	$(document).ready(function () {
+		//$('#dialog').dialog(); 
+		console.log("clicked");
+		$('#dialog_link').click(function () {
+			$('#dialog').dialog('open');
+			return false;
+		});
+	});
+
+	$(function(){
+	console.log("started");
+	var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+	  $('a[data-modal-id]').click(function(e) {
+		e.preventDefault();
+		$("body").append(appendthis);
+		$(".modal-overlay").fadeTo(500, 0.7);
+		//$(".js-modalbox").fadeIn(500);
+		var modalBox = $(this).attr('data-modal-id');
+		$('#'+modalBox).fadeIn($(this).data());
+	  });  
+	  
+
+	$(".js-modal-close, .modal-overlay").click(function() {
+	  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+		$(".modal-overlay").remove();
+	  });
+	});
+
+	$(window).resize(function() {
+	  $(".modal-box").css({
+		top: ($(window).height() - $(".modal-box").outerHeight()) / 2,
+		left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+	  });
+	});
+	 
+	$(window).resize();
+	 
+	});
+	</script>
+
+	<div id="popup" class="modal-box">  
 	  <header>
 		<h3>Select Driver</h3>
 	  </header>

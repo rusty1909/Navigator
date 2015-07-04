@@ -4,9 +4,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-if(isset($_GET['username'])) {
+if(isset($_POST['username'])) {
 	
-	$username = $_GET['username'];
+	$username = $_POST['username'];
 	if(User::isExists('username', $username)){
 		echo 1;
 	} else {
