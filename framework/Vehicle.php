@@ -18,6 +18,7 @@ class Vehicle {
 	private $description;
 	private $address;
 	private $LatLong;
+	private $driver;
 	
 	function __construct($id){
 		
@@ -44,6 +45,7 @@ class Vehicle {
 				$this->description = $row['description'];
 				$this->dateAdded = $row['date_added'];
 				$this->address = $row['address'];
+				$this->driver = $row['driver'];
 				$this->LatLong["lat"] = $row['lattitude'];
 				$this->LatLong["long"] = $row['longitude'];
 			}
@@ -567,6 +569,10 @@ class Vehicle {
 	
 	function getDescription() {
 		return $this->description;
+	}
+	
+	function getDriver() {
+		return $this->driver;
 	}
 }
 ?>

@@ -126,7 +126,7 @@ if(!isset($_SESSION['user']))
 			
 			<div class="clear"></div> <!-- End .clear -->
 			
-			<div class="content-box"><!-- Start Content Box -->
+			<div class="content-box column-left" style="width:63%"><!-- Start Content Box -->
 				
 				<div class="content-box-header">
 					
@@ -174,7 +174,6 @@ if(!isset($_SESSION['user']))
 								   <th>Driver Name</th>
 								   <th>Driver Phone</th>
 								   <th>Current Vehicle</th>
-								   <th>Action</th>
 								</tr>
 								
 							</thead>
@@ -219,13 +218,17 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mDriver->getCurrentJob());
 									$mVehicle = new Vehicle($mDriver->getCurrentVehicle());
 									echo "<tr>";
-									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='#' style='text-transform:uppercase;'>".$mDriver->getName()."</a></b></td>";
-									echo "<td>".$mDriver->getPhone()."</td>";
-									echo "<td><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
-									echo "<td>
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='detail.php?id=".$mDriver->getId()."' style='text-transform:uppercase;vertical-align:2px;'>".$mDriver->getName()."</a></b></td>";
+									echo "<td><b><img height='20' width='20' src='../../res/phone_icon.png'><span style='vertical-align:5px;'>+91-".$mDriver->getPhone()."</span></b></td>";
+									if($mVehicle->getId() != ""){
+										echo "<td><b><img height='15' width='15' src='../../res/vehicle_types/".$mVehicle->getType().".png'>&nbsp;<a style='text-transform:uppercase;vertical-align:2px;' href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td>";
+									} else {
+										echo "<td></td>";
+									}
+									/*echo "<td>
 										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>&nbsp;&nbsp;
 										 <a href='#' title='Locate'><img src='../../res/hammer_screwdriver.png' alt='Locate'></a>&nbsp;&nbsp;
-									</td>";
+									</td>";*/
 									echo "</tr>";	
 								}
 								?>
@@ -256,7 +259,7 @@ if(!isset($_SESSION['user']))
 								<tr>
 								   <th>Driver Name</th>
 								   <th>Driver Phone</th>
-								   <th>Current Vehicle</th>
+								   <th>Address</th>
 								   <th>Action</th>
 								</tr>
 								
@@ -296,9 +299,9 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mDriver->getCurrentJob());
 									$mVehicle = new Vehicle($mDriver->getCurrentVehicle());
 									echo "<tr>";
-									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='#' style='text-transform:uppercase;'>".$mDriver->getName()."</a></b></td>";
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='detail.php' style='text-transform:uppercase;'>".$mDriver->getName()."</a></b></td>";
 									echo "<td>".$mDriver->getPhone()."</td>";
-									echo "<td><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
+									echo "<td>".$mDriver->getAddress()."</td>";
 									echo "									<td>
 										<!-- Icons -->
 										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
@@ -318,6 +321,35 @@ if(!isset($_SESSION['user']))
 				</div> <!-- End .content-box-content -->
 				
 			</div> <!-- End .content-box -->
+			
+			<div class="content-box column-right" style="width:35%">
+				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
+					<h3 style="cursor: s-resize;">Notifications</h3>
+				</div> <!-- End .content-box-header -->
+				
+				<div style="display: block;" class="content-box-content">
+					
+					<div style="display: block;" class="tab-content default-tab">
+					
+						<table>
+						<thead>
+						<tr></tr>
+						</thead>
+						<tbody>
+						<?php
+							echo "<tr></tr>";
+							echo "<tr><td>Total Vehicles</td><td></td></tr>";
+							echo "<tr><td>Already Deployed</td><td></td></tr>";
+							echo "<tr><td>Waiting Deployement</td><td></td></tr>";
+						?>
+						</tbody>
+						</table>
+					</div> <!-- End #tab3 -->  
+				</div> <!-- End .content-box-content -->
+				
+			</div>
+			<div class="clear"></div>
+			
 			
 <?php include("../footer.php")?>
 			

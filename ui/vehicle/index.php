@@ -250,7 +250,7 @@ if(!isset($_SESSION['user']))
 								for($i=0; $i<sizeof($mVehicleList); $i++) {
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
-									$mDriver = new Driver($mJob->getDriver());
+									$mDriver = new Driver($mVehicle->getDriver());
 									echo "<tr>";
 									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
@@ -350,12 +350,16 @@ if(!isset($_SESSION['user']))
 								for($i=0; $i<sizeof($mVehicleList); $i++) {
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
-									$mDriver = new Driver($mJob->getDriver());
+									$mDriver = new Driver($mVehicle->getDriver());
 									echo "<tr>";
 									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
-									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
-									echo "<td>".$mDriver->getName()."</td>";
+									echo "<td><b><a style='text-transform:uppercase;' href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td>";
+									if($mVehicle->getDriver() != "0"){
+										echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;<b><a href='detail.php?id=".$mDriver->getId()."' style='text-transform:uppercase;vertical-align:2px;'>".$mDriver->getName()."</a></b></td>";
+									} else{
+										echo "<td></td>";
+									}
 									echo "</tr>";	
 								}
 								?>
@@ -724,12 +728,8 @@ if(!isset($_SESSION['user']))
 			</div> <!-- End .content-box -->
 			
 			<div class="content-box column-right" style="width:35%">
-			
-				
 				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
-					
 					<h3 style="cursor: s-resize;">Notifications</h3>
-					
 				</div> <!-- End .content-box-header -->
 				
 				<div style="display: block;" class="content-box-content">
@@ -749,8 +749,7 @@ if(!isset($_SESSION['user']))
 						?>
 						</tbody>
 						</table>
-					</div> <!-- End #tab3 -->        
-					
+					</div> <!-- End #tab3 -->  
 				</div> <!-- End .content-box-content -->
 				
 			</div>
