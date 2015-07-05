@@ -519,7 +519,7 @@ if(!isset($_SESSION['user']))
 								<?php 
 									} else{
 										$mDriver = new Driver($mVehicle1->getCurrentDriver());
-										echo "<span style='vertical-align:2px;'><b>".$mDriver->getName()."</b></span>";
+										echo "<span style='vertical-align:2px;'><b><a href='../driver/detail.php?id=".$mDriver->getId()."'>".$mDriver->getName()."</a></b></span>";
 								?>				
 								&nbsp;&nbsp;&nbsp; <a href="#" style="font-size:11px" onClick="setDriver(<?php echo $mVehicle->getId();?>, 0);"><img id="add" height="15" width="15" src="../../res/delete.png" title="Remove Driver" alt="Remove Driver"></a>
 								<?php    } ?>

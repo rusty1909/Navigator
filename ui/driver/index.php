@@ -109,6 +109,17 @@ if(!isset($_SESSION['user']))
 		 
 		});
 	</script>
+	
+	<script>
+	$(document).ready(function() {
+		$("#date_join").datepicker({
+		  changeMonth: true,
+		  changeYear: true
+		});
+		$( "#from_date").datepicker( "option", "yyyy-mm-dd", $( this ).val());
+		$( "#to_date").datepicker( "option", "yyyy-mm-dd", $( this ).val());
+	});
+	</script>
 		
 	</head>
   
@@ -385,11 +396,16 @@ if(!isset($_SESSION['user']))
 									<label>Address</label>
 										<textarea name="address" id="address" ></textarea>
 								</p>
-								
+
 								<p>
 									<label>Description</label>
 									<input class="text-input large-input" name="description" id="description" type="text">
 									<br><small>A small description of the driver which will help in identifying the driver with ease.</small>
+								</p>
+							
+								<p class="column-left">
+									<label>Joining Date</label>
+										<input class="text-input medium-input" id="date_join" name="date_join" type="text"> 
 								</p>
 								
 								

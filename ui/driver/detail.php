@@ -15,11 +15,9 @@ if(!isset($_SESSION['user']))
 	} 
 	$mId = $_GET['id'];
 	
-	$mVehicle = new Vehicle($mId);
+	$mDriver = new Driver($mId);
+	$mVehicle = new Vehicle($mDriver->getCurrentVehicle());
 	
-	$mLat=$mVehicle->getLat();
-	$mLong=$mVehicle->getLong();
-	$address = "Address";//trim($mVehicle->getAddress());
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 		
@@ -52,134 +50,43 @@ if(!isset($_SESSION['user']))
 		<!-- jQuery Datepicker Plugin -->
 		<script type="text/javascript" src="../../res/jquery.htm"></script>
 		<script type="text/javascript" src="../../res/jquery.js"></script>
-	<script src="http://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&key=AIzaSyBcmYGGYTH1hGEEr31Odpiou8thwx55f_o"></script>
-	<script>
-    //defining map properties    
-    
-        
-    //declaring map variable
-    var map;
-        
-    //declaring markers and content variables
-    var marker;
-    var contentString;
-        
-    //declaring location elements
-    var latitude = 0;
-    var longitude = 0;
-    var address = "Loading...";
-    var last_updated = "";
-    var vehicle_number = "";
-	var isMoved = false;
-        
-    function clearMap(){
-        marker.setMap(null);
-    }
-        
-    function fetchLocation(){
-        var id = $('#id_value').val();
+		<script>
+		function fetchLocation(){
+			var id = $('#vehicle').val();
 			if(id == "") return;
 			jQuery.ajax({
 					type: 'POST',
-					url: 'locationInfo.php',
+					url: '../vehicle/locationInfo.php',
 					data: 'id='+ id,
 					cache: false,
 					success: function(response){
-                        //alert(response);
+						//alert(response);
 						if(response == 0){
 						}
 						else {
-                            var location = JSON.parse(response);
-                            latitude = location.lattitude;
-                            longitude = location.longitude;
-                            address = location.address;
-                            last_updated = location.last_update;
-                            vehicle_number = location.vehicle_number;
+							var location = JSON.parse(response);
+							latitude = location.lattitude;
+							longitude = location.longitude;
+							address = location.address;
+							last_updated = location.last_update;
+							vehicle_number = location.vehicle_number;
 						}
 					}
 				});
-    }
-	
-	function updateAddressView(address){
-		document.getElementById("address_view").innerHTML = address;
-	}
-        
-    function updateMarker(isMoved){
-      fetchLocation();
-      clearMap();
-      addMarker();
-	  if(isMoved){
-		  locatePosition();
-		  isMoved=false;
-	  }
-	  updateAddressView(address);
-    }
-	
-	function locatePosition(){
-		map.panTo(marker.getPosition());
-	}
-        
-    function addMarker(){
-      marker=new google.maps.Marker({
-          position:new google.maps.LatLng(latitude, longitude),
-          title:vehicle_number
-	  });
-	  marker.setAnimation(google.maps.Animation.BOUNCE);
-      //map.panTo(marker.getPosition());
-	  marker.setMap(map);
-	  
-	  contentString = '<div id="content">'+
-		  '<div id="siteNotice">'+
-		  '</div>'+
-		  '<h1 id="firstHeading" class="firstHeading">Vehicle Number</h1>'+
-		  '<div id="bodyContent">'+
-		  '<p><b>address</b></p>'+
-		  '<p>(last updated at lat_updated)</p>'+
-		  '</div>'+
-		  '</div>';
-        
-        //alert(contentString);
-    }
-        
-        
-        
-	function initialize() {
-      fetchLocation();
-      var mapProp = {
-		center:new google.maps.LatLng(<?php echo $mLat.", ".$mLong; ?>),
-		zoom:13,
-		mapTypeId:google.maps.MapTypeId.ROADMAP
-	  };
-      map=new google.maps.Map(document.getElementById("googleMap"),mapProp);        
-      addMarker();
-	  
-	  var infowindow = new google.maps.InfoWindow({
-		  content: contentString
-	  }); 
-
-	  google.maps.event.addListener(marker, 'click', function() {
-        alert(contentString);
-		infowindow.open(map,marker);
-	  });
-      window.setTimeout(function() {
-         updateMarker(false);
-		 //alert();
-		 map.panTo(marker.getPosition());
-      }, 1000);
-	  
-	}
-        
-	google.maps.event.addDomListener(window, 'load', initialize);
-        
-    var updates = setInterval(function(){ updateMarker(true) }, 2000);
-	</script>
-</head>
-  
-	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
-		<input type=hidden value="<?php echo $mId; ?>" id="id_value">
-	<?php include('../sidebar.php');?>
+			document.getElementById("location_view").innerHTML = address;
+			document.getElementById("last_updated").innerHTML = last_updated;
+		}
 		
-		<div id="main-content-map"> <!-- Main Content Section with everything -->
+		setInterval(function(){ fetchLocation() }, 2000);
+		</script>
+
+</head>
+	
+	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+	<?php include('../sidebar.php');?>
+		<input type='text' hidden value='<?php echo $mVehicle->getId(); ?>' id='vehicle' name='vehicle'>
+		
+		<div id="main-content"> <!-- Main Content Section with everything -->
 			
 			<noscript> <!-- Show a notification if the user has disabled javascript -->
 				<div class="notification error png_bg">
@@ -189,123 +96,86 @@ if(!isset($_SESSION['user']))
 				</div>
 			</noscript>
 			
-			<div class="clear"></div> <!-- End .clear -->
-			
-
-			<div class="clear"></div>
-			
-			<div class="content-box" style="margin: 0 0 0 0;padding: 0 0 0 0;border:0px"><!-- Start Content Box -->
-				
+			<div class="clear"></div> <!-- End .clear -->		
 
 				
-				<div class="content-box-content-map" style="padding:0;width:100%">
+				<div  class="content-box-content-detail" style="width:58%;height:88%;float:left;overflow-y:auto">
+
 					
+					<div id="personal_info" style="margin:15px 5px 20px 10px">
+						<img id="type" height="35" width="35" src="../../res/driver_icon.png" > <span style="vertical-align:10px;"><b style="font-size:25px;"><?php echo $mDriver->getName(); ?> </b>	</span>	
+						<br><br><input class="button" type='button' value='Edit'> &nbsp;&nbsp;&nbsp; 
+						<br><br><br>
 					
-					<div style="display: block; " class="tab-content default-tab" id="map" style="width:100%;height:100%;"> <!-- This is the target div. id must match the href of this div's tab -->
-					<?php
-					if(!$mVehicle->isDeployed()) {
-							echo "<div class='notification information png_bg' style='width:50%;float:left;margin:10px 10px 10px 10px;'><div>Tracking device has been installed yet.</div></div> ";
-					} else {
-						if($mVehicle->getAddress()==null) {
-							echo "<div class='notification attention png_bg' style='width:50%;float:left;margin:10px 10px 10px 10px;'><div>Could not find location at this moment, Please be patient and be with us.</div></div> ";
-						} else {
-							//echo $mVehicle->getAddress();
-					?>
-					<div id="googleMap" style="width:70%;height:100%;float:left;"></div>
-					<?php
-						}
-					}
-					?>
-					<div class="content-box-content-detail" style="width:30%;height:100%;float:right;overflow-y:auto">
+						<div id="address_info">
+							<img id="address_icon" height="20" width="20" src="../../res/address.png" title="Address" alt="Address">&nbsp;
+							<b><span id="address_view" style='vertical-align:2px;'>
+								<?php 
+								echo $mDriver->getAddress();
+								?>
+								</span>
+							
+						</div>
+						<br><br>
+						<div id="contact_info">
+							<img id="contact_icon" height="20" width="20" src="../../res/phone_icon.png" title="Phone" alt="Phone">&nbsp;
+							<b><span id="address_view" style='vertical-align:2px;'>
+								<?php 
+								echo $mDriver->getPhone();
+								?>
+								</span>
+							
+						</div>
+						<br><br>
+						<div id="joining_date_info">
+							<img id="joining_date_icon" height="20" width="20" src="../../res/calendar.png" title="Joining Date" alt="Joining Date">&nbsp;
+							<b><span id="address_view" style='vertical-align:2px;'>
+								<?php 
+								echo $mDriver->getJoiningDate();
+								?>
+								</span>
+							
+						</div>
 					
-						<div id="vehicle_number" style="margin:15px 5px 20px 5px">
-						<b style="font-size:30px"><?php echo $mVehicle->getVehicleNumber(); ?> </b>
-						<span style="font-size:12px">(<?php echo $mVehicle->getType();?>)</span>	
-						<br><br><input type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input type='button' value='Notifications'>					
-						</div>
-						
-					 
-					
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="address_block">
-							<div style="display: block;" class="content-box-content-no-border">
-						
-								<div style="display: block;" class="tab-content default-tab">
-									<b> Current Location : </b><br><br>
-									<div id="address_view">
-									Locating...
-									</div><br>
-									<input type="button" value="Locate" onClick="locatePosition()">
-								</div> <!-- End #tab3 -->        
-								
-							</div>
-						</div>
-						
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="driver_info_block">
-							<div style="display: block;" class="content-box-content-no-border">
-						
-								<div style="display: block;" class="tab-content default-tab">
-									<b> Current Driver : </b><br><br>
-									<div id="driver_view">
-									Locating...
-									</div><br>
-									<a href="#" style="font-size:11px">Assign driver</a>
-								</div>        
-								
-							</div>
-						</div>
-						
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="alert_block">
-							<div style="display: block;" class="content-box-content-no-border">
-						
-								<div style="display: block;" class="tab-content default-tab">
-									<b> Track Vehicle Path : </b><br><br>
-									<form>
-									<table>
-									<tr><td style="width:20px;padding:7px;">From</td><td><input type='date' id='from_date'> <br></td></tr>
-									<tr><td style="width:20px;padding:7px;">To</td><td> <input type='date' id='from_date'> <br></td></tr>
-									<tr><td colspan='2' style="width:20px;padding:7px;"><input type="submit" value="Show Route" onClick="locatePosition()"><tr><td>
-									</table>
-									</form>
-									
-								</div>      
-								
-							</div>
-						</div>
-						
-						<div class="content-box" style="margin:5px 5px 5px 5px" id="latest_news_block">
-							<div style="display: block;" class="content-box-content-no-border">
-						
-								<div style="display: block;" class="tab-content default-tab">
-								
-									<table>
-									<thead>
-									<tr></tr>
-									</thead>
-									<tbody>
-									<?php
-										echo "<tr></tr>";
-										echo "<tr><td>Total Vehicles</td><td></td></tr>";
-										echo "<tr><td>Already Deployed</td><td></td></tr>";
-										echo "<tr><td>Waiting Deployement</td><td></td></tr>";
-									?>
-									</tbody>
-									</table>
-								</div> <!-- End #tab3 -->        
-								
-							</div>
-						</div>
-						
+
+														
 					</div> 
-					</div>
-					
-					<!-- End #map -->
-
-					
 				</div>
 
-				<!-- End .content-box-content -->
-				
-			</div> <!-- End .content-box -->
+				<div class="column-right" style="width:35%;height:88%">				
+					<div class="content-box-header">					
+						<h3 style="cursor: s-resize;">Current Status</h3>					
+					</div> <!-- End .content-box-header -->	
+							<br>
+							<div id="vehicle_info">
+								<?php
+									//$mVehicle1 = new Vehicle($mId);
+									//echo $mVehicle->getCurrentDriver();
+									if($mDriver->getCurrentVehicle() == 0){
+								?>									
+								<b><img id="driver_icon" height="20" width="20" src="../../res/vehicle_types/Truck.png" title="Vehicle" alt="Vehicle">&nbsp; <span style='vertical-align:5px;'>Click</span> <a class="js-open-modal" href="#" data-modal-id="popup" style="font-size:11px" ><img id="add" height="15" width="15" src="../../res/add.png" title="Add Driver" alt="Add Driver"></a> <span style='vertical-align:5px;'>to assign vehicle</span></b>
+								<?php 
+									} else{
+										echo "<img id='driver_icon' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType()."' title='".$mVehicle->getType()."' alt='".$mVehicle->getType()."'>&nbsp; <span style='vertical-align:5px;'><b><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></span>";
+								?>				
+								&nbsp;&nbsp;&nbsp; 
+								<?php    } ?>
+							</div>				
+							<br>
+							<?php 
+								if($mDriver->getCurrentVehicle() != 0){
+							?>
+							<div id="location_info">
+								<img id="location_icon" height="15" width="15" src="../../res/location_icon.png" title="Location" alt="Location">&nbsp;
+								<b><span id="location_view" style='vertical-align:2px;'>
+									Locating...
+									</span><br></b>									
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:9px;vertical-align:2px;">Last updated <b id='last_updated'> -- -- -- </b></span>
+									
+							</div>	
+								<?php } ?>
+							
+				</div> <!-- End .content-box -->
 			
 		</div> <!-- End #main-content -->
 		

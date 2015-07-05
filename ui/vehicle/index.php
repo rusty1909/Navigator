@@ -356,7 +356,7 @@ if(!isset($_SESSION['user']))
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><b><a style='text-transform:uppercase;' href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td>";
 									if($mVehicle->getDriver() != "0"){
-										echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;<b><a href='detail.php?id=".$mDriver->getId()."' style='text-transform:uppercase;vertical-align:2px;'>".$mDriver->getName()."</a></b></td>";
+										echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;<b><a href='../driver/detail.php?id=".$mDriver->getId()."' style='text-transform:uppercase;vertical-align:2px;'>".$mDriver->getName()."</a></b></td>";
 									} else{
 										echo "<td></td>";
 									}
