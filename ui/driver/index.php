@@ -84,6 +84,10 @@ if(!isset($_SESSION['user']))
 			$(".modal-overlay").fadeTo(500, 0.7);
 			//$(".js-modalbox").fadeIn(500);
 			var modalBox = $(this).attr('data-modal-id');
+			if(modalBox == "detail-popup"){
+				//alert("sdvdskvds");
+				//$('#'+modalBox).load("edit.php");
+			}
 			$('#'+modalBox).fadeIn($(this).data());
 		  });  
 		  
@@ -188,7 +192,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>-->
-											<a class="button" class='js-open-modal' href='#' data-modal-id='popup' >Add Driver</a>
+											<a class="button" class='js-open-modal' href='#' data-modal-id='edit-popup' >Add Driver</a>
 										</div>
 										
 										<div class="pagination">
@@ -275,7 +279,7 @@ if(!isset($_SESSION['user']))
 												<option value="option3">Delete</option>
 											</select>
 											<a class="button" href="#">Apply to selected</a>-->
-											<a class="button" class='js-open-modal' href='#' data-modal-id='popup' >Add Driver</a>
+											<a class="button" class='js-open-modal' href='#' data-modal-id='edit-popup' >Add Driver</a>
 										</div>
 										
 										<div class="pagination">
@@ -299,7 +303,7 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mDriver->getCurrentJob());
 									$mVehicle = new Vehicle($mDriver->getCurrentVehicle());
 									echo "<tr>";
-									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='detail.php' style='text-transform:uppercase;'>".$mDriver->getName()."</a></b></td>";
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='detail.php?id=".$mDriver->getId()."' style='text-transform:uppercase;' >".$mDriver->getName()."</a></b></td>";
 									echo "<td>".$mDriver->getPhone()."</td>";
 									echo "<td>".$mDriver->getAddress()."</td>";
 									echo "									<td>
@@ -358,7 +362,7 @@ if(!isset($_SESSION['user']))
 	</div>
 
 	
-	<div id="popup" class="modal-box" style="width:50%;">  
+	<div id="edit-popup" class="modal-box" style="width:50%;">  
 		<header>
 			<h3>Add Driver</h3>
 		</header>
@@ -374,7 +378,7 @@ if(!isset($_SESSION['user']))
 								
 								<p class="column-right">
 									<label>Phone</label>
-										<input class="text-input medium-input" name="phone" id="phone" type="text"> 
+										<b>+91- </b><input class="text-input medium-input" name="phone" id="phone" type="text"> 
 								</p>
 
 								<p>
@@ -402,6 +406,21 @@ if(!isset($_SESSION['user']))
 		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
 	  </footer>
 	  </form>
+
+		</div>
+	</div>
+
+	<div id="detail-popup" class="modal-box" style="width:50%;">  
+		<header>
+			<h3>Driver Info</h3>
+		</header>
+		<div class="detail-popup-body" id="item-list">
+					
+
+	  <footer>
+		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
+	  </footer>
 
 		</div>
 	</div>
