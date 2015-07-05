@@ -49,22 +49,61 @@ if(!isset($_SESSION['user']))
 		<script type="text/javascript" src="../../res/jquery.htm"></script>
 		<script type="text/javascript" src="../../res/jquery.js"></script>
 		<!--[if IE]><script type="text/javascript" src="resources/scripts/jquery.bgiframe.js"></script><![endif]-->
-
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		
-		<!-- Internet Explorer .png-fix -->
-		
-		<!--[if IE 6]>
-			<script type="text/javascript" src="resources/scripts/DD_belatedPNG_0.0.7a.js"></script>
-			<script type="text/javascript">
-				DD_belatedPNG.fix('.png_bg, img, li');
-			</script>
-		<![endif]-->
+	  <!--  //modal box jquery -->
+		<link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	
     <script type="text/javascript">
 	function onDelete(id){
 		if(confirm("You really want to delete this vehicle?"))
 			window.location.href = "action.php?action=delete&id="+id;
 	}
+	</script>
+	<script>
+		$(document).ready(function () {
+			console.log("clicked");
+			$('#dialog_link').click(function () {
+				$('#dialog').dialog('open');
+				return false;
+			});
+			
+			//$("#edit-form").load("edit.php");
+		});
+
+		$(function(){
+		console.log("started");
+		var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+		  $('a[data-modal-id]').click(function(e) {
+			e.preventDefault();
+			$("body").append(appendthis);
+			$(".modal-overlay").fadeTo(500, 0.7);
+			//$(".js-modalbox").fadeIn(500);
+			var modalBox = $(this).attr('data-modal-id');
+			$('#'+modalBox).fadeIn($(this).data());
+		  });  
+		  
+
+		$(".js-modal-close, .modal-overlay").click(function() {
+		  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+			$(".modal-overlay").remove();
+		  });
+		});
+
+		$(window).resize(function() {
+		  $(".modal-box").css({
+			top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
+			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+		  });
+		});
+		 
+		$(window).resize();
+		 
+		});
 	</script>
 		
 	</head>
@@ -83,38 +122,7 @@ if(!isset($_SESSION['user']))
 				</div>
 			</noscript>
 			
-			<!-- Page Head -- >
-			<h2>Welcome John</h2>
-			<p id="page-intro">What would you like to do?</p>
-			
-			<ul class="shortcut-buttons-set">
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/pencil_48.png" alt="icon"><br>
-					Write an Article
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/paper_content_pencil_48.png" alt="icon"><br>
-					Create a New Page
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/image_add_48.png" alt="icon"><br>
-					Upload an Image
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#"><span>
-					<img src="../../res/clock_48.png" alt="icon"><br>
-					Add an Event
-				</span></a></li>
-				
-				<li><a class="shortcut-button" href="#messages" rel="modal"><span>
-					<img src="../../res/comment_48.png" alt="icon"><br>
-					Open Modal
-				</span></a></li>
-				
-			</ul><! -- End .shortcut-buttons-set -->
+
 			
 			<div class="clear"></div> <!-- End .clear -->
 			
@@ -175,13 +183,13 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<select name="dropdown">
+											<!--<select name="dropdown">
 												<option selected="selected" value="option1">Choose an action...</option>
 												<option value="option2">Edit</option>
 												<option value="option3">Delete</option>
 											</select>
-											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Driver</a>
+											<a class="button" href="#">Apply to selected</a>-->
+											<a class="button" class='js-open-modal' href='#' data-modal-id='popup' >Add Driver</a>
 										</div>
 										
 										<div class="pagination">
@@ -194,11 +202,6 @@ if(!isset($_SESSION['user']))
 													$k = $i+1;
 													echo "<a href='#' class='number current' title='".$k."'>".$k."</a>";
 												}
-											
-											//<a href="#" class="number" title="1">1</a>
-											//<a href="#" class="number" title="2">2</a>
-											//<a href="#" class="number current" title="3">3</a>
-											//<a href="#" class="number" title="4">4</a>
 												echo "<a href='#' title='Next Page'>Next »</a><a href='#' title='Last Page'>Last »</a>";
 											}
 											?>
@@ -209,14 +212,6 @@ if(!isset($_SESSION['user']))
 							</tfoot>
 						 
 							<tbody>
-<!--								<tr>
-								<div id="search" style="display: none;" class="tab-content">
-								<td><input type="text" id="type"></td>
-								<td><input type="text" id="job"></td>
-								<td><input type="text" id="driver"></td>
-								<td><input type="button" id="search" value="Search"></td>
-								</div>
-								</tr> -->
 								<?php
 								//$mDriverList = $mAllDriverList;
 								for($i=0; $i<sizeof($mDriverList); $i++) {
@@ -224,7 +219,7 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mDriver->getCurrentJob());
 									$mVehicle = new Vehicle($mDriver->getCurrentVehicle());
 									echo "<tr>";
-									echo "<td>".$mDriver->getName()."</td>";
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='#' style='text-transform:uppercase;'>".$mDriver->getName()."</a></b></td>";
 									echo "<td>".$mDriver->getPhone()."</td>";
 									echo "<td><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "<td>
@@ -271,13 +266,13 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<select name="dropdown">
+											<!--<select name="dropdown">
 												<option selected="selected" value="option1">Choose an action...</option>
 												<option value="option2">Edit</option>
 												<option value="option3">Delete</option>
 											</select>
-											<a class="button" href="#">Apply to selected</a>
-											<a class="button" href="edit.php">Add Driver</a>
+											<a class="button" href="#">Apply to selected</a>-->
+											<a class="button" class='js-open-modal' href='#' data-modal-id='popup' >Add Driver</a>
 										</div>
 										
 										<div class="pagination">
@@ -301,7 +296,7 @@ if(!isset($_SESSION['user']))
 									$mJob = new Job($mDriver->getCurrentJob());
 									$mVehicle = new Vehicle($mDriver->getCurrentVehicle());
 									echo "<tr>";
-									echo "<td>".$mDriver->getName()."</td>";
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b><a href='#' style='text-transform:uppercase;'>".$mDriver->getName()."</a></b></td>";
 									echo "<td>".$mDriver->getPhone()."</td>";
 									echo "<td><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "									<td>
@@ -329,4 +324,54 @@ if(!isset($_SESSION['user']))
 		</div> <!-- End #main-content -->
 		
 	</div>
+
+	
+	<div id="popup" class="modal-box" style="width:50%;">  
+		<header>
+			<h3>Add Driver</h3>
+		</header>
+		<div class="modal-body" id="item-list">
+						<form action="action.php?action=add" method="POST">
+							
+							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+															
+								<p class="column-left">
+									<label>Name</label>
+										<input class="text-input medium-input" id="name" name="name" type="text"> 
+								</p>
+								
+								<p class="column-right">
+									<label>Phone</label>
+										<input class="text-input medium-input" name="phone" id="phone" type="text"> 
+								</p>
+
+								<p>
+									<label>Address</label>
+										<textarea name="address" id="address" ></textarea>
+								</p>
+								
+								<p>
+									<label>Description</label>
+									<input class="text-input large-input" name="description" id="description" type="text">
+									<br><small>A small description of the driver which will help in identifying the driver with ease.</small>
+								</p>
+								
+								
+								
+							</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->
+							
+						
+<!----------------------------------------------------------------------------------------------------------------------------->
+
+	  <footer>
+		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
+	  </footer>
+	  </form>
+
+		</div>
+	</div>
+
 </body></html>
