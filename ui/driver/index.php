@@ -173,7 +173,7 @@ if(!isset($_SESSION['user']))
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<a class="button" href="edit.php">Add Driver</a>
+											<a class="button" class='js-open-modal' href='#' data-modal-id='edit-popup' >Add Driver</a>
 										</div>
 										<div class="clear"></div>
 									</td>
