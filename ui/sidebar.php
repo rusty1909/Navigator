@@ -84,14 +84,14 @@ if($mIsCompanyRegistered){
 					</ul>
 				</li>     -->
 				
-				<li>
+				<!--<li>
 					<a href="#" class="nav-top-item">
 						Issues
 					</a>
 					<ul style="display: none;">
 						<li><a href="/navigator/admin/issue/"  target="_admin">Issue List</a></li>
 					</ul>
-				</li> 
+				</li> -->
 			<?php 
 			if($mUser->getUsername() == "rusty" || $mUser->getUsername() == "dheerajagrawal19@live.com" || $mUser->getUsername() == "sumshri") {
 			?>
