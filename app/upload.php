@@ -19,9 +19,13 @@
     //not supporting Job feature now!!!
 	//$mJob = new Job($mVehicle->getCurrentJob());
 	//$mJob->setLocation($lattitude, $longitude);
-    if($criteria == "location")
-        $mVehicle->addTrack($lattitude, $longitude, $address);
-    else
-        $mVehicle->updateDuration($lattitude, $longitude);
-	
+    if($criteria == "location"){
+        if($mVehicle->addTrack($lattitude, $longitude, $address)){
+			echo "success";
+		} else echo "fail";
+    } else {
+        if($mVehicle->updateDuration($lattitude, $longitude)){
+			echo "success";
+		} else echo "fail";
+	}
 ?>
