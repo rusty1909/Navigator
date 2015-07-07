@@ -412,14 +412,14 @@ class Vehicle {
 	}
     
     function updateDuration($lattitude, $longitude){
-        print_r("update duration<br>");
+        //print_r("update duration<br>");
         $db = new Connection();
 		$conn = $db->connect();
         
         $id = 0;
         
         $sql = "SELECT id FROM location WHERE vehicle_id = '$this->id' ORDER BY id DESC ";
-        print_r($sql);
+        //print_r($sql);
 		$action = mysqli_query($conn, $sql);
 		
 		if (mysqli_num_rows($action) > 0) {
@@ -432,12 +432,12 @@ class Vehicle {
 		$fgDate = $db->getTimeNow();
 		
         $sql = "UPDATE location SET last_updated = '$fgDate' WHERE id = '$id'";
-		print_r($sql);
+		//print_r($sql);
 		if (mysqli_query($conn, $sql)) {
-            print_r("Record updated successfully");
+            //print_r("Record updated successfully");
 			return true;
 		} else {
-            print_r("Error updating record: " . mysqli_error($conn));
+            //print_r("Error updating record: " . mysqli_error($conn));
 			return false;
 		}
     }
