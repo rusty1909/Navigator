@@ -20,8 +20,6 @@ $c_admin = array();
 $c_tin = array();
 
 $sql = "SELECT * FROM user";
-
-
 //echo "--->".$sql;
 $action = mysqli_query($conn, $sql);
 
