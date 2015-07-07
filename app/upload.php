@@ -4,12 +4,12 @@
 	require_once '../framework/Job.php';
 
 	//print_r($_POST);
-    $criteria = trim($_POST['criteria']);
-	$vehicle = trim($_POST['vehicle']);
-	$lattitude = trim($_POST['lattitude']);
-	$longitude = trim($_POST['longitude']);
-	$address = trim($_POST['address']);
-    $city = trim($_POST['city']);
+    $criteria = trim($_GET['criteria']);
+	$vehicle = trim($_GET['vehicle']);
+	$lattitude = trim($_GET['lattitude']);
+	$longitude = trim($_GET['longitude']);
+	$address = trim($_GET['address']);
+    $city = trim($_GET['city']);
 	
 	//echo "<br>".Vehicle::getIdByNumber($vehicle)."<br>";
 	
