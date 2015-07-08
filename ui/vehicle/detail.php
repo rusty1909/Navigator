@@ -480,7 +480,7 @@ if(!isset($_SESSION['user']))
 					if(!$mVehicle->isDeployed()) {
 							echo "<div class='notification information png_bg' style='width:50%;float:left;margin:10px 10px 10px 10px;'><div>Tracking device has been installed yet.</div></div> ";
 					} else {
-						if($mVehicle->getAddress()==null) {
+						if($mVehicle->isLocationAvailable()==null) {
 							echo "<div class='notification attention png_bg' style='width:50%;float:left;margin:10px 10px 10px 10px;'><div>Could not find location at this moment, Please be patient and be with us.</div></div> ";
 						} else {
 							//echo $mVehicle->getAddress();

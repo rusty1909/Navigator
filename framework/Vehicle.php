@@ -579,6 +579,11 @@ class Vehicle {
 		return $this->address;
 	}*/
 	
+	function isLocationAvailable(){
+		if($this->LatLong != null) return true;
+		else return false;
+	}
+	
 	function getDescription() {
 		return $this->description;
 	}
