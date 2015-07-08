@@ -384,28 +384,28 @@ if(!isset($_SESSION['user']))
 															
 								<p class="column-left">
 									<label>Name</label>
-										<input class="text-input medium-input" id="name" name="name" type="text"> 
+										<input class="text-input medium-input" id="name" name="name" type="text" required placeholder='Rudra XYZ'> 
 								</p>
 								
 								<p class="column-right">
 									<label>Phone</label>
-										<b>+91- </b><input class="text-input medium-input" name="phone" id="phone" type="text"> 
+										<b>+91- </b><input class="text-input medium-input" name="phone" id="phone" type="number" required placeholder='0123456789' min='1000000000' max='9999999999'> 
 								</p>
 
 								<p>
 									<label>Address</label>
-										<textarea name="address" id="address" ></textarea>
+										<textarea name="address" id="address" required placeholder="House #12 , mayur vihar , new delhi"></textarea>
 								</p>
 
 								<p>
 									<label>Description</label>
-									<input class="text-input large-input" name="description" id="description" type="text">
+									<input class="text-input large-input" name="description" id="description" type="text" required placeholder="I was working in this company or having much experience.">
 									<br><small>A small description of the driver which will help in identifying the driver with ease.</small>
 								</p>
 							
 								<p class="column-left">
 									<label>Joining Date</label>
-										<input class="text-input medium-input" id="date_join" name="date_join" type="text"> 
+										<input class="text-input medium-input" id="date_join" name="date_join" type="text" required> 
 								</p>
 								
 								

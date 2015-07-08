@@ -162,45 +162,45 @@
 								
 								<p class="column-left">
 									<label>FirstName <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="firstname" name="firstname" type="text" style="width:95% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="firstname" name="firstname" type="text" style="width:95% !important" required placeholder='Rudra'> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
 								<p class="column-right" style="margin: 0 -10px 0 0;">
 									<label>LastName</label>
-									<input class="text-input medium-input" id="lastname" name="lastname" type="text"  style="width:95% !important"> 
+									<input class="text-input medium-input" id="lastname" name="lastname" type="text"  style="width:95% !important" required placeholder='Goyal'> 
 								</p>
 								
 								<p>
 									<label>Username <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="username" name="username" type="text" style="width:45.5% !important" onBlur="checkForUser(this.value)"><span class="input-notification error png_bg" id="user_error"></span><span class="input-notification success png_bg" id="user_success"></span>
+									<input class="text-input medium-input" id="username" name="username" type="text" style="width:45.5% !important" onBlur="checkForUser(this.value)" required placeholder='xyz132'><span class="input-notification error png_bg" id="user_error"></span><span class="input-notification success png_bg" id="user_success"></span>
 								</p>
 
 								<p class="column-left">
 									<label>Password <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="password" name="password" type="password" style="width:95% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="password" name="password" type="password" style="width:95% !important" required> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
 								<p class="column-right" style="margin: 0 -10px 0 0;" >
 									<label>Re-Type Password <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="retype" name="retype" type="password"  style="width:95% !important" onBlur="checkPassword()"><br><span class="input-notification error png_bg" id="pass_error"></span><span class="input-notification success png_bg" id="pass_success"></span>
+									<input class="text-input medium-input" id="retype" name="retype" type="password"  style="width:95% !important" onBlur="checkPassword()" required><br><span class="input-notification error png_bg" id="pass_error"></span><span class="input-notification success png_bg" id="pass_success"></span>
 								</p>
 
 								<p>
 									<label>Email <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="email" name="email" type="email" style="width:45.5% !important" onBlur="checkForEmail(this.value)"> <span class="input-notification error png_bg" id="email_error"></span><span class="input-notification success png_bg" id="email_success"></span>
+									<input class="text-input medium-input" id="email" name="email" type="email" style="width:45.5% !important" onBlur="checkForEmail(this.value)" required placeholder='xyz@xyz.com'> <span class="input-notification error png_bg" id="email_error"></span><span class="input-notification success png_bg" id="email_success"></span>
 								</p>
 
 								<p class="column-left">
 									<label>Office Phone</label>
-									<input class="text-input medium-input" id="phone_o" name="phone_o" type="text" style="width:95% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" type="number" id="phone_o" name="phone_o" style="width:95% !important" required placeholder='0123456789'> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
 								<p class="column-right" style="margin: 0 -10px 0 0;" >
 									<label>Mobile <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="phone_m" name="phone_m" type="text"  style="width:95% !important"> 
+									<input class="text-input medium-input" id="phone_m" name="phone_m" type="number"  style="width:95% !important" required placeholder='0123456789'> 
 								</p>
 								
 								<p>

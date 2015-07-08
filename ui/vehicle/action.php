@@ -27,9 +27,23 @@ switch($action) {
 	case "delete" : $id = $_GET['id'];
 		echo $_GET['id'];
 		$mVehicle = new Vehicle($id);
+    
+       /* if getCurrentJob() retruns o means vehicle is not on job... */
+        if($mVehicle->isOnTrip() != 0|| $mVehicle->getCurrentJob() != 0){
+            echo '<script language="javascript">';
+            echo 'alert("Vehicle is on Job, can\'t delte now !!!")';
+            echo '</script>';
+            
+            header('Location:index.php');
+            
+            break;
+        }
+    
 		if($mVehicle->delete())
 			header('Location:index.php');
-		else {}
+		else {
+            header('Location:index.php');
+        }
 			//header('Location:abc.php');
         break;
 

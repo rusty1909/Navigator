@@ -1,10 +1,7 @@
 <?php
-
-
-
 require_once 'Connection.php';
 
-class Vehicle {
+class RetVehicle {
 	private $id;
 	private $vehicleNumber;
 	private $type;
@@ -14,6 +11,7 @@ class Vehicle {
 	private $isDeployed;
 	private $isOnJob;
 	private $dateAdded;
+    private $dateRetired;
 	private $addedBy;
 	private $description;
 	private $address;
@@ -27,7 +25,7 @@ class Vehicle {
 		$db = new Connection();
 		$conn = $db->connect();
 
-		$sql = "SELECT * FROM vehicle WHERE id='$id'";
+		$sql = "SELECT * FROM retvehicle WHERE id='$id'";
 		$action = mysqli_query($conn, $sql);
 
 		if (mysqli_num_rows($action) > 0) {
@@ -44,6 +42,7 @@ class Vehicle {
 				$this->addedBy = $row['added_by'];
 				$this->description = $row['description'];
 				$this->dateAdded = $row['date_added'];
+                $this->$dateRetired = $row['date_retired'];
 				$this->address = $row['address'];
 				$this->driver = $row['driver'];
 				$this->LatLong["lat"] = $row['lattitude'];
@@ -65,7 +64,7 @@ class Vehicle {
 		$companyId = $_SESSION['user']['company'];
 		$userId = $_SESSION['user']['id'];
 		
-		$sql = "INSERT INTO vehicle (type, model, vehicle_number, make_year, company_id, added_by, description) VALUES ('$type','$model','$vehicle_number','$make_year','$companyId','$userId','$description')";
+		$sql = "INSERT INTO retvehicle (type, model, vehicle_number, make_year, company_id, added_by, description) VALUES ('$type','$model','$vehicle_number','$make_year','$companyId','$userId','$description')";
 		
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -86,21 +85,14 @@ class Vehicle {
         if($this->isOnTrip())
             return false;
         
-        $sql = "UPDATE vehicle SET date_deactivate = now() WHERE id = '$this->id'";
-        mysqli_query($conn, $sql);
-            
 		// sql to delete a record
-        /*
-		$sql = "DELETE FROM vehicle WHERE id='$this->id'";
+		$sql = "DELETE FROM retvehicle WHERE id='$this->id'";
 
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
 			return false;
 		}
-        */
-        
-        return true;
 	}
 	
 	function getCurrentJob() {
@@ -131,7 +123,7 @@ class Vehicle {
 		
 		//if(!Vehicle::exists($conn, $vehicle_number)) return;
 		
-		$sql = "SELECT driver FROM vehicle WHERE id = '$this->id' AND status = '1'";
+		$sql = "SELECT driver FROM retvehicle WHERE id = '$this->id' AND status = '1'";
         //echo $sql;
 		$action = mysqli_query($conn, $sql);
 		
@@ -152,7 +144,7 @@ class Vehicle {
 		$conn = $db->connect();
 		
 		
-		$sql = "UPDATE vehicle SET driver = 0 WHERE id = '$this->id'";
+		$sql = "UPDATE retvehicle SET driver = 0 WHERE id = '$this->id'";
 		//print_r($sql);
 
 		if (mysqli_query($conn, $sql)) {
@@ -199,7 +191,7 @@ class Vehicle {
 		
 		//if(!Vehicle::exists($conn, $vehicle_number)) return $result;
 		
-		$sql = "SELECT id, vehicle_number, lattitude, longitude, address, last_update FROM vehicle WHERE id = '$this->id'";
+		$sql = "SELECT id, vehicle_number, lattitude, longitude, address, last_update FROM retvehicle WHERE id = '$this->id'";
 		$action = mysqli_query($conn, $sql);
 		
 
@@ -223,7 +215,7 @@ class Vehicle {
 		
 		//if(!Vehicle::exists($conn, $vehicle_number)) return $result;
 		
-		$sql = "SELECT lattitude FROM vehicle WHERE id = '$this->id'";
+		$sql = "SELECT lattitude FROM retvehicle WHERE id = '$this->id'";
 		$action = mysqli_query($conn, $sql);
 		
 
@@ -247,7 +239,7 @@ class Vehicle {
 		
 		//if(!Vehicle::exists($conn, $vehicle_number)) return $result;
 		
-		$sql = "SELECT last_update FROM vehicle WHERE id = '$this->id'";
+		$sql = "SELECT last_update FROM retvehicle WHERE id = '$this->id'";
 		$action = mysqli_query($conn, $sql);
 		
 
@@ -271,7 +263,7 @@ class Vehicle {
 		
 		//if(!Vehicle::exists($conn, $vehicle_number)) return $result;
 		
-		$sql = "SELECT address FROM vehicle WHERE id = '$this->id'";
+		$sql = "SELECT address FROM retvehicle WHERE id = '$this->id'";
 		$action = mysqli_query($conn, $sql);
 		
 
@@ -295,7 +287,7 @@ class Vehicle {
 		
 		//if(!Vehicle::exists($conn, $vehicle_number)) return $result;
 		
-		$sql = "SELECT longitude FROM vehicle WHERE id = '$this->id'";
+		$sql = "SELECT longitude FROM retvehicle WHERE id = '$this->id'";
 		$action = mysqli_query($conn, $sql);
 		
 
@@ -319,12 +311,12 @@ class Vehicle {
 		$last_last_update;		
 
 		/*
-		* Finally update the vehicle table with latest values
+		* Finally update the retvehicle table with latest values
 		*/
 		
 		$fgDate = $db->getTimeNow();
 		
-		$sql = "UPDATE vehicle SET lattitude = '$lattitude', longitude = '$longitude', city = '$city', address = '$address', last_update = '$fgDate' WHERE id = '$this->id'";
+		$sql = "UPDATE retvehicle SET lattitude = '$lattitude', longitude = '$longitude', city = '$city', address = '$address', last_update = '$fgDate' WHERE id = '$this->id'";
 		//print_r($sql);
 
 		if (mysqli_query($conn, $sql)) {
@@ -341,7 +333,7 @@ class Vehicle {
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
-		$sql = "UPDATE vehicle SET driver = '$driver' WHERE id = '$this->id'";
+		$sql = "UPDATE retvehicle SET driver = '$driver' WHERE id = '$this->id'";
 		//print_r($sql);
 
 		if (mysqli_query($conn, $sql)) {
@@ -399,7 +391,7 @@ class Vehicle {
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
-		$sql = "SELECT id FROM vehicle WHERE $col = '$value'";
+		$sql = "SELECT id FROM retvehicle WHERE $col = '$value'";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
@@ -477,12 +469,12 @@ class Vehicle {
 		$last_last_update;		
 
 		/*
-		* Finally update the vehicle table with latest values
+		* Finally update the retvehicle table with latest values
 		*/
 		$this->isDeployed = 1;
 		$fgDate = $db->getTimeNow();
 		
-		$sql = "UPDATE vehicle SET deployed = '1', date_deployed = '$fgDate' WHERE id = '$this->id'";
+		$sql = "UPDATE retvehicle SET deployed = '1', date_deployed = '$fgDate' WHERE id = '$this->id'";
 		//print_r($sql);
 
 		if (mysqli_query($conn, $sql)) {
@@ -516,7 +508,7 @@ class Vehicle {
 		$db = new Connection();
 		$conn = $db->connect();
 
-		$sql = "SELECT id FROM vehicle WHERE vehicle_number = '$vehicleNumber'";
+		$sql = "SELECT id FROM retvehicle WHERE vehicle_number = '$vehicleNumber'";
 		$action = mysqli_query($conn, $sql);
 
 		if (mysqli_num_rows($action) > 0) {
@@ -528,7 +520,7 @@ class Vehicle {
 	}
 	
 	public static function exists($conn, $vehicle_number) {
-		$sql = "SELECT id FROM vehicle WHERE vehicle_number = '$vehicle_number'";
+		$sql = "SELECT id FROM retvehicle WHERE vehicle_number = '$vehicle_number'";
 		$action = mysqli_query($conn, $sql);
 
 		if (mysqli_num_rows($action) > 0) {

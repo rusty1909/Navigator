@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	require_once "../../framework/User.php";
 	require_once "../../framework/Vehicle.php";
 	require_once "../../framework/Job.php";
@@ -788,24 +788,24 @@ if(!isset($_SESSION['user']))
 								
 								<p class="column-left">
 									<label>Vehicle Model</label>
-										<input class="text-input medium-input" id="model" name="model" type="text"> <!--<span class="input-notification success png_bg">Successful message</span>  Classes for input-notification: success, error, information, attention 
+										<input class="text-input medium-input" id="model" name="model" type="text" required placeholder='Honda City'> <!--<span class="input-notification success png_bg">Successful message</span>  Classes for input-notification: success, error, information, attention 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
 								<p class="column-right">
 									<label>Make Year</label>
-										<input class="text-input medium-input" name="make_year" id="make_year" type="text"> <!--<span class="input-notification success png_bg">Successful message</span>  Classes for input-notification: success, error, information, attention 
+										<input class="text-input medium-input" name="make_year" id="make_year" type="number" min="1400" max="2015" placeholder='2012'> <!--<span class="input-notification success png_bg">Successful message</span>  Classes for input-notification: success, error, information, attention 
 										<br><small>A small description of the field</small>-->
 								</p>
 
 								<p>
 									<label>Vehicle Number</label>
-										<input class="text-input small-input" name="vehicle_number" id="vehicle_number" type="text"> <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
+										<input class="text-input small-input" name="vehicle_number" id="vehicle_number" type="text" required placeholder='DL 12 UB 1234'> <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
 								</p>
 								
 								<p>
 									<label>Description</label>
-									<input class="text-input large-input" name="description" id="description" type="text">
+									<input class="text-input large-input" name="description" id="description" type="text" required placeholder='Honda City 12 years old good condition'>
 									<br><small>A small description of the vehicle which will help in identifying the vehicle with ease.</small>
 								</p>
 								

@@ -370,13 +370,13 @@ class User {
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		if($company_id > 0)
-			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1'";
+			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND date_deactivate IS NULL ";
 		else
-			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '1'";
+			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '1' AND date_deactivate IS NULL ";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
-		if (mysqli_num_rows($action) > 0) {
+		if (!empty($action) && mysqli_num_rows($action) > 0) {
 		while($row = mysqli_fetch_assoc($action)) {
 				array_push($result, $row['id']);
 			}
@@ -395,13 +395,14 @@ class User {
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		if($company_id > 0)
-			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND deployed='1' AND status = '1'";
+			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND deployed='1' AND status = '1' AND date_deactivate IS NULL ";
 		else
-			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND deployed='1' AND status = '1'";
+			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND deployed='1' AND status = '1' AND date_deactivate IS NULL ";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
-		if (mysqli_num_rows($action) > 0) {
+        
+		if (!empty($action) && mysqli_num_rows($action) > 0) {
 		while($row = mysqli_fetch_assoc($action)) {
 				array_push($result, $row['id']);
 			}
@@ -420,7 +421,7 @@ class User {
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
-		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '0'";
+		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '0' OR date_deactivate IS NOT NULL  ";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
@@ -443,11 +444,11 @@ class User {
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
-		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND on_job='1'";
+		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND on_job='1' AND date_deactivate IS NULL ";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
-		if (mysqli_num_rows($action) > 0) {
+		if (!empty($action) && mysqli_num_rows($action) > 0) {
 		while($row = mysqli_fetch_assoc($action)) {
 				array_push($result, $row['id']);
 			}
@@ -466,11 +467,11 @@ class User {
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
-		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND on_job='0' AND deployed='1'";
+		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND on_job='0' AND deployed='1' AND date_deactivate IS NULL ";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
-		if (mysqli_num_rows($action) > 0) {
+		if (!empty($action) && mysqli_num_rows($action) > 0) {
 		while($row = mysqli_fetch_assoc($action)) {
 				array_push($result, $row['id']);
 			}
@@ -490,13 +491,13 @@ class User {
 		$result = array();
 		
 		if($company_id > 0)
-			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND deployed='0'";
+			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND deployed='0' AND date_deactivate IS NULL ";
 		else
-			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND deployed='0'";
+			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND deployed='0' AND date_deactivate IS NULL ";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
-		if (mysqli_num_rows($action) > 0) {
+		if (!empty($action) && mysqli_num_rows($action) > 0) {
 		while($row = mysqli_fetch_assoc($action)) {
 				array_push($result, $row['id']);
 			}
