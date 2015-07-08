@@ -83,7 +83,7 @@ class Vehicle {
 		
 		//if(!Vehicle::exists($conn, $vehicle_number)) return false;
 		
-        if($this->isOnTrip())
+        if($this->isDeployed())
             return false;
         
         $sql = "UPDATE vehicle SET date_deactivate = now() WHERE id = '$this->id'";
