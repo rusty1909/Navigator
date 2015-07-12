@@ -62,6 +62,59 @@ if(User::isLoggedIn())
 			</script>
 		<![endif]-->
 		
+    
+          <!--  //modal box jquery -->
+        <link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    
+    <script>
+		$(document).ready(function () {
+			console.log("clicked");
+			$('#dialog_link').click(function () {
+				$('#dialog').dialog('open');
+				return false;
+			});
+			
+			//$("#edit-form").load("edit.php");
+		});
+
+		$(function(){
+		console.log("started");
+		var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+		  $('a[data-modal-id]').click(function(e) {
+			e.preventDefault();
+			$("body").append(appendthis);
+			$(".modal-overlay").fadeTo(500, 0.7);
+			//$(".js-modalbox").fadeIn(500);
+			var modalBox = $(this).attr('data-modal-id');
+			$('#'+modalBox).fadeIn($(this).data());
+		  });  
+		  
+
+		$(".js-modal-close, .modal-overlay").click(function() {
+		  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+			$(".modal-overlay").remove();
+		  });
+		});
+
+		$(window).resize(function() {
+		  $(".modal-box").css({
+			top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
+			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+		  });
+		});
+		 
+		$(window).resize();
+		 
+		});
+        
+    </script>
+
+    
 	</head>
   
 	<body id='login'>
@@ -108,7 +161,7 @@ if(User::isLoggedIn())
 					</p>
 					<div class="clear"></div>
 					<p>
-						<a href="forgetpassword.php" style="float:right;"> Forget Password? </a>
+						<a href="forgetpassword.php" style="float:right;"  class="js-open-modal" href="#" data-modal-id="resetpswdpopup"> Forget Password? </a>
 					</p>
 					
 				</form>
@@ -116,7 +169,36 @@ if(User::isLoggedIn())
 			
 		</div> <!-- End #login-wrapper -->
 		
-  
+  <div id="resetpswdpopup" class="modal-box" style="width:50%;">  
+	  <header>
+		<h3>Reset Your Password</h3>
+	  </header>
+	  <div class="modal-body" id="item-list">		
+<!-------------------------------------------------------------------------------------------------------------------------->
+						<form action="action.php?action=resetpassword" method="POST">
+							
+							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+								<p>
+									<label>Email ID</label>
+										<input class="text-input small-input" name="email_id" id="email_id" type="email" required placeholder='xyz@abc.com'> <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
+								</p>
+								
+								
+							</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->
+							
+						
+<!----------------------------------------------------------------------------------------------------------------------------->
+
+	  <footer>
+		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
+	  </footer>
+	  </form>
+	  </div>
+	</div>
+	
   
 
-    <div id="facebox" style="display:none;">       <div class="popup">         <table>           <tbody>             <tr>               <td class="tl"></td><td class="b"></td><td class="tr"></td>             </tr>             <tr>               <td class="b"></td>               <td class="body">                 <div class="content">                 </div>                 <div class="footer">                   <a href="#" class="close">                     <img src="../../res/closelabel.gif" title="close" class="close_image">                   </a>                 </div>               </td>               <td class="b"></td>             </tr>             <tr>               <td class="bl"></td><td class="b"></td><td class="br"></td>             </tr>           </tbody>         </table>       </div>     </div></body></html>
+</body></html>

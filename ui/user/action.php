@@ -3,6 +3,7 @@
 ini_set('display_errors', 1);*/
 
 require_once '../../framework/User.php';
+require_once '../../framework/Mailer.php';
 
 if(isset($_GET['action'])) {
 	//die "p";
@@ -76,6 +77,37 @@ switch($action) {
             //die("sorry!!");
 			echo "<script>window.location.href = '../user/login.php'</script>";
 		}
+		break;
+    
+    case "resetpassword" : if(!isset($_POST['email_id'])) {
+			echo "<script>window.location.href = '../user/login.php'</script>";
+			break;
+		}		
+		$email = $_POST['email_id'];
+        $id = User::getIdByEmail($email);
+    
+        if($id == -1){
+            echo "<script>alert('Email ID does not exist in our database...\n Please use proper id or create a new account with us. !!!');</script>";
+			echo "<script>window.location.href = '../user/login.php'</script>";
+        	break;
+        }
+        	
+        $securityKey = Security::getSecurityKey($id);
+    
+        $passresetlink = "www.findgaddi.com/navigator/ui/user/resetPassword.php?id=$id&key=$securityKey";
+    
+        $messagereset =  '<br > Please click on the below link or if link does not work please copy paste the link in your browser.<br >';
+        $messagereset .= $passresetlink ;
+    
+    if(Mailer::SendResetPasswd($id, 'Please reset your passwword', $messagereset)){
+    
+        echo "<script>alert('We have sent a mail, Please click on the link in mail to reset your mail.  !!!');</script>";
+		echo "<script>window.location.href = '../user/login.php'</script>";
+    }else{
+           echo "<script>alert('There was some error, please try again...  !!!');</script>";
+           echo "<script>window.location.href = '../user/login.php'</script>";
+    
+    }
 		break;
 }
 ?>

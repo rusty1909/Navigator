@@ -145,6 +145,26 @@ class Mailer {
         return $msgToUser;
 
     }
+    
+    public static function SendResetPasswd($puserid,$subject,$message ){
+        $msgToUser = "";
+
+        $msg = "Dear Customer,";
+        $msg  .= "<br /><br />";
+
+
+        $message = $msg.$message;
+
+        $message = Mailer::makeMessage($message); 
+
+       if(mail($puserid, $subject, $message, Def_headers)) {
+               $msgToUser = "We will revert you soon, please stay tuned...";
+           }else {	
+                return false;
+                 $msgToUser ="There was some error, please try again...";
+            }
+        return $msgToUser;
+    }
 
     public static function SendReActivationMessage($pfullname,$puserid,$ppasswdHash ){
     $msgToUser = "";

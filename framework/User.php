@@ -114,11 +114,13 @@ class User {
 		if (mysqli_num_rows($action) > 0) {
 			while($row = mysqli_fetch_assoc($action)) {
 				return $row['id'];
-			}
+            }
 			$mUser = new User();
 			$mUser->updateLoggedinState(1);
 			return true;
-		}
+		}else{
+            return -1; //error when email id is not found is data base..
+        }
 		return false;
     }
 	
@@ -247,7 +249,22 @@ class User {
 		}
 	}
 	
-	
+	function resetPassword($newPassword) {
+
+		// opening db connection
+		$db = new Connection();
+		$conn = $db->connect();
+				
+		$sql = "UPDATE user SET password = '$newPassword' WHERE id = '$this->id'";
+		
+		if (mysqli_query($conn, $sql)) {
+			$_SESSION['user']['password'] = $newPassword;
+			return true;
+		} else {
+			return false;
+		}
+	}
+    
 	function updatePassword($oldPassword, $newPassword) {
 
 		// opening db connection
@@ -367,6 +384,9 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+        if(empty($_SESSION['user']))
+            return null;
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		if($company_id > 0)
@@ -392,6 +412,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		if($company_id > 0)
@@ -418,6 +442,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
@@ -441,6 +469,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
@@ -463,6 +495,11 @@ class User {
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
+        
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
@@ -511,6 +548,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$company_id = $_SESSION['user']['company'];
 		//echo $company_id;
 		$result = array();
@@ -535,6 +576,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
@@ -558,6 +603,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
@@ -581,6 +630,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
@@ -605,6 +658,11 @@ class User {
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
+        
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
@@ -629,6 +687,10 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+         if(empty($_SESSION['user']))
+            return null;
+        
+        
 		$result = array();
 		$company_id = $_SESSION['user']['company'];
 		$sql = "SELECT id FROM job WHERE company_id = '$this->companyId' AND status = '0'";
