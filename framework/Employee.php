@@ -8,10 +8,12 @@ if(!isset($_SESSION))
 
 require_once 'Connection.php';
 require_once 'User.php';
-require_once 'Employee.php';
 
-class Company {
+
+
+class Employee {
     private $id;
+    public $company;
     public $name;
     public $tinNumber;
     public $address1;
@@ -32,13 +34,13 @@ class Company {
         // opening db connection
         $db = new Connection();
         $conn = $db->connect();
-        $sql ="SELECT * FROM company WHERE id='$id'";
+        $sql ="SELECT * FROM Employee WHERE id='$id'";
         $action = mysqli_query($conn, $sql);
         if (mysqli_num_rows($action) > 0) {
             while($row = mysqli_fetch_assoc($action)) {
                 $this->id = $row['id'];
                 $this->name = $row['name'];
-                $this->tinNumber = $row['tin_number'];
+                $this->tinNumber = $row['empID'];
                 $this->address1 = $row['address_1'];
                 $this->address2 = $row['address_2'];
                 $this->landmark = $row['landmark'];
@@ -57,29 +59,25 @@ class Company {
     }
 
 
-    public static function add($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
+    public static function add($company, $name, $empID, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $email) {
         // opening db connection
         $db = new Connection();
         $conn = $db->connect();
         //user details
         $userId = $_SESSION['user']['id'];
         $username = $_SESSION['user']['username'];
-        $sql = "INSERT INTO `company`( `name`, `tin_number`, `address_1`, `address_2`, `landmark`, `city`, `state`, `pincode`, `phone`, `fax`, `email`, `website`, `admin_user`, `description`) VALUES ('$name', '$tin_number', '$address_1', '$address_2', '$landmark', '$city', '$state', '$pincode', '$phone', '$fax', '$email', '$website', '$userId', '$description')";
+        
+        $website = "";
+        $description = "";
+             
+        $sql = "INSERT INTO `employee`( `company` , `name`, `empID`, `address_1`, `address_2`, `landmark`, `city`, `state`, `pincode`, `phone`, `fax`, `email`, `website`, `admin_user`, `description`) VALUES ('$company', '$name', '$empID', '$address_1', '$address_2', '$landmark', '$city', '$state', '$pincode', '$phone', '', '$email', '', '$userId', '')";
 
-        /*if($conn != null) echo "1111<br>";*/
         if (mysqli_query($conn, $sql)) {
-            $getCompany = "SELECT id FROM company WHERE name='$name' AND tin_number='$tin_number' AND website='$website'";
+            $getCompany = "SELECT id FROM employee WHERE name='$name' AND empID='$empID' AND website='$website'";
        
             $action = mysqli_query($conn, $getCompany);
             if (mysqli_num_rows($action) > 0) {
-                while($row = mysqli_fetch_assoc($action)) {
-                    $companyId = $row['id'];
-                    $_SESSION['user']['company'] = $companyId;
-                    $mUser = new User();
-                    $mUser->setCompany($companyId);
-                    $mUser->updateCompanyToVehicle();
                     return true;
-                }
             } else {
                 return false;
             }
@@ -89,20 +87,20 @@ class Company {
         }
     }
 
+    public static function workingEmployee($com){
+        $db = new Connection();
+        $conn = $db->connect();
+       
+        $sql = "SELECT id FROM employee WHERE company = '$com'";
+        $action = mysqli_query($conn, $sql);
+       
+        return mysqli_num_rows($action);        
+    }
+        
     function getName() {
         return $this->name;
     }
 
-    public static function addEmployee($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
-   
-            return Employee::add($_SESSION['user']['company'], $name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $email);
-    }
-    
-     public static function totalEmployee() {
-   
-            return Employee::workingEmployee($_SESSION['user']['company']);
-    }
-    
     public static function isCompanyRegistered($id) {
         $db = new Connection();
         $conn = $db->connect();
@@ -110,7 +108,7 @@ class Company {
         $mUser = new User();
         $userid = $mUser->getId();
 
-        $sql = "SELECT * FROM company WHERE id='$id' AND admin_user='$userid'";
+        $sql = "SELECT * FROM employee WHERE id='$id' AND admin_user='$userid'";
         $action = mysqli_fetch_assoc(mysqli_query($conn, $sql));
         if($action != null)
             return true;
@@ -123,7 +121,7 @@ class Company {
         $db = new Connection();
         $conn = $db->connect();
 
-        $sql = "SELECT id FROM company WHERE tin_number = '$tin'";
+        $sql = "SELECT id FROM employee WHERE empID = '$tin'";
         $action = mysqli_query($conn, $sql);
         if (mysqli_num_rows($action) > 0) {
             while($row = mysqli_fetch_assoc($action)) {
@@ -169,7 +167,7 @@ class Company {
 
     }
     
-    public function update(/*$name, $tin_number, */$address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
+    public function update(/*$name, $empID, */$address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
         // opening db connection
         $db = new Connection();
         $conn = $db->connect();
@@ -177,7 +175,7 @@ class Company {
         $mUser = new User();
         $comid = $mUser->getCompany();
         $id = $mUser->getId();
-        $sql = "UPDATE `company` SET `address_1`='$address_1', `address_2`='$address_2', `landmark`='$landmark', `city`='$city', `state`='$state' , `pincode`='$pincode', `phone`='$phone', `fax`='$fax', `email`='$email', `website`='$website', `description`='$description' WHERE admin_user= '$id' AND id='$comid'";
+        $sql = "UPDATE `employee` SET `address_1`='$address_1', `address_2`='$address_2', `landmark`='$landmark', `city`='$city', `state`='$state' , `pincode`='$pincode', `phone`='$phone', `fax`='$fax', `email`='$email', `website`='$website', `description`='$description' WHERE admin_user= '$id' AND id='$comid'";
 
         if (mysqli_query($conn, $sql)) {
             return true;
@@ -191,7 +189,7 @@ class Company {
         $db = new Connection();
         $conn = $db->connect();
 
-        $sql = "SELECT id FROM company WHERE $col = '$value'";
+        $sql = "SELECT id FROM employee WHERE $col = '$value'";
         $action = mysqli_query($conn, $sql);
         if (mysqli_num_rows($action) > 0) {
             return true;

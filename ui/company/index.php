@@ -96,32 +96,7 @@ ini_set('display_errors', 1);
 				});
 		}
 		
-/*		function checkForName(name) {
-			//var exists = f;
-			if(name=="") return;
-			if(name=="rusty"){
-				document.getElementById("name").value = "";
-				document.getElementById("name_success").innerHTML = "";
-				document.getElementById("name_error").innerHTML = "<b><i>'"+name+"'</i></b>  already exists!";			
-			} else {
-				document.getElementById("name_error").innerHTML = "";
-				document.getElementById("name_success").innerHTML = "<b>available ! ! !<b>";
-			}
-		}
-*/
-/*		function checkForTIN(tin) {
-			if(tin=="") return;
-			//var exists = f;
-			if(tin=="rusty"){
-				document.getElementById("tin_number").value = "";
-				document.getElementById("tin_success").innerHTML = "";
-				document.getElementById("tin_error").innerHTML = "<b><i>'"+tin+"'</i></b>  already exists!";			
-			} else {
-				document.getElementById("tin_error").innerHTML = "";
-				document.getElementById("tin_success").innerHTML = "<b>available ! ! !<b>";
-			}
-		}
-*/		
+	
         function validate(){
 			var name = document.getElementById("name").value;
 			var tin = document.getElementById("tin_number").value;
@@ -212,26 +187,26 @@ ini_set('display_errors', 1);
 						</div>
 						
 					</div>
-					<!-- PROFILE ENDS -->
-
-					<div style="display: block;" class="tab-content" id="edit">					
-						<form action="action.php?action=register" method="POST" onSubmit="return validate()">
+					
+					<div style="display: block;" class="tab-content" id="staff">			
+                        Existing Employee Count : <?php echo  Company::totalEmployee();?>
+						<form action="action.php?action=registerEmployee" method="POST" onSubmit="return validate()">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 							
 								<p class="column-left">
-									<label>CompanyName <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="name" name="name" type="text" style="width:45.5% !important" onBlur="checkForName(this.value)"> <span class="input-notification error png_bg" id="name_error"></span><span class="input-notification success png_bg" id="name_success"></span>  
+									<label>Employee Name <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="name" name="name" type="text" style="width:45.5% !important" required placeholder="Ranjan Singh"> <span class="input-notification error png_bg" id="name_error"></span><span class="input-notification success png_bg" id="name_success"></span>  
 								</p>
 							
 								<p class="column-right">
-									<label>TIN Number <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="tin_number" name="tin_number" type="text" style="width:45.5% !important" onBlur="checkForTIN(this.value)"> <span class="input-notification error png_bg" id="tin_error"></span><span class="input-notification success png_bg" id="tin_success"></span>  
+									<label>Employee ID <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="tin_number" name="tin_number" type="text" style="width:45.5% !important"  required placeholder="11223344h"> <span class="input-notification error png_bg" id="tin_error"></span><span class="input-notification success png_bg" id="tin_success"></span>  
 								</p>
 								
 								<p class="column-left">
 									<label>Address Line 1 <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="address_1" name="address_1" type="text" style="width:99.5% !important">
+									<input class="text-input medium-input" id="address_1" name="address_1" type="text" style="width:99.5% !important"  required placeholder="Chawri bazar">
 								</p>
 							
 								<p class="column-right">
@@ -247,12 +222,12 @@ ini_set('display_errors', 1);
 								
 								<p class="column-right">
 									<label>City <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="city" name="city" type="text"  style="width:45.5% !important"> 
+									<input class="text-input medium-input" id="city" name="city" type="text"  style="width:45.5% !important"  required placeholder="New Delhi"> 
 								</p>
 				
 								<p class="column-left">
 									<label>State <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="state" name="state" type="text" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="state" name="state" type="text" style="width:45.5% !important"  required placeholder="Delhi"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
@@ -263,28 +238,18 @@ ini_set('display_errors', 1);
 
 								<p class="column-left">
 									<label>Phone <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="phone" name="phone" type="text" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="phone" name="phone" type="number" style="width:45.5% !important"  required placeholder="0123456789"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
-								<p class="column-right">
-									<label>Fax </label>
-									<input class="text-input medium-input" id="fax" name="fax" type="text"  style="width:45.5% !important"> 
-								</p>
-
 								<p class="column-left">
 									<label>Email</label>
 									<input class="text-input medium-input" id="email" name="email" type="email" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
-								<p class="column-right">
-									<label>Website </label>
-									<input class="text-input medium-input" id="website" name="website" type="text"  style="width:45.5% !important"> 
-								</p>
-								
 								<p>
-									<input class="button" value="   Register Company   " type="submit">
+									<input class="button" value="   Register Employee   " type="submit">
 								</p>
 								
 							</fieldset>
@@ -293,6 +258,20 @@ ini_set('display_errors', 1);
 							
 						</form>
 					</div> <!-- End #tab3 -->					
+                    
+                    <div style="display: block;" class="tab-content" id="payment">					
+						<p>
+                        
+                        Make Payments and keep using the findgaddi services.
+                        </p>
+					</div> <!-- End #tab3 -->					
+                    
+                    <div style="display: block;" class="tab-content" id="setting">					
+						<p>
+                            Change Settings for notifications and alerts.
+                        </p>
+					</div> <!-- End #tab3 -->					
+                    
 				</div> <!-- End .content-box-content -->				
 			</div> <!-- End .content-box -->
 
