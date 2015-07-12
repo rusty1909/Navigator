@@ -248,6 +248,8 @@ class User {
 			return false;
 		}
 	}
+    
+    
 	
 	function resetPassword($newPassword) {
 
@@ -524,6 +526,11 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+        if(empty($_SESSION['user']))
+            return null;
+        
+      
+        
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
@@ -742,6 +749,19 @@ class User {
 			return false;
 		}
 	}
+    
+    public static function resetpasswordmail($id) {
+		$securityKey = Security::getSecurityKey($id);
+    
+        $idk = User::getIdByEmail($id);
+    
+        $passresetlink = "http://www.findgaddi.com/navigator/ui/user/resetPassword.php?id=$idk&key=$securityKey";
+    
+        $messagereset =  '<br > Please click on the below link or if link does not work please copy paste the link in your browser.<br >';
+        $messagereset .= $passresetlink ;
+    
+        return Mailer::SendResetPasswd($id, 'Please reset your passwword', $messagereset);
+	}
 
     public static function activate($id) {
 		// opening db connection
@@ -802,4 +822,6 @@ class User {
 		return $this->activated;
 	}
 }
+
+//User::resetpasswordmail('dheerajagrawal19@gmail.com');
 ?>

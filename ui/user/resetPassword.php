@@ -1,14 +1,24 @@
 <?php
 
 if(!empty($_POST)){
-    $id = $_POST['id'];
+    
+require_once '../../framework/User.php';
+    
+    if(empty($_POST['id']))
+        $id = $_GET['id'];
+    else
+        $id = $_POST['id'];
+    
+   // die($id);
     $password = $_POST['password'];
     
     $_SESSION['user']['id'] = $id;
     
     $mUser = new User();
     
-    $mUser->resetPassword($password);
+    if($mUser->resetPassword($password))    
+        header('Location:login.php');
+    
     exit();
 }
 
@@ -23,6 +33,9 @@ if(isset($_GET['id']) && isset($_GET['key'])) {
     exit();
 }
 
+$pswdrstlink = "resetPassword.php?id=".$id;
+
+//die($pswdrstlink);
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
@@ -79,17 +92,10 @@ if(isset($_GET['id']) && isset($_GET['key'])) {
   
 	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		
-
-		<div id="sidebar" style="width:45%;background:#f0f0f0"><div id="sidebar-wrapper"> <!-- Sidebar with logo and menu -->
-			
+	
 			<h1 id="sidebar-title"><a href="#">FindGaddi</a></h1>
 		  
 
-
-
-			
-		</div></div> <!-- End #sidebar -->
-		<div style="width:30%;float:left">wertyuk</div>
 		<div id="main-content"style="width:45%;float:left;"> <!-- Main Content Section with everything -->
 			
 			<noscript> <!-- Show a notification if the user has disabled javascript -->
@@ -112,12 +118,13 @@ if(isset($_GET['id']) && isset($_GET['key'])) {
 					
 					<div style="display: block;" class="tab-content default-tab" id="tab2">
 					
-						<form action="resetPassword.php" method="POST" onSubmit="return notify()">
+						<form action="<?php echo $pswdrstlink ?>" method="POST">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 							
-								<input type="text" hidden="hidden" value="<?php echo $id; ?>">
-								<p class="column-left">
+                                <input type="hidden" name="id" value="<?php echo $id ?>" />
+    
+                                <p class="column-left">
 									<label>Password <span class="mandatory">*</span></label>
 									<input class="text-input medium-input" id="password" name="password" type="password" style="width:95% !important" required> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
@@ -129,7 +136,7 @@ if(isset($_GET['id']) && isset($_GET['key'])) {
 								</p>
 
 								<p id="notify">
-									<input class="button" value="Reset Password" type="button" onClick='notify()'>
+									<input class="button" value="Reset Password" type="submit">
 								</p>
 								
 							</fieldset>

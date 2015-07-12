@@ -33,7 +33,7 @@ class Mailer {
 
     public static function makeMessage($msg){
 
-        $message =  '<table cellpadding="10"><tbody><tr><td align="center" style="padding:30px"><a href="http://www.findgaddi.com/" target="_blank"><img src="http://www.findgaddi.com/navigator/res/logo_small.jpg" alt="FindGaddi" style="width: 40px; border-radius: 10%;"></a> </td><td width="90%" style=background: #3b5998; color: #ffffff;"> <h2>FindGaddi.com</h2> </td> </tr> <tr> <td align="center" > </td> <td>';
+        $message =  '<table cellpadding="10"><tbody><tr><td align="center" style="padding:30px"><a href="http://www.findgaddi.com/" target="_blank"><img src="http://www.findgaddi.com/navigator/res/logo_small.png" alt="FindGaddi" style="width: 40px; border-radius: 10%;"></a> </td><td width="90%" style=background: #3b5998; color: #ffffff;"> <h2>FindGaddi.com</h2> </td> </tr> <tr> <td align="center" > </td> <td>';
 
         $message .= $msg;
         $message .= "<b><br /><br />Best Regards, <br /> FindGaddi.com Team<br /></b>";
@@ -200,5 +200,5 @@ class Mailer {
 
 }
 
-//echo Mailer::SendMessagebyPHP('rusty.developer@gmail.com', 'rusty.developer@gmail.com', 'rusty.developer@gmail.com');
+//echo Mailer::SendResetPasswd('dheerajagrawal19@gmail.com', 'dheerajagrawal19@gmail.com', 'dheerajagrawal19@gmail.com');
 ?>

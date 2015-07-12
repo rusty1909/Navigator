@@ -118,21 +118,21 @@
 		}
 		</script>
 		
+		<style>
+		
+		.column-right {
+		  width: 48%;
+		  float: left;
+		  margin: auto;
+		}
+		</style>
 	</head>
   
 	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		
 
-		<div id="sidebar" style="width:45%;background:#f0f0f0"><div id="sidebar-wrapper"> <!-- Sidebar with logo and menu -->
-			
-			<h1 id="sidebar-title"><a href="#">FindGaddi</a></h1>
+	<h1 id="sidebar-title"><a href="#">FindGaddi</a></h1>
 		  
-			<!-- Logo (221px wide) -->
-			<a href="#"><img id="logo" src="../../res/logo.png" alt="FindGaddi logo"></a>
-
-
-			
-		</div></div> <!-- End #sidebar -->
 		<div id="main-content"style="width:45%;float:right;"> <!-- Main Content Section with everything -->
 			
 			<noscript> <!-- Show a notification if the user has disabled javascript -->
@@ -177,13 +177,13 @@
 								</p>
 
 								<p class="column-left">
-									<label>Password <span class="mandatory">*</span></label>
+									<label>Password</label>
 									<input class="text-input medium-input" id="password" name="password" type="password" style="width:95% !important" required> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
-								<p class="column-right" style="margin: 0 -10px 0 0;" >
-									<label>Re-Type Password <span class="mandatory">*</span></label>
+								<p class="column-right">
+									<label>Re-Type Password </label>
 									<input class="text-input medium-input" id="retype" name="retype" type="password"  style="width:95% !important" onBlur="checkPassword()" required><br><span class="input-notification error png_bg" id="pass_error"></span><span class="input-notification success png_bg" id="pass_success"></span>
 								</p>
 
@@ -198,7 +198,7 @@
 										<br><small>A small description of the field</small>-->
 								</p>
 								
-								<p class="column-right" style="margin: 0 -10px 0 0;" >
+								<p class="column-right">
 									<label>Mobile <span class="mandatory">*</span></label>
 									<input class="text-input medium-input" id="phone_m" name="phone_m" type="number"  style="width:95% !important" required placeholder='0123456789'> 
 								</p>

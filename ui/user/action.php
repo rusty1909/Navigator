@@ -83,7 +83,8 @@ switch($action) {
 			echo "<script>window.location.href = '../user/login.php'</script>";
 			break;
 		}		
-		$email = $_POST['email_id'];
+    
+		$email = stripslashes($_POST['email_id']);
         $id = User::getIdByEmail($email);
     
         if($id == -1){
@@ -91,23 +92,15 @@ switch($action) {
 			echo "<script>window.location.href = '../user/login.php'</script>";
         	break;
         }
-        	
-        $securityKey = Security::getSecurityKey($id);
-    
-        $passresetlink = "www.findgaddi.com/navigator/ui/user/resetPassword.php?id=$id&key=$securityKey";
-    
-        $messagereset =  '<br > Please click on the below link or if link does not work please copy paste the link in your browser.<br >';
-        $messagereset .= $passresetlink ;
-    
-    if(Mailer::SendResetPasswd($id, 'Please reset your passwword', $messagereset)){
-    
-        echo "<script>alert('We have sent a mail, Please click on the link in mail to reset your mail.  !!!');</script>";
-		echo "<script>window.location.href = '../user/login.php'</script>";
-    }else{
-           echo "<script>alert('There was some error, please try again...  !!!');</script>";
-           echo "<script>window.location.href = '../user/login.php'</script>";
-    
-    }
-		break;
+        
+        if(User::resetpasswordmail($email)){
+            echo "<script>alert('We have sent a mail, Please click on the link in mail to reset your mail.  !!!');</script>";
+            echo "<script>window.location.href = '../user/login.php'</script>";
+        }else{
+               echo "<script>alert('There was some error, please try again...  !!!');</script>";
+               echo "<script>window.location.href = '../user/login.php'</script>";
+
+        }
+
 }
 ?>
