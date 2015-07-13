@@ -73,7 +73,7 @@ class Notification {
 }
 
 
-Notification::addSearchNotification(23, 63, 73.5346, 28.4756, "atm");
+//Notification::addSearchNotification(23, 63, 73.5346, 28.4756, "atm");
 
 
 ?>
