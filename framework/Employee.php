@@ -73,11 +73,14 @@ class Employee {
         $sql = "INSERT INTO `employee`( `company` , `name`, `empID`, `address_1`, `address_2`, `landmark`, `city`, `state`, `pincode`, `phone`, `fax`, `email`, `website`, `admin_user`, `description`) VALUES ('$company', '$name', '$empID', '$address_1', '$address_2', '$landmark', '$city', '$state', '$pincode', '$phone', '', '$email', '', '$userId', '')";
 
         if (mysqli_query($conn, $sql)) {
-            $getCompany = "SELECT id FROM employee WHERE name='$name' AND empID='$empID' AND website='$website'";
+            $getCompany = "SELECT id FROM employee WHERE name='$name' AND empID='$empID'";
        
             $action = mysqli_query($conn, $getCompany);
             if (mysqli_num_rows($action) > 0) {
-                    return true;
+                    if(User::add($name, '', $email, 'findgaddi', $phone, $phone, $email))
+                        return true;
+                    else
+                        return false;
             } else {
                 return false;
             }
