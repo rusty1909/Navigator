@@ -2,6 +2,7 @@
 
 	require_once '../framework/Vehicle.php';
 	require_once '../framework/Job.php';
+	require_once '../framework/Notification.php';
 
 	//print_r($_POST);
     $criteria = trim($_GET['criteria']);
@@ -14,7 +15,14 @@
 	//echo "<br>".Vehicle::getIdByNumber($vehicle)."<br>";
 	
 	$mVehicle = new Vehicle(Vehicle::getIdByNumber($vehicle));
+	if($mVehicle->getCurrentCity() != $city){
+		$vehicleId = $mVehicle->getId();
+		$driver = $mVehicle->getDriver();
+		Notification::addLocationNotification($driver, $vehicleId, $lattitude, $longitude, $city);
+	}
+	
 	$mVehicle->setLocation($lattitude, $longitude, $address, $city);
+
 	
     //not supporting Job feature now!!!
 	//$mJob = new Job($mVehicle->getCurrentJob());

@@ -17,6 +17,7 @@ class Vehicle {
 	private $addedBy;
 	private $description;
 	private $address;
+	private $city;
 	private $LatLong;
 	private $driver;
 	
@@ -46,6 +47,7 @@ class Vehicle {
 				$this->dateAdded = $row['date_added'];
 				$this->address = $row['address'];
 				$this->driver = $row['driver'];
+				$this->city = $row['city'];
 				$this->LatLong["lat"] = $row['lattitude'];
 				$this->LatLong["long"] = $row['longitude'];
 			}
@@ -590,6 +592,10 @@ class Vehicle {
 	
 	function getDriver() {
 		return $this->driver;
+	}
+	
+	function getCurrentCity(){
+		return $this->city;
 	}
 }
 ?>

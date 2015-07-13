@@ -70,6 +70,33 @@ class Notification {
 			return false;
 		}
 	}
+	
+	public static function addLocationNotification($driver, $vehicle, $lattitude, $longitude, $city){
+		// opening db connection
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		
+		$today = date('Y-m-d');
+        
+		$fgDate = $db->getTimeNow();
+		
+		$type = "location";
+		$origin = "vehicle";
+		$category = 1; // notification_category : location
+		
+		//user details
+		$userId = $_SESSION['user']['id'];
+		$companyId = $_SESSION['user']['company'];
+		
+		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, city, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$city', '$fgDate')";
+		echo $sql;
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 
