@@ -34,8 +34,10 @@
     fwrite($file, $binary);
     fclose($file);
 	
-	$mVehicle->updateExpenses($driver, $latitude, $longitude, $address, $reason, $amount, $filename);
+	if($mVehicle->updateExpenses($driver, $latitude, $longitude, $address, $reason, $amount, $filename)) {	
+		$latestReceiptId = $mVehicle->getLatestReceipt();
+		Notification::addReceiptNotification($driver, $mVehicle->getId(), $latitude, $longitude, $latestReceiptId);
 
-    echo "image uploaded";
-	
+		echo "image uploaded";
+	}
 ?>

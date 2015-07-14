@@ -98,7 +98,7 @@ class Notification {
 		}
 	}
 	
-	public static function addReceiptNotification($driver, $vehicle, $lattitude, $longitude, $receipt_id){
+	public static function addReceiptNotification($driver, $vehicle, $latitude, $longitude, $receipt_id){
 				$db = new Connection();
 		$conn = $db->connect();
 		
