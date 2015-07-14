@@ -56,7 +56,7 @@ class Notification {
 		
 		$type = "search";
 		$origin = "driver";
-		$category = 3; // notification_category : search
+		$category = 1; // notification_category : search
 		
 		//user details
 		$userId = $_SESSION['user']['id'];
@@ -150,8 +150,8 @@ class Notification {
 		}
 	}
 	
-	public static function addBatteryPluggedNotification($driver, $vehicle, $latitude, $longitude){
-				$db = new Connection();
+	public static function addBatteryNotification($type, $driver, $vehicle, $latitude, $longitude){
+		$db = new Connection();
 		$conn = $db->connect();
 		
 		
@@ -159,9 +159,16 @@ class Notification {
         
 		$fgDate = $db->getTimeNow();
 		
-		$type = "power_battery_plugged";
+		//$type = "power_battery_plugged";
 		$origin = "vehicle";
-		$category = 10; // notification_category : power_battery_plugged
+		//$category = 10; // notification_category : power_battery_plugged
+		switch($type){
+			case "power_battery_plugged" : $category = 10; break;
+			case "power_shutdown" :
+			case "power_battery_unplugged" :
+			case "power_battery_plugged" : $category = 99; break;
+			default : $category = -1; break;
+		}
 		
 		//user details
 		$userId = $_SESSION['user']['id'];
@@ -175,64 +182,5 @@ class Notification {
 			return false;
 		}
 	}
-	
-	public static function addBatteryShutDownNotification($driver, $vehicle, $latitude, $longitude){
-				$db = new Connection();
-		$conn = $db->connect();
-		
-		
-		$today = date('Y-m-d');
-        
-		$fgDate = $db->getTimeNow();
-		
-		$type = "power_shutdown";
-		$origin = "vehicle";
-		$category = 99; // notification_category : power_shutdown
-		
-		//user details
-		$userId = $_SESSION['user']['id'];
-		$companyId = $_SESSION['user']['company'];
-		
-		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
-		echo $sql;
-		if (mysqli_query($conn, $sql)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public static function addBatteryUnPluggedNotification($driver, $vehicle, $latitude, $longitude){
-				$db = new Connection();
-		$conn = $db->connect();
-		
-		
-		$today = date('Y-m-d');
-        
-		$fgDate = $db->getTimeNow();
-		
-		$type = "power_battery_unplugged";
-		$origin = "vehicle";
-		$category = 99; // notification_category : power_battery_unplugged
-		
-		//user details
-		$userId = $_SESSION['user']['id'];
-		$companyId = $_SESSION['user']['company'];
-		
-		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
-		echo $sql;
-		if (mysqli_query($conn, $sql)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-
-}
-
-
-//Notification::addBatteryLowNotification(23, 63, 73.5346, 28.4756);
-
 
 ?>

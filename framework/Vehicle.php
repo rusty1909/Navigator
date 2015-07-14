@@ -424,6 +424,24 @@ class Vehicle {
 			return false;
 		}
 	}
+	
+	function getLatestReceipt() {
+		$db = new Connection();
+		$conn = $db->connect();
+        
+        $sql = $sql = "SELECT id FROM vehicle WHERE vehicle_id = '$this->id'";
+		
+		$action = mysqli_query($conn, $sql);
+        
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				$result = $row['id'];
+			}
+        } else{
+            return null;
+        }
+		return $result;
+	}
     
     function updateDuration($lattitude, $longitude){
         //print_r("update duration<br>");
