@@ -71,7 +71,7 @@ class Notification {
 		}
 	}
 	
-	public static function addLocationNotification($driver, $vehicle, $lattitude, $longitude, $city){
+	public static function addLocationNotification($driver, $vehicle, $latitude, $longitude, $city){
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
@@ -97,10 +97,142 @@ class Notification {
 			return false;
 		}
 	}
+	
+	public static function addReceiptNotification($driver, $vehicle, $lattitude, $longitude, $receipt_id){
+				$db = new Connection();
+		$conn = $db->connect();
+		
+		
+		$today = date('Y-m-d');
+        
+		$fgDate = $db->getTimeNow();
+		
+		$type = "expenses";
+		$origin = "driver";
+		$category = 10; // notification_category : expenses
+		
+		//user details
+		$userId = $_SESSION['user']['id'];
+		$companyId = $_SESSION['user']['company'];
+		
+		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, receipt, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$receipt_id', '$fgDate')";
+		echo $sql;
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static function addBatteryLowNotification($driver, $vehicle, $latitude, $longitude){
+				$db = new Connection();
+		$conn = $db->connect();
+		
+		
+		$today = date('Y-m-d');
+        
+		$fgDate = $db->getTimeNow();
+		
+		$type = "power_battery_low";
+		$origin = "vehicle";
+		$category = 99; // notification_category : power_battery_low
+		
+		//user details
+		$userId = $_SESSION['user']['id'];
+		$companyId = $_SESSION['user']['company'];
+		
+		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
+		echo $sql;
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static function addBatteryPluggedNotification($driver, $vehicle, $latitude, $longitude){
+				$db = new Connection();
+		$conn = $db->connect();
+		
+		
+		$today = date('Y-m-d');
+        
+		$fgDate = $db->getTimeNow();
+		
+		$type = "power_battery_plugged";
+		$origin = "vehicle";
+		$category = 10; // notification_category : power_battery_plugged
+		
+		//user details
+		$userId = $_SESSION['user']['id'];
+		$companyId = $_SESSION['user']['company'];
+		
+		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
+		echo $sql;
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static function addBatteryShutDownNotification($driver, $vehicle, $latitude, $longitude){
+				$db = new Connection();
+		$conn = $db->connect();
+		
+		
+		$today = date('Y-m-d');
+        
+		$fgDate = $db->getTimeNow();
+		
+		$type = "power_shutdown";
+		$origin = "vehicle";
+		$category = 99; // notification_category : power_shutdown
+		
+		//user details
+		$userId = $_SESSION['user']['id'];
+		$companyId = $_SESSION['user']['company'];
+		
+		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
+		echo $sql;
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static function addBatteryUnPluggedNotification($driver, $vehicle, $latitude, $longitude){
+				$db = new Connection();
+		$conn = $db->connect();
+		
+		
+		$today = date('Y-m-d');
+        
+		$fgDate = $db->getTimeNow();
+		
+		$type = "power_battery_unplugged";
+		$origin = "vehicle";
+		$category = 99; // notification_category : power_battery_unplugged
+		
+		//user details
+		$userId = $_SESSION['user']['id'];
+		$companyId = $_SESSION['user']['company'];
+		
+		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
+		echo $sql;
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+
 }
 
 
-//Notification::addSearchNotification(23, 63, 73.5346, 28.4756, "atm");
+//Notification::addBatteryLowNotification(23, 63, 73.5346, 28.4756);
 
 
 ?>
