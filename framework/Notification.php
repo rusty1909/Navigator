@@ -58,12 +58,12 @@ class Notification {
 		$origin = "driver";
 		$category = 1; // notification_category : search
 		
-		//user details
-		$userId = $_SESSION['user']['id'];
-		$companyId = $_SESSION['user']['company'];
+		
+		$mVehicle = new Vehicle($vehicle);
+		$companyId = $mVehicle->getCompany();
 		
 		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, search_item, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$searchItem', '$fgDate')";
-		echo $sql;
+		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
@@ -85,12 +85,11 @@ class Notification {
 		$origin = "vehicle";
 		$category = 1; // notification_category : location
 		
-		//user details
-		$userId = $_SESSION['user']['id'];
-		$companyId = $_SESSION['user']['company'];
+		$mVehicle = new Vehicle($vehicle);
+		$companyId = $mVehicle->getCompany();
 		
 		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, city, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$city', '$fgDate')";
-		echo $sql;
+		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
@@ -111,12 +110,11 @@ class Notification {
 		$origin = "driver";
 		$category = 10; // notification_category : expenses
 		
-		//user details
-		$userId = $_SESSION['user']['id'];
-		$companyId = $_SESSION['user']['company'];
+		$mVehicle = new Vehicle($vehicle);
+		$companyId = $mVehicle->getCompany();
 		
 		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, receipt, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$receipt_id', '$fgDate')";
-		echo $sql;
+		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
@@ -137,12 +135,11 @@ class Notification {
 		$origin = "vehicle";
 		$category = 99; // notification_category : power_battery_low
 		
-		//user details
-		$userId = $_SESSION['user']['id'];
-		$companyId = $_SESSION['user']['company'];
+		$mVehicle = new Vehicle($vehicle);
+		$companyId = $mVehicle->getCompany();
 		
 		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
-		echo $sql;
+		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
@@ -170,17 +167,16 @@ class Notification {
 			default : $category = -1; break;
 		}
 		
-		//user details
-		$userId = $_SESSION['user']['id'];
-		$companyId = $_SESSION['user']['company'];
+		$mVehicle = new Vehicle($vehicle);
+		$companyId = $mVehicle->getCompany();
 		
 		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
-		echo $sql;
+		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+}
 ?>
