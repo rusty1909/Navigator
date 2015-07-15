@@ -174,17 +174,17 @@ ini_set('display_errors', 1);
 							
 								<p class="column-left">
 									<label>CompanyName <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="name" name="name" type="text" style="width:45.5% !important" onBlur="checkForName(this.value)"> <span class="input-notification error png_bg" id="name_error"></span><span class="input-notification success png_bg" id="name_success"></span>  
+									<input class="text-input medium-input" id="name" name="name" type="text" style="width:45.5% !important" onBlur="checkForName(this.value)" required placeholder="XYZ Pvt Ltd"> <span class="input-notification error png_bg" id="name_error"></span><span class="input-notification success png_bg" id="name_success"></span>  
 								</p>
 							
 								<p class="column-right">
 									<label>TIN Number <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="tin_number" name="tin_number" type="text" style="width:45.5% !important" onBlur="checkForTIN(this.value)"> <span class="input-notification error png_bg" id="tin_error"></span><span class="input-notification success png_bg" id="tin_success"></span>  
+									<input class="text-input medium-input" id="tin_number" name="tin_number" type="text" style="width:45.5% !important" onBlur="checkForTIN(this.value)"  required> <span class="input-notification error png_bg" id="tin_error"></span><span class="input-notification success png_bg" id="tin_success"></span>  
 								</p>
 								
 								<p class="column-left">
 									<label>Address Line 1 <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="address_1" name="address_1" type="text" style="width:99.5% !important">
+									<input class="text-input medium-input" id="address_1"  required placeholder="Indira Bazar" name="address_1" type="text" style="width:99.5% !important">
 								</p>
 							
 								<p class="column-right">
@@ -194,29 +194,29 @@ ini_set('display_errors', 1);
 								
 								<p class="column-left">
 									<label>Landmark </label>
-									<input class="text-input medium-input" id="landmark" name="landmark" type="text" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="landmark" name="landmark" type="text"  placeholder="Sanganeri Gate" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
 								<p class="column-right">
 									<label>City <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="city" name="city" type="text"  style="width:45.5% !important"> 
+									<input class="text-input medium-input" id="city" name="city" type="text"   required placeholder="New Delhi" style="width:45.5% !important"> 
 								</p>
 				
 								<p class="column-left">
 									<label>State <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="state" name="state" type="text" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="state" name="state" type="text" style="width:45.5% !important"  required placeholder="Delhi"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
 								<p class="column-right">
 									<label>Pin Code <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="pincode" name="pincode" type="text"  style="width:45.5% !important"> 
+									<input class="text-input medium-input" id="pincode" name="pincode" type="number"  required placeholder="110091" style="width:45.5% !important"> 
 								</p>
 
 								<p class="column-left">
 									<label>Phone <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="phone" name="phone" type="text" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="phone" name="phone" type="number"  required placeholder="011 23456789" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
