@@ -50,6 +50,8 @@ if(!isset($_SESSION['user']))
 		<!-- jQuery Datepicker Plugin -->
 		<script type="text/javascript" src="../../res/jquery.htm"></script>
 		<script type="text/javascript" src="../../res/jquery.js"></script>
+		<script src="http://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&key=AIzaSyBcmYGGYTH1hGEEr31Odpiou8thwx55f_o&sensor=false&libraries=places,geometry,drawing"></script>
+		
 		<script>
 		function fetchLocation(){
 			var id = $('#vehicle').val();
@@ -73,7 +75,22 @@ if(!isset($_SESSION['user']))
 						}
 					}
 				});
-			document.getElementById("location_view").innerHTML = address;
+				
+			var geocoder = new google.maps.Geocoder();
+			var latlng = new google.maps.LatLng(latitude, longitude);
+			geocoder.geocode({'location': latlng}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					if (results[1]) {
+						var formatted_address = results[1].formatted_address;
+						document.getElementById("location_view").innerHTML = formatted_address;
+					} else {
+						console.log('No results found');
+					}
+				} else {
+					console.log('Geocoder failed due to: ' + status);
+				}
+			});
+			//document.getElementById("location_view").innerHTML = address;
 			document.getElementById("last_updated").innerHTML = last_updated;
 		}
 		
