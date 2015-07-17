@@ -6,6 +6,7 @@ if(!isset($_SESSION))
 	session_start();
 require_once 'Connection.php';
 require_once 'User.php';
+require_once 'Vehicle.php';
 
 class Notification {
 	private $id;
@@ -61,6 +62,7 @@ class Notification {
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
+		//echo "companyId = ".$companyId."                      ";
 		
 		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, search_item, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$searchItem', '$fgDate')";
 		//echo $sql;
