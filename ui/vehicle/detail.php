@@ -175,8 +175,22 @@ if(!isset($_SESSION['user']))
 				});
     }
 	
-	function updateAddressView(address){
-		document.getElementById("address_view").innerHTML = address;
+	function updateAddressView(){
+		var geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(latitude, longitude);
+		geocoder.geocode({'location': latlng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results[1]) {
+					var formatted_address = results[1].formatted_address;
+					document.getElementById("address_view").innerHTML = formatted_address;
+				} else {
+					console.log('No results found');
+				}
+			} else {
+				console.log('Geocoder failed due to: ' + status);
+			}
+		});
+		
 		document.getElementById("last_updated").innerHTML = last_updated;		
 	}
         
@@ -188,7 +202,7 @@ if(!isset($_SESSION['user']))
 		  locatePosition();
 		  isMoved=false;
 	  }*/
-	  updateAddressView(address);
+	  updateAddressView();
     }
 	
 	function locatePosition(){
