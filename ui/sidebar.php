@@ -110,7 +110,7 @@ if($mIsCompanyRegistered){
 						Download App
 					</a>
 					<ul style="display: none;">
-						<li><a href="https://play.google.com/store/apps/details?id=com.navigator.trackapp " target="_blank"> FindGaddi Android APP </a></li>
+						<li><a href="https://play.google.com/store/apps/details?id=com.findgaddi.tracker" target="_blank"> findGaddi Tracker App </a></li>
 					</ul>
 				</li>
 							
