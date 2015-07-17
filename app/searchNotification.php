@@ -9,5 +9,9 @@
 	$longitude = trim($_GET['longitude']);
 	$searchItem = trim($_GET['item']);
 	
-	Notification::addSearchNotification($driver, $vehicle, $latitude, $longitude, $searchItem);
+	if(Notification::addSearchNotification($driver, $vehicle, $latitude, $longitude, $searchItem)){
+		echo "success";
+	} else{
+		echo "fail";
+	}
 ?>
