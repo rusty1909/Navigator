@@ -124,31 +124,6 @@ class Notification {
 		}
 	}
 	
-	public static function addBatteryLowNotification($driver, $vehicle, $latitude, $longitude){
-				$db = new Connection();
-		$conn = $db->connect();
-		
-		
-		$today = date('Y-m-d');
-        
-		$fgDate = $db->getTimeNow();
-		
-		$type = "power_battery_low";
-		$origin = "vehicle";
-		$category = 99; // notification_category : power_battery_low
-		
-		$mVehicle = new Vehicle($vehicle);
-		$companyId = $mVehicle->getCompany();
-		
-		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
-		//echo $sql;
-		if (mysqli_query($conn, $sql)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	public static function addBatteryNotification($type, $driver, $vehicle, $latitude, $longitude){
 		$db = new Connection();
 		$conn = $db->connect();
@@ -165,7 +140,7 @@ class Notification {
 			case "power_battery_plugged" : $category = 10; break;
 			case "power_shutdown" :
 			case "power_battery_unplugged" :
-			case "power_battery_plugged" : $category = 99; break;
+			case "power_battery_low" : $category = 99; break;
 			default : $category = -1; break;
 		}
 		
