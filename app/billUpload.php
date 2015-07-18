@@ -8,7 +8,7 @@
 	$vehicleId = Vehicle::getIdByNumber($vehicle);
 	$mVehicle = new Vehicle($vehicleId);
 	
-    $driver = trim($_POST['driver']);
+    $driver = $mVehicle->getDriver();
 
     $latitude = trim($_POST['latitude']);
     $longitude = trim($_POST['longitude']);
