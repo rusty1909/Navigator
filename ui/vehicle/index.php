@@ -737,7 +737,7 @@ if(!isset($_SESSION['user']))
 					<h3 style="cursor: s-resize;">Notifications</h3>
 				</div> <!-- End .content-box-header -->
 				
-				<div style="display: block;" class="content-box-content">
+				<div style="display: block;padding:0px" class="content-box-content">
 					
 					<div style="display: block;" class="tab-content default-tab">
 					
@@ -745,7 +745,7 @@ if(!isset($_SESSION['user']))
 						<thead>
 						<tr></tr>
 						</thead>
-						<tbody>
+						<tbody style="border-bottom:0px">
 						<?php
 							echo "<tr></tr>";
 							echo "<tr><td>Total Vehicles</td><td>".sizeof($mAllVehicleList)."</td></tr>";
@@ -759,6 +759,7 @@ if(!isset($_SESSION['user']))
 				
 			</div>
 			<div class="clear"></div>
+
 			
 <?php include("../footer.php")?>
 			
