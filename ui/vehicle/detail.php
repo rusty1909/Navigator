@@ -144,7 +144,7 @@ if(!isset($_SESSION['user']))
 	var polylines = [];
 	var snappedPolyline;
 	
-	var API_KEY = "AIzaSyCz-2M1YhnS8ee4O9W1da15dXpSNIN7oqs";
+	var API_KEY = "AIzaSyCHqUJxbs3XYWSRTVeSiR6pUILkkzg5vew";
         
     function clearMap(){
 		if(marker != null)
