@@ -34,7 +34,7 @@ class Employee {
         // opening db connection
         $db = new Connection();
         $conn = $db->connect();
-        $sql ="SELECT * FROM Employee WHERE id='$id'";
+        $sql ="SELECT * FROM employee WHERE id='$id'";
         $action = mysqli_query($conn, $sql);
         if ($action!= null && mysqli_num_rows($action) > 0) {
             while($row = mysqli_fetch_assoc($action)) {

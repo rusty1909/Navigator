@@ -115,13 +115,12 @@ class Company {
             return null;
         
         
-		
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
-		$sql = "SELECT id FROM employee WHERE company = '$this->companyId''";
-		//echo "--->".$sql;
-		$action = mysqli_query($conn, $sql);
+		$sql = "SELECT id FROM employee WHERE company = '$company_id'";
+		
+        $action = mysqli_query($conn, $sql);
 
 		if (mysqli_num_rows($action) > 0) {
 		while($row = mysqli_fetch_assoc($action)) {

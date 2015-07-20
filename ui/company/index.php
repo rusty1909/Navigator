@@ -275,14 +275,14 @@ ini_set('display_errors', 1);
 											<a class="button" class='js-open-modal' href='#' data-modal-id='add-employee' >Add Driver</a>
 										</div>
 										
-										<div class="pagination">
+										<!--<div class="pagination">
 											<a href="#" title="First Page">« First</a><a href="#" title="Previous Page">« Previous</a>
 											<a href="#" class="number" title="1">1</a>
 											<a href="#" class="number" title="2">2</a>
 											<a href="#" class="number current" title="3">3</a>
 											<a href="#" class="number" title="4">4</a>
 											<a href="#" title="Next Page">Next »</a><a href="#" title="Last Page">Last »</a>
-										</div> <!-- End .pagination -->
+										</div> --><!-- End .pagination -->
 										<div class="clear"></div>
 									</td>
 								</tr>
@@ -292,6 +292,7 @@ ini_set('display_errors', 1);
 								<?php
 								$mEployeelist = Company::totalEmployeeArray();
 								for($i=0; $i<sizeof($mEployeelist); $i++) {
+                                    //echo $mEployeelist[$i];
 									$mEmployee = new Employee($mEployeelist[$i]);
 									echo "<tr>";
 									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getName()."</b></td>";
