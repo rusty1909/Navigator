@@ -36,7 +36,7 @@ class Employee {
         $conn = $db->connect();
         $sql ="SELECT * FROM Employee WHERE id='$id'";
         $action = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($action) > 0) {
+        if ($action!= null && mysqli_num_rows($action) > 0) {
             while($row = mysqli_fetch_assoc($action)) {
                 $this->id = $row['id'];
                 $this->name = $row['name'];
@@ -66,6 +66,7 @@ class Employee {
         //user details
         $userId = $_SESSION['user']['id'];
         $username = $_SESSION['user']['username'];
+        $company = $_SESSION['user']['company'];
         
         $website = "";
         $description = "";
@@ -77,7 +78,7 @@ class Employee {
        
             $action = mysqli_query($conn, $getCompany);
             if (mysqli_num_rows($action) > 0) {
-                    if(User::add($name, '', $email, 'findgaddi', $phone, $phone, $email))
+                    if(User::add($name, '', $email, 'findgaddi', $phone, $phone, $email, $company))
                         return true;
                     else
                         return false;
@@ -202,6 +203,10 @@ class Employee {
     
     function getAdmin(){
 		return $this->admin;
+	}
+    
+    function getId(){
+		return $this->id;
 	}
     
     function getPhone(){

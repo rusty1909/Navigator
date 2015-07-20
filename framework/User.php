@@ -75,11 +75,11 @@ class User {
 		return $mUser;
 	}
 
-	public static function add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email){
+	public static function add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email, $company=-1){
 		$db = new Connection();
 		$conn = $db->connect();
 		//add user
-		$user = "INSERT INTO user (firstname, lastname, username, password, phone_m, phone_o, email) VALUES ('$firstname', '$lastname', '$username', '$password', '$phone_m', '$phone_o', '$email')";
+		$user = "INSERT INTO user (firstname, lastname, username, password, phone_m, phone_o, email, company_id) VALUES ('$firstname', '$lastname', '$username', '$password', '$phone_m', '$phone_o', '$email', '$company')";
 		//echo $user."<br>";
 		//echo "1<br>";
 		if (mysqli_query($conn, $user)) {

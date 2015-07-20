@@ -45,6 +45,11 @@ ini_set('display_errors', 1);
 		<script type="text/javascript" src="../../res/jquery.htm"></script>
 		<script type="text/javascript" src="../../res/jquery.js"></script>
 
+    	  <!--  //modal box jquery -->
+		<link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    
 		<script>
 		$(document).ready(function(){
 			$('#name').blur(checkCompanyname); //use keyup,blur, or change
@@ -125,6 +130,55 @@ ini_set('display_errors', 1);
 			$("#edit").show();
 		});
 		</script>
+    
+    <script>
+		$(document).ready(function () {
+			console.log("clicked");
+			$('#dialog_link').click(function () {
+				$('#dialog').dialog('open');
+				return false;
+			});
+			
+			//$("#edit-form").load("edit.php");
+		});
+
+		$(function(){
+		console.log("started");
+		var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+		  $('a[data-modal-id]').click(function(e) {
+			e.preventDefault();
+			$("body").append(appendthis);
+			$(".modal-overlay").fadeTo(500, 0.7);
+			//$(".js-modalbox").fadeIn(500);
+			var modalBox = $(this).attr('data-modal-id');
+			if(modalBox == "detail-popup"){
+				//alert("sdvdskvds");
+				//$('#'+modalBox).load("edit.php");
+			}
+			$('#'+modalBox).fadeIn($(this).data());
+		  });  
+		  
+
+		$(".js-modal-close, .modal-overlay").click(function() {
+		  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+			$(".modal-overlay").remove();
+		  });
+		});
+
+		$(window).resize(function() {
+		  $(".modal-box").css({
+			top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
+			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+		  });
+		});
+		 
+		$(window).resize();
+		 
+		});
+	</script>
+    
+    
 </head>
   
 	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
@@ -187,10 +241,106 @@ ini_set('display_errors', 1);
 						</div>
 						
 					</div>
-					
-					<div style="display: block;" class="tab-content" id="staff">			
-                        Existing Employee Count : <?php echo  Company::totalEmployee();?>
-						<form action="action.php?action=registerEmployee" method="POST" onSubmit="return validate()">
+					                    
+                   <div style="display: block;" class="tab-content" id="staff">	
+						 Existing Employee Count : <?php echo  Company::totalEmployee();?>
+                       
+						<?php
+						$mEployeelist = Company::totalEmployee();
+						if(sizeof($mEployeelist) == 0) {
+						?>
+						<div class="notification attention png_bg">
+							<div>
+								You don't have any employee in this category.
+							</div>
+						</div>
+						<?php } else {?>
+						
+						<table>
+							
+							<thead>
+								<tr>
+								   <th>Employee Name</th>
+								   <th>Employee Phone</th>
+								   <th>Address</th>
+								   <th>Action</th>
+								</tr>
+								
+							</thead>
+						 
+							<tfoot>
+								<tr>
+									<td colspan="6">
+										<div class="bulk-actions align-left">
+											<a class="button" class='js-open-modal' href='#' data-modal-id='add-employee' >Add Driver</a>
+										</div>
+										
+										<div class="pagination">
+											<a href="#" title="First Page">« First</a><a href="#" title="Previous Page">« Previous</a>
+											<a href="#" class="number" title="1">1</a>
+											<a href="#" class="number" title="2">2</a>
+											<a href="#" class="number current" title="3">3</a>
+											<a href="#" class="number" title="4">4</a>
+											<a href="#" title="Next Page">Next »</a><a href="#" title="Last Page">Last »</a>
+										</div> <!-- End .pagination -->
+										<div class="clear"></div>
+									</td>
+								</tr>
+							</tfoot>
+						 
+							<tbody>
+								<?php
+								$mEployeelist = Company::totalEmployeeArray();
+								for($i=0; $i<sizeof($mEployeelist); $i++) {
+									$mEmployee = new Employee($mEployeelist[$i]);
+									echo "<tr>";
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getName()."</b></td>";
+									echo "<td>".$mEmployee->getPhone()."</td>";
+									echo "<td>".$mEmployee->getAddress()."</td>";
+									echo "									<td>
+										<!-- Icons -->
+										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
+										 <a href='#' title='Delete' onClick='onDelete(".$mEmployee->getId().")'><img src='../../res/cross.png' alt='Delete'></a>&nbsp;&nbsp;
+										 <a href='#' title='Edit Meta'><img src='../../res/hammer_screwdriver.png' alt='Edit Meta'></a>
+									</td>";
+									echo "</tr>";	
+								}
+								?>
+							</tbody>
+							
+						</table>
+						<?php } ?>
+					</div> <!-- End #prev -->
+                
+                
+                    
+                    <div style="display: block;" class="tab-content" id="payment">					
+						<p>
+                        
+                        Make Payments and keep using the findgaddi services.
+                        </p>
+					</div> <!-- End #tab3 -->					
+                    
+                    <div style="display: block;" class="tab-content" id="setting">					
+						<p>
+                            Change Settings for notifications and alerts.
+                        </p>
+					</div> <!-- End #tab3 -->					
+                    
+				</div> <!-- End .content-box-content -->				
+			</div> <!-- End .content-box -->
+
+			<div class="clear"></div>
+            
+            <!-- //////////////// POP UP Box for adding employee-->
+    <div id="add-employee" class="modal-box" style="width:50%;">  
+		<header>
+			<h3>Add Driver</h3>
+		</header>
+		<div class="modal-body" id="item-list">
+						
+            
+            <form action="action.php?action=registerEmployee" method="POST" onSubmit="return validate()">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 							
@@ -248,34 +398,19 @@ ini_set('display_errors', 1);
 										<br><small>A small description of the field</small>-->
 								</p>
 								
-								<p>
-									<input class="button" value="   Register Employee   " type="submit">
-								</p>
-								
-							</fieldset>
-							
-							<div class="clear"></div><!-- End .clear -->
-							
-						</form>
-					</div> <!-- End #tab3 -->					
-                    
-                    <div style="display: block;" class="tab-content" id="payment">					
-						<p>
-                        
-                        Make Payments and keep using the findgaddi services.
-                        </p>
-					</div> <!-- End #tab3 -->					
-                    
-                    <div style="display: block;" class="tab-content" id="setting">					
-						<p>
-                            Change Settings for notifications and alerts.
-                        </p>
-					</div> <!-- End #tab3 -->					
-                    
-				</div> <!-- End .content-box-content -->				
-			</div> <!-- End .content-box -->
+													
+						
+<!----------------------------------------------------------------------------------------------------------------------------->
 
-			<div class="clear"></div>
+	  <footer>
+		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
+	  </footer>
+                            </fieldset>
+	  </form>
+
+		</div>
+	</div>
 			
 			<!-- End Notifications -->
 			

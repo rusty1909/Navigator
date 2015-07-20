@@ -35,7 +35,7 @@ switch($action) {
 			$username = $_SESSION['user']['username'];
 			$password = $_SESSION['user']['password'];
 			$mUser->login($username, $password);
-			echo "<script>alert('Employee added successfully!!!');</script>";
+			echo "<script>alert('Company added successfully!!!');</script>";
 			echo "<script>window.location.href = '../user/login.php'</script>";
 			//header('Location:../user/login.php');
 		} else {
@@ -64,7 +64,7 @@ switch($action) {
 			$username = $_SESSION['user']['username'];
 			$password = $_SESSION['user']['password'];
 			$mUser->login($username, $password);
-			echo "<script>alert('Company registered successfully!!!');</script>";
+			echo "<script>alert('Employee added successfully!!!');</script>";
 			echo "<script>window.location.href = '../user/login.php'</script>";
 			//header('Location:../user/login.php');
 		} else {
