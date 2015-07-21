@@ -1,7 +1,7 @@
 <?php
 
 	require_once '../framework/Vehicle.php';
-	require_once '../framework/Job.php';
+	require_once '../framework/Notification.php';
 
 	//print_r($_POST);
     $vehicle = trim($_POST['vehicle']);
@@ -12,7 +12,7 @@
 
     $latitude = trim($_POST['latitude']);
     $longitude = trim($_POST['longitude']);
-    $address = trim($_POST['address']);
+    $address = "";
     $reason = trim($_POST['reason']);
     $amount = trim($_POST['amount']);
 
@@ -28,8 +28,8 @@
 		mkdir($folderpath, 0777, true);
 	}
 	
-    $filepath = $folderpath."/".$filename.".jpg";
-    echo $filepath;
+    $filepath = $folderpath."/".$filename.".png";
+    //echo $filepath;
     $file = fopen($filepath, 'wb');
     fwrite($file, $binary);
     fclose($file);
@@ -38,6 +38,8 @@
 		$latestReceiptId = $mVehicle->getLatestReceipt();
 		Notification::addReceiptNotification($driver, $mVehicle->getId(), $latitude, $longitude, $latestReceiptId);
 
-		echo "image uploaded";
+		echo "success";
+	} else{
+		echo "fail";
 	}
 ?>

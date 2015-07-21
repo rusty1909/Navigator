@@ -429,7 +429,7 @@ class Vehicle {
 		$db = new Connection();
 		$conn = $db->connect();
         
-        $sql = $sql = "SELECT id FROM vehicle WHERE vehicle_id = '$this->id'";
+        $sql = $sql = "SELECT id FROM vehicle WHERE id = '$this->id'";
 		
 		$action = mysqli_query($conn, $sql);
         
