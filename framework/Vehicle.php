@@ -429,7 +429,7 @@ class Vehicle {
 		$db = new Connection();
 		$conn = $db->connect();
         
-        $sql = $sql = "SELECT id FROM expenses WHERE vehicle_id = '$this->id'";
+        $sql = $sql = "SELECT id FROM expenses WHERE vehicle_id = '$this->id' ORDER BY id ASC";
 		
 		$action = mysqli_query($conn, $sql);
         
