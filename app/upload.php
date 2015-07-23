@@ -15,7 +15,7 @@
 	//echo "<br>".Vehicle::getIdByNumber($vehicle)."<br>";
 	
 	$mVehicle = new Vehicle(Vehicle::getIdByNumber($vehicle));
-	if($mVehicle->getCurrentCity() != $city){
+	if($city != "" && $mVehicle->getCurrentCity() != $city){
 		$vehicleId = $mVehicle->getId();
 		$driver = $mVehicle->getDriver();
 		Notification::addLocationNotification($driver, $vehicleId, $lattitude, $longitude, $city);
