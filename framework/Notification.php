@@ -10,7 +10,7 @@ require_once 'Vehicle.php';
 
 class Notification {
 	private $id;
-	private $category;
+	private $priority;
 	private $type;
 	private $vehicle;
 	private $driver;
@@ -31,7 +31,7 @@ class Notification {
 		if (mysqli_num_rows($action) > 0) {
 			while($row = mysqli_fetch_assoc($action)) {
 				$this->id = $row['id'];
-				$this->category = $row['category'];				
+				$this->priority = $row['priority'];				
 				$this->type = $row['type'];
 				$this->origin = $row['origin'];
 				$this->driver = $row['driver'];
@@ -57,14 +57,14 @@ class Notification {
 		
 		$type = "search";
 		$origin = "driver";
-		$category = 1; // notification_category : search
+		$priority = Notification::getPriority($type); // notification_category : search
 		
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
 		//echo "companyId = ".$companyId."                      ";
 		
-		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, search_item, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$searchItem', '$fgDate')";
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, search_item, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$searchItem', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -85,12 +85,12 @@ class Notification {
 		
 		$type = "location";
 		$origin = "vehicle";
-		$category = 1; // notification_category : location
+		$priority = Notification::getPriority($type); // notification_category : location
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
 		
-		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, city, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$city', '$fgDate')";
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, city, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$city', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -110,12 +110,12 @@ class Notification {
 		
 		$type = "expenses";
 		$origin = "driver";
-		$category = 10; // notification_category : expenses
+		$priority = Notification::getPriority($type); // notification_category : expenses
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
 		
-		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, receipt, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$receipt_id', '$fgDate')";
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, receipt, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$receipt_id', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -135,25 +135,34 @@ class Notification {
 		
 		//$type = "power_battery_plugged";
 		$origin = "vehicle";
-		//$category = 10; // notification_category : power_battery_plugged
-		switch($type){
-			case "power_battery_plugged" : $category = 10; break;
-			case "power_shutdown" :
-			case "power_battery_unplugged" :
-			case "power_battery_low" : $category = 99; break;
-			default : $category = -1; break;
-		}
+		$priority = Notification::getPriority($type);
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
 		
-		$sql = "INSERT INTO `notification` (category, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$category', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public static function getPriority($type){
+		$db = new Connection();
+		$conn = $db->connect();
+		$priority = -1;
+		$sql = "SELECT priority FROM notification_category WHERE name = '$type'";
+		$action = mysqli_query($conn, $sql);
+		
+		if (mysqli_num_rows($action) > 0) {
+			// output data of each row
+			if($row = mysqli_fetch_assoc($action)) {
+				$priority = $row['priority'];
+			}
+		}
+		return $priority;
 	}
 }
 ?>
