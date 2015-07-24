@@ -65,6 +65,36 @@ if(!isset($_SESSION['user']))
     
 	
     <script type="text/javascript">
+	
+	function fetchNotification(){
+		//alert(id+" "+driver_id);
+		var data = "";
+        jQuery.ajax({
+            type: 'POST',
+            url: 'notification.php',
+            cache: false,
+            success: function(response){
+				if(response == 0){
+				}
+				else {					
+					var notiList = JSON.parse(response);
+					for(var i=0; i<15;i++){
+						data += "<tr style='background: #fff;border-bottom: 1px solid #ddd;'><td style='padding:7px;line-height:1em;'>"+notiList[i].string+"</td></tr>";
+						//console.log(i+" "+data);
+					}
+					//alert(data);
+					document.getElementById("noti_body").innerHTML = data;
+					//$("#noti_table").find("tbody").find('#main-content table').;
+					data="";
+				}
+            }
+        });
+       
+        
+	}
+	
+	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
+	
 	function onDelete(id){
 		if(confirm("You really want to delete this vehicle?"))
 			window.location.href = "action.php?action=delete&id="+id;
@@ -741,17 +771,12 @@ if(!isset($_SESSION['user']))
 					
 					<div style="display: block;" class="tab-content default-tab">
 					
-						<table>
+						<table id="noti_table">
 						<thead>
 						<tr></tr>
 						</thead>
-						<tbody style="border-bottom:0px">
-						<?php
-							echo "<tr></tr>";
-							echo "<tr><td>Total Vehicles</td><td>".sizeof($mAllVehicleList)."</td></tr>";
-							echo "<tr><td>Already Deployed</td><td>".sizeof($mDeployedVehicleList)."</td></tr>";
-							echo "<tr><td>Waiting Deployement</td><td>".sizeof($mWaitingVehicleList)."</td></tr>";
-						?>
+						<tbody style="border-bottom:0px" id="noti_body">
+						<tr><td><b>Loading Notifications</b></td></tr>
 						</tbody>
 						</table>
 					</div> <!-- End #tab3 -->  

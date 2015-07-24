@@ -60,14 +60,14 @@ class Notification {
 				$vehicleId = $this->vehicle;
 				$mVehicle = new Vehicle($vehicleId);
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\">".$mDriver->getName()."</a> searched for <b>".$item."</b> from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> searched for <b>".$item."</b> from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
 				break;
 				
 			case "location" : $vehicleId = $this->vehicle;
 				$mVehicle = new Vehicle($vehicleId);
 				$city = $this->city;
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a> reached <b>".$city."</b>";
+				$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> reached <b>".$city."</b>";
 				break;
 			
 			case "expenses" : $vehicleId = $this->vehicle;
@@ -75,7 +75,7 @@ class Notification {
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\">".$mDriver->getName()."</a> uploaded bill from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> uploaded bill from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
 				break;
 			
 			case "power_battery_low" : $vehicleId = $this->vehicle;
@@ -83,7 +83,7 @@ class Notification {
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
 				
-				$resArray['string'] = "<b>Low Battery</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				$resArray['string'] = "<b>Low Battery</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
 				break;
 				
 			case "power_shutdown" : $vehicleId = $this->vehicle;
@@ -91,7 +91,7 @@ class Notification {
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
 				
-				$resArray['string'] = "<b>Device shutdown</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				$resArray['string'] = "<b>Device shutdown</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
 				break;
 			
 			case "power_battery_unplugged" : $vehicleId = $this->vehicle;
@@ -99,7 +99,7 @@ class Notification {
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
 				
-				$resArray['string'] = "<b>Power Unplugged</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				$resArray['string'] = "<b>Power Unplugged</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
 				break;
 			
 			case "power_battery_plugged" : $vehicleId = $this->vehicle;
@@ -107,7 +107,7 @@ class Notification {
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
 				
-				$resArray['string'] = "Power is back on <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				$resArray['string'] = "Power is back on <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
 				break;
 				
 			default : $resArray['string'] = "";
