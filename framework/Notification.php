@@ -7,6 +7,7 @@ if(!isset($_SESSION))
 require_once 'Connection.php';
 require_once 'User.php';
 require_once 'Vehicle.php';
+require_once 'Driver.php';
 
 class Notification {
 	private $id;
@@ -17,8 +18,10 @@ class Notification {
 	private $origin;
 	private $latitude;
 	private $longitude;
-	private $companyId;
+	private $company;
+	private $admin;
 	private $searchItem;
+	private $city;
 	private $dateAdded;
 	
 	function __construct($id) {
@@ -26,7 +29,7 @@ class Notification {
 		$db = new Connection();
 		$conn = $db->connect();
 
-		$sql = "SELECT * FROM job WHERE id='$id'";
+		$sql = "SELECT * FROM notification WHERE id='$id'";
 		$action = mysqli_query($conn, $sql);
 		if (mysqli_num_rows($action) > 0) {
 			while($row = mysqli_fetch_assoc($action)) {
@@ -39,10 +42,85 @@ class Notification {
 				$this->latitude = $row['latitude'];
 				$this->longitude = $row['longitude'];
 				$this->company = $row['company'];
+				$this->admin = $row['admin'];
 				$this->searchItem = $row['search_item'];
+				$this->city = $row['city'];
 				$this->dateAdded = $row['date_added'];
 			}
 		}
+	}
+	
+	function getResource(){
+		$resArray = array();
+		$resArray['id'] = $this->id;
+		switch($this->type){
+			case "search" : $driverId = $this->driver;
+				$mDriver = new Driver($driverId);
+				$item = $this->searchItem;
+				$vehicleId = $this->vehicle;
+				$mVehicle = new Vehicle($vehicleId);
+				
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\">".$mDriver->getName()."</a> searched for <b>".$item."</b> from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				break;
+				
+			case "location" : $vehicleId = $this->vehicle;
+				$mVehicle = new Vehicle($vehicleId);
+				$city = $this->city;
+				
+				$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a> reached <b>".$city."</b>";
+				break;
+			
+			case "expenses" : $vehicleId = $this->vehicle;
+				$mVehicle = new Vehicle($vehicleId);
+				$driverId = $this->driver;
+				$mDriver = new Driver($driverId);
+				
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\">".$mDriver->getName()."</a> uploaded bill from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				break;
+			
+			case "power_battery_low" : $vehicleId = $this->vehicle;
+				$mVehicle = new Vehicle($vehicleId);
+				$driverId = $this->driver;
+				$mDriver = new Driver($driverId);
+				
+				$resArray['string'] = "<b>Low Battery</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				break;
+				
+			case "power_shutdown" : $vehicleId = $this->vehicle;
+				$mVehicle = new Vehicle($vehicleId);
+				$driverId = $this->driver;
+				$mDriver = new Driver($driverId);
+				
+				$resArray['string'] = "<b>Device shutdown</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				break;
+			
+			case "power_battery_unplugged" : $vehicleId = $this->vehicle;
+				$mVehicle = new Vehicle($vehicleId);
+				$driverId = $this->driver;
+				$mDriver = new Driver($driverId);
+				
+				$resArray['string'] = "<b>Power Unplugged</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				break;
+			
+			case "power_battery_plugged" : $vehicleId = $this->vehicle;
+				$mVehicle = new Vehicle($vehicleId);
+				$driverId = $this->driver;
+				$mDriver = new Driver($driverId);
+				
+				$resArray['string'] = "Power is back on <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\">".$mVehicle->getVehicleNumber()."</a>";
+				break;
+				
+			default : $resArray['string'] = "";
+				break;
+		}
+		//echo $resArray['string']."<br>";
+		$date = $this->dateAdded;
+		$resArray['time'] = date("d-m-Y H:i:s", strtotime($date));
+		$resArray['lat'] = $this->latitude;
+		$resArray['long'] = $this->longitude;
+		$resArray['priority'] = $this->priority;
+		
+		return $resArray;
 	}
 	
 	public static function addSearchNotification($driver, $vehicle, $latitude, $longitude, $searchItem) {
@@ -62,9 +140,10 @@ class Notification {
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
+		$adminId = $mVehicle->getAddedBy();
 		//echo "companyId = ".$companyId."                      ";
 		
-		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, search_item, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$searchItem', '$fgDate')";
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, admin, search_item, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$adminId', '$searchItem', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -89,8 +168,8 @@ class Notification {
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
-		
-		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, city, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$city', '$fgDate')";
+		$adminId = $mVehicle->getAddedBy();
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, admin, city, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$adminId', '$city', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -114,8 +193,8 @@ class Notification {
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
-		
-		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, receipt, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$receipt_id', '$fgDate')";
+		$adminId = $mVehicle->getAddedBy();
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, admin, receipt, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$adminId', '$receipt_id', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -139,8 +218,8 @@ class Notification {
 		
 		$mVehicle = new Vehicle($vehicle);
 		$companyId = $mVehicle->getCompany();
-		
-		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$fgDate')";
+		$adminId = $mVehicle->getAddedBy();
+		$sql = "INSERT INTO `notification` (priority, type, origin, driver, vehicle, latitude, longitude, company, admin, date_added) VALUES ('$priority', '$type', '$origin', '$driver', '$vehicle', '$latitude', '$longitude', '$companyId', '$adminId', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;

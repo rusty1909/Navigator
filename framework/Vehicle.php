@@ -3,6 +3,7 @@
 
 
 require_once 'Connection.php';
+require_once 'User.php';
 
 class Vehicle {
 	private $id;
@@ -473,6 +474,32 @@ class Vehicle {
 			return false;
 		}
     }
+	
+	public static function getAllNotifications(){
+		$db = new Connection();
+		$conn = $db->connect();
+        
+		$mUser = User::getCurrentUser();
+		$companyId = $mUser->getCompany();
+		$userId = $mUser->getId();
+		
+        $result = array();
+        if($companyId > 0)
+			$sql = "SELECT id FROM notification WHERE company = '$companyId' ORDER BY date_added DESC ";
+		else
+			$sql = "SELECT id FROM notification WHERE admin = '$userId' ORDER BY date_added DESC ";
+        //print_r($sql);
+		$action = mysqli_query($conn, $sql);
+		
+		if (mysqli_num_rows($action) > 0) {
+			// output data of each row
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}
+		
+		return $result;
+	}
     
     function getTotalExpense($month){
     }
@@ -614,6 +641,10 @@ class Vehicle {
 	
 	function getCurrentCity(){
 		return $this->city;
+	}
+	
+	function getAddedBy(){
+		return $this->addedBy;
 	}
 }
 ?>
