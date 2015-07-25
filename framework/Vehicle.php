@@ -417,7 +417,10 @@ class Vehicle {
 		$db = new Connection();
 		$conn = $db->connect();
         
-        $sql = "INSERT INTO expenses (vehicle_id, driver_id, lattitude, longitude, address, reason, amount, filename) VALUES ('$this->id', '$driver', '$latitude', '$longitude', '$address', '$reason', '$amount', '$filename')";
+		$companyId = Vehicle::getCompany();
+		$adminId = Vehicle::getAddedBy();
+		
+        $sql = "INSERT INTO expenses (vehicle_id, driver_id, lattitude, longitude, address, reason, amount, filename, company, admin) VALUES ('$this->id', '$driver', '$latitude', '$longitude', '$address', '$reason', '$amount', '$filename', '$companyId', '$adminId')";
 		
 		if (mysqli_query($conn, $sql)) {
 			return true;

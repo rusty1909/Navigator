@@ -8,6 +8,7 @@ require_once 'Connection.php';
 require_once 'User.php';
 require_once 'Vehicle.php';
 require_once 'Driver.php';
+require_once 'Expense.php';
 
 class Notification {
 	private $id;
@@ -23,6 +24,7 @@ class Notification {
 	private $searchItem;
 	private $city;
 	private $dateAdded;
+	private $receipt;
 	
 	function __construct($id) {
 		// opening db connection
@@ -45,6 +47,7 @@ class Notification {
 				$this->admin = $row['admin'];
 				$this->searchItem = $row['search_item'];
 				$this->city = $row['city'];
+				$this->receipt = $row['receipt'];
 				$this->dateAdded = $row['date_added'];
 			}
 		}
@@ -74,8 +77,12 @@ class Notification {
 				$mVehicle = new Vehicle($vehicleId);
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
+				$receiptId = $this->receipt;
+				$mExpense = new Expense($receiptId);
+				$expenseAmount = $mExpense->getAmount();
+				$expenseReason = $mExpense->getReason();
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> uploaded bill from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> uploaded bill of <b>Rs.".$expenseAmount."</b> for <b>".$expenseReason."</b> from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
 				break;
 			
 			case "power_battery_low" : $vehicleId = $this->vehicle;
@@ -119,6 +126,7 @@ class Notification {
 		$resArray['lat'] = $this->latitude;
 		$resArray['long'] = $this->longitude;
 		$resArray['priority'] = $this->priority;
+		$resArray['type'] = $this->type;
 		
 		return $resArray;
 	}
