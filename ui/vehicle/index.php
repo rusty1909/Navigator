@@ -79,7 +79,7 @@ if(!isset($_SESSION['user']))
 				else {					
 					var notiList = JSON.parse(response);
 					for(var i=0; i<15;i++){
-						data += "<tr style='background: #fff;border-bottom: 1px solid #ddd;'><td style='padding:7px;line-height:1em;'>"+notiList[i].string+"</td></tr>";
+						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td style='padding:10px;line-height:1em;'>"+notiList[i].string+"</td></tr>";
 						//console.log(i+" "+data);
 					}
 					//alert(data);
@@ -173,11 +173,11 @@ if(!isset($_SESSION['user']))
 		
 	</head>
   
-	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+	<body onload='fetchNotification()'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		
 	<?php include('../sidebar.php');?>
 		
-		<div id="main-content"> <!-- Main Content Section with everything -->
+		<div id="main-content" style="height:88%"> <!-- Main Content Section with everything -->
 			
 			<noscript> <!-- Show a notification if the user has disabled javascript -->
 				<div class="notification error png_bg">
@@ -769,7 +769,7 @@ if(!isset($_SESSION['user']))
 				
 				<div style="display: block;padding:0px" class="content-box-content">
 					
-					<div style="display: block;" class="tab-content default-tab">
+					<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
 					
 						<table id="noti_table">
 						<thead>
