@@ -78,7 +78,7 @@ if(!isset($_SESSION['user']))
 				}
 				else {					
 					var notiList = JSON.parse(response);
-					for(var i=0; i<15 && i<notiList.length; i++){
+					for(var i=0; i<50 && i<notiList.length; i++){
 						var image = "alert_ok";
 						switch(notiList[i].type){
 							case "expenses" : image = "alert_upload"; break;
@@ -772,12 +772,12 @@ if(!isset($_SESSION['user']))
 	
 			</div> <!-- End .content-box -->
 			
-			<div class="content-box column-right" style="width:35%">
+			<div class="content-box column-right" style="width:35%;height:100%;">
 				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
 					<h3 style="cursor: s-resize;">Notifications</h3>
 				</div> <!-- End .content-box-header -->
 				
-				<div style="display: block;padding:0px" class="content-box-content">
+				<div style="display: block;padding:0px;height:93%;overflow-y:auto" class="content-box-content">
 					
 					<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
 					

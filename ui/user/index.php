@@ -25,39 +25,80 @@ if(!isset($_SESSION['user']))
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 		
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-		
-		<title>FindGaddi</title>
-		
-		<!--                       CSS                       -->
-	  
-		<!-- Reset Stylesheet -->
-		<link rel="stylesheet" href="../../res/reset.css" type="text/css" media="screen">
-	  
-		<!-- Main Stylesheet -->
-		<link rel="stylesheet" href="../../res/style.css" type="text/css" media="screen">
-		
-		<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
-		<link rel="stylesheet" href="../../res/invalid.css" type="text/css" media="screen">	
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	
+	<title>FindGaddi</title>
+	
+	<!--                       CSS                       -->
   
-		<!-- jQuery -->
-		<script type="text/javascript" src="../../res/jquery-1.js"></script>
+	<!-- Reset Stylesheet -->
+	<link rel="stylesheet" href="../../res/reset.css" type="text/css" media="screen">
+  
+	<!-- Main Stylesheet -->
+	<link rel="stylesheet" href="../../res/style.css" type="text/css" media="screen">
+	
+	<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+	<link rel="stylesheet" href="../../res/invalid.css" type="text/css" media="screen">	
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="../../res/jquery-1.js"></script>
+	
+	<!-- jQuery Configuration -->
+	<script type="text/javascript" src="../../res/simpla.js"></script>
+	
+	<!-- Facebox jQuery Plugin -->
+	<script type="text/javascript" src="../../res/facebox.js"></script>
+	
+	<!-- jQuery WYSIWYG Plugin -->
+	<script type="text/javascript" src="../../res/jquery_002.js"></script>
+	
+	<!-- jQuery Datepicker Plugin -->
+	<script type="text/javascript" src="../../res/jquery.htm"></script>
+	<script type="text/javascript" src="../../res/jquery.js"></script>
 		
-		<!-- jQuery Configuration -->
-		<script type="text/javascript" src="../../res/simpla.js"></script>
-		
-		<!-- Facebox jQuery Plugin -->
-		<script type="text/javascript" src="../../res/facebox.js"></script>
-		
-		<!-- jQuery WYSIWYG Plugin -->
-		<script type="text/javascript" src="../../res/jquery_002.js"></script>
-		
-		<!-- jQuery Datepicker Plugin -->
-		<script type="text/javascript" src="../../res/jquery.htm"></script>
-		<script type="text/javascript" src="../../res/jquery.js"></script>
+	<script>
+	function fetchNotification(){
+		//alert(id+" "+driver_id);
+		var data = "";
+        jQuery.ajax({
+            type: 'POST',
+            url: 'notification.php',
+            cache: false,
+            success: function(response){
+				if(response == 0){
+				}
+				else {					
+					var notiList = JSON.parse(response);
+					for(var i=0; i<50 && i<notiList.length; i++){
+						var image = "alert_ok";
+						switch(notiList[i].type){
+							case "expenses" : image = "alert_upload"; break;
+							case "power_battery_plugged" : image = "alert_ok"; break;
+							case "location" : image = "alert_location"; break;
+							case "power_battery_low" :
+							case "power_shutdown" :
+							case "power_battery_unplugged" : image = "alert_high"; break;
+							default : image = "alert_ok"; break;
+						}
+						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
+						console.log(image);
+					}
+					//alert(data);
+					document.getElementById("noti_body").innerHTML = data;
+					//$("#noti_table").find("tbody").find('#main-content table').;
+					data="";
+				}
+            }
+        });
+       
+        
+	}
+	
+	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
+	</script>
 </head>
   
-	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+	<body onload='fetchNotification()'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		
 	<?php include('../sidebar.php');?>
 		
@@ -72,10 +113,10 @@ if(!isset($_SESSION['user']))
 			</noscript>
 			
 			<div class="clear"></div> <!-- End .clear -->
-			<div style="width:48%;height:88%;float:left">
+			<div style="width:58%;height:88%;float:left">
 				<div class="content-box column-left" style="width:100%;height:49%">				
 					<div class="content-box-header">					
-						<h3 style="cursor: s-resize;">Reminders</h3>					
+						<h3 style="cursor: s-resize;">Reminders</h3>				
 					</div> <!-- End .content-box-header -->				
 					<div class="content-box-content">										
 					</div> <!-- End .content-box-content -->				
@@ -90,33 +131,28 @@ if(!isset($_SESSION['user']))
 				</div> <!-- End .content-box -->
 			</div>
 
-			<div class="content-box column-right" style="width:49%;height:88%">
+			<div class="content-box column-right" style="width:40%;height:88%;">
 			
 				
 				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
 					
-					<h3 style="cursor: s-resize;">Vehicle Status</h3>
+					<h3 style="cursor: s-resize;">Notifications</h3>
 					
 				</div> <!-- End .content-box-header -->
 				
-				<div style="display: block;" class="content-box-content">
+				<div style="display: block;padding:0px;height:93%;overflow-y:auto" class="content-box-content">
 					
-					<div style="display: block;" class="tab-content default-tab">
+					<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
 					
-						<table>
+						<table id="noti_table">
 						<thead>
 						<tr></tr>
 						</thead>
-						<tbody>
-						<?php
-							echo "<tr></tr>";
-							echo "<tr><td>Total Vehicles</td><td>".sizeof($mAllVehicleList)."</td></tr>";
-							echo "<tr><td>Already Deployed</td><td>".sizeof($mDeployedVehicleList)."</td></tr>";
-							echo "<tr><td>Waiting Deployement</td><td>".sizeof($mWaitingVehicleList)."</td></tr>";
-						?>
+						<tbody style="border-bottom:0px" id="noti_body">
+						<tr><td><b>Loading Notifications</b></td></tr>
 						</tbody>
 						</table>
-					</div> <!-- End #tab3 -->        
+					</div>      
 					
 				</div> <!-- End .content-box-content -->
 				
