@@ -14,6 +14,9 @@ if(!isset($_SESSION['user']))
 
 	$mCompany = new Company($mUser->getCompany());
 	$mEmployeeList = $mCompany->getEmployeeList();
+	
+	$mAlertList = $mUser->getAlerts();
+	$mMonthlyAlertList = $mUser->getMonthlyAlerts();
 
 	
     $mAllVehicleList = $mUser->getVehicleList();
@@ -136,15 +139,21 @@ if(!isset($_SESSION['user']))
 						<li><a class="shortcut-button" href="#"><span>
 							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">STAFFS</span></b>
 							<img src="../../res/staff.png" alt="icon"><br>
+							<?php
+							if($mUser->getCompany()==-1){
+							?>
+							<b><span style="border: none; display:block; padding: 0px;">Please add Company to add Staff</span></b>
+							<?php } else { ?>
 							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mEmployeeList) ?></span></b> registered<br>staff<br>
+							<?php } ?>
 						</span></a>
 						</li>
 						
 						<li><a class="shortcut-button" href="#"><span>
 							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">ALERTS</span></b>
 							<img src="../../res/alerts.png" alt="icon"><br>
-							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mDriverList) ?></span></b> reported<br>this month<br><br>
-							<b><?php echo sizeof($mAvailableDriverList) ?></b> total reported<br>
+							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mMonthlyAlertList) ?></span></b> reported<br>this month<br><br>
+							<b><?php echo sizeof($mAlertList) ?></b> total reported<br>
 						</span></a></li>
 						
 					</ul><!-- End .shortcut-buttons-set -->

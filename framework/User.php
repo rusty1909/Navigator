@@ -234,6 +234,56 @@ class User {
 		}
 		//return false;
 	}
+	
+	function getAlerts(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$result = array();
+		
+		$mUser = new User();
+		$companyId	= $mUser->getCompany();
+		if($companyId == -1){
+			$sql = "SELECT id FROM `notification` WHERE admin = '$this->id' AND priority = '99'";
+		} else {
+			$sql = "SELECT id FROM `notification` WHERE company = '$companyId' AND priority = '99'";
+		}
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}
+		
+		return $result;
+	}
+	
+	function getMonthlyAlerts(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$result = array();
+		
+		$mUser = new User();
+		$companyId	= $mUser->getCompany();
+		if($companyId == -1){
+			$sql = "SELECT id FROM `notification` WHERE admin = '$this->id' AND priority = '99' AND MONTH(date_added) = MONTH(CURRENT_DATE) AND YEAR(date_added) = YEAR(CURRENT_DATE)";
+		} else {
+			$sql = "SELECT id FROM `notification` WHERE company = '$companyId' AND priority = '99' AND MONTH(date_added) = MONTH(CURRENT_DATE) AND YEAR(date_added) = YEAR(CURRENT_DATE)";
+		}
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}
+		
+		return $result;
+	}
 
     function logout() {
 		$mUser = new User();
