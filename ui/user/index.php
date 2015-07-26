@@ -6,6 +6,8 @@ ini_set('display_errors', 1);
 	require_once "../../framework/Vehicle.php";
 	require_once "../../framework/Company.php";
 	require_once "../../framework/Driver.php";
+	require_once "../../framework/Expense.php";
+	
 
 if(!isset($_SESSION['user']))
 	header('Location:../user/login.php');
@@ -17,6 +19,8 @@ if(!isset($_SESSION['user']))
 	
 	$mAlertList = $mUser->getAlerts();
 	$mMonthlyAlertList = $mUser->getMonthlyAlerts();
+	
+	$mPendingExpenseList = $mUser->getPendingExpenseList();
 
 	
     $mAllVehicleList = $mUser->getVehicleList();
@@ -59,8 +63,98 @@ if(!isset($_SESSION['user']))
 	<!-- jQuery Datepicker Plugin -->
 	<script type="text/javascript" src="../../res/jquery.htm"></script>
 	<script type="text/javascript" src="../../res/jquery.js"></script>
-		
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&key=AIzaSyBcmYGGYTH1hGEEr31Odpiou8thwx55f_o&sensor=false&libraries=places,geometry,drawing"></script>
+
+	<!-- //Modal Box Functionality  -->
 	<script>
+	$(document).ready(function () {
+		//$('#dialog').dialog(); 
+		console.log("clicked");
+		$('#dialog_link').click(function () {
+			$('#dialog').dialog('open');
+			return false;
+		});
+	});
+
+	$(function(){
+	var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+	  $('a[data-modal-id]').click(function(e) {
+		e.preventDefault();
+		$("body").append(appendthis);
+		$(".modal-overlay").fadeTo(500, 0.7);
+		//$(".js-modalbox").fadeIn(500);
+		var modalBox = $(this).attr('data-modal-id');
+		$('#'+modalBox).fadeIn($(this).data());
+	  });  
+	  
+
+	$(".js-modal-close, .modal-overlay").click(function() {
+	  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+		$(".modal-overlay").remove();
+	  });
+	});
+
+	$(window).resize(function() {
+	  $(".modal-box").css({
+		top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
+		left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+	  });
+	});
+	 
+	$(window).resize();
+	 
+	});
+	</script>
+
+	<script>
+	function fetchBillDetails(id){
+		var data = "";
+        jQuery.ajax({
+            type: 'POST',
+            url: 'action.php?action=billdetail&id='+id,
+            cache: false,
+            success: function(response){
+				if(response == 0){
+				}
+				else {
+					//alert(response)
+					var billDetail = JSON.parse(response);
+					
+					var vehicle_image = '../../res/vehicle_types/'+billDetail.vehicle.type+'.png';
+					var vehicle_text = "<img height='18' width='18' src='"+vehicle_image+"'>&nbsp;&nbsp;<b><a href='../vehicle/detail.php?id="+billDetail.vehicle.id+"' style='text-transform:uppercase;vertical-align:2px;' class='js-modal-close'>"+billDetail.vehicle.number+"</a>";					
+					document.getElementById("vehicle").innerHTML = vehicle_text;
+					
+					var driver_image = '../../res/driver_icon.png';
+					var driver_text = "<img height='15' width='15' src='"+driver_image+"'>&nbsp;&nbsp;<b><a href='../driver/detail.php?id="+billDetail.driver.id+"' style='text-transform:uppercase;vertical-align:2px;' class='js-modal-close'>"+billDetail.driver.name+"</a>";
+					document.getElementById("driver").innerHTML = driver_text;
+					
+					var bill_image_path = '../../res/bills/'+billDetail.vehicle.number+'/'+billDetail.filename+'.jpg';
+					var bill_image_text = "<img src='"+bill_image_path+"'>";
+					document.getElementById("bill_image").innerHTML = bill_image_text;
+					
+					var reason_image = '../../res/info.png';
+					var reason_text = "<img height='18' width='18' src='"+reason_image+"'>&nbsp;&nbsp<b>"+billDetail.reason+"</b>";
+					document.getElementById("reason").innerHTML = reason_text;
+					
+					document.getElementById("amount").innerHTML = "<b>Rs."+billDetail.amount+"</b>";
+					
+					var calendar_image = '../../res/calendar.png';
+					var date_added_text = "<img height='15' width='15' src='"+calendar_image+"'>&nbsp;&nbsp<b>"+billDetail.date_added+"</b>";
+					document.getElementById("date_added").innerHTML = date_added_text;
+					
+					document.getElementById("latlng").innerHTML = billDetail.location.lat+","+billDetail.location.lng;
+				}
+            }
+        });
+	}
+	
 	function fetchNotification(){
 		//alert(id+" "+driver_id);
 		var data = "";
@@ -85,7 +179,7 @@ if(!isset($_SESSION['user']))
 							default : image = "alert_ok"; break;
 						}
 						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td><td style='font-size:10px;padding-top:-10px'><span style='vertical-align:7px;'><b>"+notiList[i].time+"</b></span></td></tr>";
-						console.log(image);
+						//console.log(image);
 					}
 					//alert(data);
 					document.getElementById("noti_body").innerHTML = data;
@@ -94,8 +188,6 @@ if(!isset($_SESSION['user']))
 				}
             }
         });
-       
-        
 	}
 	
 	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
@@ -161,18 +253,27 @@ if(!isset($_SESSION['user']))
 				<div class="clear"></div>
 				<div class="content-box column-left" style="width:49%;height:50%">				
 					<div class="content-box-header">					
-						<h3 style="cursor: s-resize;">Pending Bills</h3>				
+						<h3 style="cursor: s-resize;">Pending Bills (<?php echo sizeof($mPendingExpenseList);?>)</h3>				
 					</div> <!-- End .content-box-header -->				
 					<div style="display: block;padding:0px;height:85%;overflow-y:auto" class="content-box-content">
 					
-						<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
+						<div style="display:block;overflow-y:auto" class="tab-content default-tab">
 						
 							<table id="noti_table">
 							<thead>
 							<tr></tr>
 							</thead>
 							<tbody style="border-bottom:0px" id="bill_body">
-							<tr><td><b>Coming soon...</b></td></tr>
+							<?php
+								for($i=0; $i<sizeof($mPendingExpenseList); $i++){
+									$mExpense = new Expense($mPendingExpenseList[$i]);
+									$vehicleId = $mExpense->getVehicle();
+									$mVehicle = new Vehicle($vehicleId);
+									$reason = $mExpense->getReason();
+									$amount = $mExpense->getAmount();
+									echo "<tr onMouseOver='this.bgColor='#EEEEEE''><td style='width:50%'><b><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td><td>".$reason."</td><td><b>Rs.".$amount."</b></td><td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='../../res/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td></tr>";
+								}
+							?>
 							</tbody>
 							</table>
 						</div>      
@@ -235,5 +336,34 @@ if(!isset($_SESSION['user']))
 			
 		</div> <!-- End #main-content -->
 		
+	</div>
+	
+	<div id="bill_popup" class="modal-box">  
+	  <header>
+		<h3>Bill Details</h3>
+	  </header>
+	  <div class="modal-body" id="item-list" style="padding-left:10px;padding-right:10px">
+	  
+		<table>
+		<tbody>
+			<tr><td colspan='3' id="vehicle">vehicle...</td><td colspan='2' rowspan='5' id="bill_image" style='vertical-align:bottom'>bill_image...</td></tr>
+			<tr><td colspan='3' id="driver">driver...</td></tr>
+			<tr><td colspan='3' id="reason">reason...</td></tr>
+			<tr><td colspan='3' id="amount">amount...</td></tr>
+			<tr><td colspan='3' id="date_added">date_added...</td></tr>
+			<tr></tr>
+			<tr><td colspan='5'>Updated at</td></tr>
+			<tr><td colspan='4' id='address'>Loading</td><td rowspan='2' id='map'>map</td></tr>
+			<tr><td id='latlng'>Loading</td></tr>
+			
+		</tbody>
+		</table>
+		
+	  </div>
+	  <footer>
+		<b><input class="button js-modal-close" value="APPROVE"></b>&nbsp;
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>REJECT</b></a>&nbsp;
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>LATER</b></a>
+	  </footer>
 	</div>
   </body></html>

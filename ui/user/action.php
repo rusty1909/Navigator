@@ -1,9 +1,12 @@
 <?php
-/*error_reporting(E_ALL);
-ini_set('display_errors', 1);*/
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require_once '../../framework/User.php';
 require_once '../../framework/Mailer.php';
+require_once '../../framework/Expense.php';
+require_once '../../framework/Driver.php';
+require_once '../../framework/Vehicle.php';
 
 if(isset($_GET['action'])) {
 	//die "p";
@@ -101,6 +104,35 @@ switch($action) {
                echo "<script>window.location.href = '../user/login.php'</script>";
 
         }
-
+		break;
+	
+	case "billdetail" : if(!isset($_GET['id'])) {
+			break;
+		}
+		$id = $_GET['id'];
+		$mExpense = new Expense($id);
+		
+		$vehicleId = $mExpense->getVehicle();
+		$mVehicle = new Vehicle($vehicleId);
+		$vehicleDetail['id'] = $mVehicle->getId();
+		$vehicleDetail['number'] = $mVehicle->getVehicleNumber();
+		$vehicleDetail['type'] = $mVehicle->getType();
+		
+		$driverId = $mExpense->getDriver();
+		$mDriver = new Driver($driverId);
+		$driverDetail['id'] = $mDriver->getId();
+		$driverDetail['name'] = $mDriver->getName();
+		
+		$detail['id'] = $mExpense->getId();
+		$detail['vehicle'] = $vehicleDetail;
+		$detail['driver'] = $driverDetail;
+		$detail['reason'] = $mExpense->getReason();
+		$detail['amount'] = $mExpense->getAmount();
+		$detail['filename'] = $mExpense->getFilename();
+		$detail['date_added'] = $mExpense->getDateAdded();
+		$detail['location'] = $mExpense->getLocation();
+		
+		echo json_encode($detail);
+		
 }
 ?>

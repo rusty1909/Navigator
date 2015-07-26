@@ -284,6 +284,102 @@ class User {
 		
 		return $result;
 	}
+	
+	function getExpenseList(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$result = array();
+		
+		$mUser = new User();
+		$companyId	= $mUser->getCompany();
+		if($companyId == -1){
+			$sql = "SELECT id FROM `expenses` WHERE admin = '$this->id'";
+		} else {
+			$sql = "SELECT id FROM `expenses` WHERE company = '$companyId'";
+		}
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}		
+		return $result;
+	}
+	
+	function getPendingExpenseList(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$result = array();
+		
+		$mUser = new User();
+		$companyId	= $mUser->getCompany();
+		if($companyId == -1){
+			$sql = "SELECT id FROM `expenses` WHERE admin = '$this->id' AND approved='0'";
+		} else {
+			$sql = "SELECT id FROM `expenses` WHERE company = '$companyId' AND approved='0'";
+		}
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}		
+		return $result;
+	}
+	
+	function getRejectedExpenseList(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$result = array();
+		
+		$mUser = new User();
+		$companyId	= $mUser->getCompany();
+		if($companyId == -1){
+			$sql = "SELECT id FROM `expenses` WHERE admin = '$this->id' AND approved='-1'";
+		} else {
+			$sql = "SELECT id FROM `expenses` WHERE company = '$companyId' AND approved='-1'";
+		}
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}		
+		return $result;
+	}
+	
+	function getApprovedExpenseList(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$result = array();
+		
+		$mUser = new User();
+		$companyId	= $mUser->getCompany();
+		if($companyId == -1){
+			$sql = "SELECT id FROM `expenses` WHERE admin = '$this->id' AND approved='1'";
+		} else {
+			$sql = "SELECT id FROM `expenses` WHERE company = '$companyId' AND approved='1'";
+		}
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}		
+		return $result;
+	}
 
     function logout() {
 		$mUser = new User();

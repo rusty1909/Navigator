@@ -76,6 +76,20 @@ class Expense {
 			return false;
 		}
 	}
+	
+	function updateStatus($approval){
+		$db = new Connection();
+		$conn = $db->connect();
+
+		$sql = "UPDATE expenses SET approved = '$approval' WHERE id = '$this->id'";
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	function getId(){
 		return $this->id;
@@ -108,6 +122,9 @@ class Expense {
 	}
 
 	function getStatus() {
+		//0 : pending
+		//1 : approved
+		//-1 : rejected
 		return $this->approved;
 	}
 
