@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 
 	require_once "../../framework/User.php";
 	require_once "../../framework/Vehicle.php";
-	require_once "../../framework/Job.php";
+	require_once "../../framework/Company.php";
 	require_once "../../framework/Driver.php";
 
 if(!isset($_SESSION['user']))
@@ -12,6 +12,8 @@ if(!isset($_SESSION['user']))
 
 	$mUser = new User();
 
+	$mCompany = new Company($mUser->getCompany());
+	$mEmployeeList = $mCompany->getEmployeeList();
 
 	
     $mAllVehicleList = $mUser->getVehicleList();
@@ -113,10 +115,11 @@ if(!isset($_SESSION['user']))
 			
 			<div class="clear"></div> <!-- End .clear -->
 			<div style="width:59%;height:88%;float:left">
-				<div class="column-left" style="width:100%;height:49%">				
+				<div class="column-left" style="width:100%;height:50%">				
 					<ul class="shortcut-buttons-set">
 				
 						<li><a class="shortcut-button" href="../vehicle/"><span>
+							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">VEHICLES</span></b>
 							<img src="../../res/truck.png" alt="icon"><br>
 							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mAllVehicleList) ?></span></b> registered<br>drivers<br><br>
 							<b><?php echo sizeof($mOnJobVehicleList) ?></b> on-road<br><br>
@@ -124,26 +127,30 @@ if(!isset($_SESSION['user']))
 						</span></a></li>
 						
 						<li><a class="shortcut-button" href="../driver/"><span>
+							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">DRIVERS</span></b>
 							<img src="../../res/drivers.png" alt="icon"><br>
 							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mDriverList) ?></span></b> registered<br>drivers<br><br>
 							<b><?php echo sizeof($mAvailableDriverList) ?></b> available<br>
 						</span></a></li>
 						
 						<li><a class="shortcut-button" href="#"><span>
+							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">STAFFS</span></b>
 							<img src="../../res/staff.png" alt="icon"><br>
-							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mDriverList) ?></span></b> registered<br>staff<br>
+							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mEmployeeList) ?></span></b> registered<br>staff<br>
 						</span></a>
 						</li>
 						
 						<li><a class="shortcut-button" href="#"><span>
-							<img src="../../res/clock_48.png" alt="icon"><br>
-							Add an Event
+							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">ALERTS</span></b>
+							<img src="../../res/alerts.png" alt="icon"><br>
+							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mDriverList) ?></span></b> reported<br>this month<br><br>
+							<b><?php echo sizeof($mAvailableDriverList) ?></b> total reported<br>
 						</span></a></li>
 						
 					</ul><!-- End .shortcut-buttons-set -->
 				</div> <!-- End .content-box -->
 				<div class="clear"></div>
-				<div class="content-box column-left" style="width:49%;height:51%">				
+				<div class="content-box column-left" style="width:49%;height:50%">				
 					<div class="content-box-header">					
 						<h3 style="cursor: s-resize;">Pending Bills</h3>				
 					</div> <!-- End .content-box-header -->				
@@ -163,7 +170,7 @@ if(!isset($_SESSION['user']))
 					
 					</div> <!-- End .content-box-content -->			
 				</div> <!-- End .content-box -->
-				<div class="content-box column-right" style="width:49%;height:51%">				
+				<div class="content-box column-right" style="width:49%;height:50%">				
 					<div class="content-box-header">					
 						<h3 style="cursor: s-resize;">Reminders</h3>
 						<a href="#" style="color:#57a000; float:right;padding:15px 10px 0 0 !important"><b>Add Reminder</b></a>		

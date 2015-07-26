@@ -88,6 +88,24 @@ class Company {
             return false;
         }
     }
+	
+	function getEmployeeList(){
+		$db = new Connection();
+        $conn = $db->connect();
+		
+		$result = array();
+		
+		$sql = "SELECT id FROM user WHERE company_id='$this->id' AND status='1'";
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+		while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}
+		return $result;
+	}
 
     function getName() {
         return $this->name;
