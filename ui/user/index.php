@@ -15,14 +15,13 @@ if(!isset($_SESSION['user']))
 
 	
     $mAllVehicleList = $mUser->getVehicleList();
-//	$mPreviousVehicleList = $mUser->getPreviousVehicleList();
 	$mDeployedVehicleList = $mUser->getDeployedVehicleList();
-//	$mOnJobVehicleList = $mUser->getOnJobVehicleList();
-//	$mFreeVehicleList = $mUser->getFreeVehicleList();
 	$mWaitingVehicleList = $mUser->getWaitingVehicleList();
+	$mOnJobVehicleList = $mUser->getOnJobVehicleList();
 	
-	
-?>
+	$mDriverList = $mUser->getCurrentDriverList();
+	$mAvailableDriverList = $mUser->getAvailableDriverList();
+	?>
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 		
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
@@ -80,7 +79,7 @@ if(!isset($_SESSION['user']))
 							case "power_battery_unplugged" : image = "alert_high"; break;
 							default : image = "alert_ok"; break;
 						}
-						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
+						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td><td style='font-size:10px;padding-top:-10px'><span style='vertical-align:7px;'><b>"+notiList[i].time+"</b></span></td></tr>";
 						console.log(image);
 					}
 					//alert(data);
@@ -113,23 +112,81 @@ if(!isset($_SESSION['user']))
 			</noscript>
 			
 			<div class="clear"></div> <!-- End .clear -->
-			<div style="width:58%;height:88%;float:left">
-				<div class="content-box column-left" style="width:100%;height:49%">				
-					<div class="content-box-header">					
-						<h3 style="cursor: s-resize;">Reminders</h3>				
-					</div> <!-- End .content-box-header -->				
-					<div class="content-box-content">										
-					</div> <!-- End .content-box-content -->				
+			<div style="width:59%;height:88%;float:left">
+				<div class="column-left" style="width:100%;height:49%">				
+					<ul class="shortcut-buttons-set">
+				
+						<li><a class="shortcut-button" href="../vehicle/"><span>
+							<img src="../../res/truck.png" alt="icon"><br>
+							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mAllVehicleList) ?></span></b> registered<br>drivers<br><br>
+							<b><?php echo sizeof($mOnJobVehicleList) ?></b> on-road<br><br>
+							<b><?php echo sizeof($mWaitingVehicleList) ?></b> waiting<br>
+						</span></a></li>
+						
+						<li><a class="shortcut-button" href="../driver/"><span>
+							<img src="../../res/drivers.png" alt="icon"><br>
+							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mDriverList) ?></span></b> registered<br>drivers<br><br>
+							<b><?php echo sizeof($mAvailableDriverList) ?></b> available<br>
+						</span></a></li>
+						
+						<li><a class="shortcut-button" href="#"><span>
+							<img src="../../res/staff.png" alt="icon"><br>
+							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mDriverList) ?></span></b> registered<br>staff<br>
+						</span></a>
+						</li>
+						
+						<li><a class="shortcut-button" href="#"><span>
+							<img src="../../res/clock_48.png" alt="icon"><br>
+							Add an Event
+						</span></a></li>
+						
+					</ul><!-- End .shortcut-buttons-set -->
 				</div> <!-- End .content-box -->
-				<br>
-				<div class="content-box column-left" style="width:100%;height:49%">				
+				<div class="clear"></div>
+				<div class="content-box column-left" style="width:49%;height:51%">				
 					<div class="content-box-header">					
-						<h3 style="cursor: s-resize;">Reminders</h3>					
+						<h3 style="cursor: s-resize;">Pending Bills</h3>				
 					</div> <!-- End .content-box-header -->				
-					<div class="content-box-content">										
-					</div> <!-- End .content-box-content -->				
+					<div style="display: block;padding:0px;height:85%;overflow-y:auto" class="content-box-content">
+					
+						<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
+						
+							<table id="noti_table">
+							<thead>
+							<tr></tr>
+							</thead>
+							<tbody style="border-bottom:0px" id="bill_body">
+							<tr><td><b>Coming soon...</b></td></tr>
+							</tbody>
+							</table>
+						</div>      
+					
+					</div> <!-- End .content-box-content -->			
 				</div> <!-- End .content-box -->
+				<div class="content-box column-right" style="width:49%;height:51%">				
+					<div class="content-box-header">					
+						<h3 style="cursor: s-resize;">Reminders</h3>
+						<a href="#" style="color:#57a000; float:right;padding:15px 10px 0 0 !important"><b>Add Reminder</b></a>		
+					</div> <!-- End .content-box-header -->				
+					<div style="display: block;padding:0px;height:85%;overflow-y:auto" class="content-box-content">
+					
+						<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
+						
+							<table id="noti_table">
+							<thead>
+							<tr></tr>
+							</thead>
+							<tbody style="border-bottom:0px" id="rem_body">
+							<tr><td><b>Coming soon...</b></td></tr>
+							</tbody>
+							</table>
+						</div>      
+					
+					</div> <!-- End .content-box-content -->
+				</div>
 			</div>
+			
+			
 
 			<div class="content-box column-right" style="width:40%;height:88%;">
 			

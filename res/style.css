@@ -483,7 +483,8 @@ ul.content-box-tabs li a.current {
                 border: 1px solid #ccc;
                 background: #f7f7f7 url('../images/shortcut-button-bg.gif') top left no-repeat;
                 display: block;
-                width: 120px;
+                width: 135px;
+				height:100%
                 margin: 0 0 20px 0;
                 }
 

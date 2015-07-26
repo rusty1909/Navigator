@@ -477,8 +477,10 @@ class User {
         
 		$company_id = $_SESSION['user']['company'];
 		$result = array();
-		
-		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND on_job='1' AND date_deactivate IS NULL ";
+		if($company_id > 0)
+			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND driver != '0' AND date_deactivate IS NULL ";
+		else
+			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '1' AND driver != '0' AND date_deactivate IS NULL ";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
