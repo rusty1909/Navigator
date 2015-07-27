@@ -114,6 +114,7 @@ if(!isset($_SESSION['user']))
 	</script>
 
 	<script>
+	var bill_id;
 	function fetchBillDetails(id){
 		var data = "";
         jQuery.ajax({
@@ -125,6 +126,7 @@ if(!isset($_SESSION['user']))
 				}
 				else {
 					//alert(response)
+					bill_id = id;
 					var billDetail = JSON.parse(response);
 					
 					var vehicle_image = '../../res/vehicle_types/'+billDetail.vehicle.type+'.png';
@@ -136,23 +138,68 @@ if(!isset($_SESSION['user']))
 					document.getElementById("driver").innerHTML = driver_text;
 					
 					var bill_image_path = '../../res/bills/'+billDetail.vehicle.number+'/'+billDetail.filename+'.jpg';
-					var bill_image_text = "<img src='"+bill_image_path+"'>";
+					var bill_image_text = "<img width='100' src='"+bill_image_path+"'>";
 					document.getElementById("bill_image").innerHTML = bill_image_text;
 					
 					var reason_image = '../../res/info.png';
 					var reason_text = "<img height='18' width='18' src='"+reason_image+"'>&nbsp;&nbsp<b>"+billDetail.reason+"</b>";
 					document.getElementById("reason").innerHTML = reason_text;
 					
-					document.getElementById("amount").innerHTML = "<b>Rs."+billDetail.amount+"</b>";
+					var amount_image = '../../res/amount.png';
+					document.getElementById("amount").innerHTML = "<img height='18' width='18' src='"+amount_image+"'>&nbsp;&nbsp<b>Rs."+billDetail.amount+"</b>";
 					
 					var calendar_image = '../../res/calendar.png';
 					var date_added_text = "<img height='15' width='15' src='"+calendar_image+"'>&nbsp;&nbsp<b>"+billDetail.date_added+"</b>";
 					document.getElementById("date_added").innerHTML = date_added_text;
 					
-					document.getElementById("latlng").innerHTML = billDetail.location.lat+","+billDetail.location.lng;
+					//document.getElementById("latlng").innerHTML = billDetail.location.lat+","+billDetail.location.lng;
+					
+					updateAddressView(billDetail.location.lat, billDetail.location.lng);
 				}
             }
         });
+	}
+	
+	function approveBill(isApproval) {
+		jQuery.ajax({
+            type: 'POST',
+            url: 'action.php?action=billapproval&id='+bill_id+'&approval='+isApproval,
+            cache: false,
+            success: function(response){
+				if(response == 0){
+				}
+				else {
+					if(response=='success'){
+						location.reload();
+						if(isApproval==1){
+							alert("Bill Approved!!!");
+						} else {
+							alert("Bill Rejected!!!");
+						}
+					} else{
+						alert("some problem occurred");
+					}
+				}
+            }
+        });
+	}
+	
+	function updateAddressView(latitude, longitude){
+		var geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(latitude, longitude);
+		geocoder.geocode({'location': latlng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results[1]) {
+					var formatted_address = results[1].formatted_address;
+					var calendar_image = '../../res/location_icon.png';
+					document.getElementById("address").innerHTML = "<img height='15' width='15' src='"+calendar_image+"'>&nbsp;&nbsp<b>"+formatted_address+"<br>("+latitude+","+longitude+")</b>";
+				} else {
+					console.log('No results found');
+				}
+			} else {
+				console.log('Geocoder failed due to: ' + status);
+			}
+		});
 	}
 	
 	function fetchNotification(){
@@ -338,31 +385,36 @@ if(!isset($_SESSION['user']))
 		
 	</div>
 	
-	<div id="bill_popup" class="modal-box">  
+	<div id="bill_popup" class="modal-box" style="width:40%;">  
 	  <header>
 		<h3>Bill Details</h3>
 	  </header>
 	  <div class="modal-body" id="item-list" style="padding-left:10px;padding-right:10px">
-	  
-		<table>
-		<tbody>
-			<tr><td colspan='3' id="vehicle">vehicle...</td><td colspan='2' rowspan='5' id="bill_image" style='vertical-align:bottom'>bill_image...</td></tr>
-			<tr><td colspan='3' id="driver">driver...</td></tr>
-			<tr><td colspan='3' id="reason">reason...</td></tr>
-			<tr><td colspan='3' id="amount">amount...</td></tr>
-			<tr><td colspan='3' id="date_added">date_added...</td></tr>
-			<tr></tr>
-			<tr><td colspan='5'>Updated at</td></tr>
-			<tr><td colspan='4' id='address'>Loading</td><td rowspan='2' id='map'>map</td></tr>
-			<tr><td id='latlng'>Loading</td></tr>
-			
-		</tbody>
-		</table>
-		
+		<div style="float:left;width:250px">
+			<table>
+			<tbody style="border-bottom: 0px;">
+				<tr style="border-bottom: 0px;"><td id="vehicle">vehicle...</td></tr>
+				<tr style="border-bottom: 0px;"><td id="driver">driver...</td></tr>
+				<tr style="border-bottom: 0px;"><td id="reason">reason...</td></tr>
+				<tr style="border-bottom: 0px;"><td id="amount">amount...</td></tr>
+				
+			</tbody>
+			</table>
+		</div>
+		<div style="float:right;" id="bill_image">
+		</div>
+		<div style="width:100%">
+			<table>
+			<tbody>
+				<tr style="border-bottom: 0px;"><td id='address'>Loading</td><!--<td id='map'>map</td>--></tr>
+				<tr style="border-bottom: 0px;"><td id="date_added">date_added...</td></tr>				
+			</tbody>
+			</table>
+		</div>
 	  </div>
 	  <footer>
-		<b><input class="button js-modal-close" value="APPROVE"></b>&nbsp;
-		<a href="#" class="js-modal-close" style="color:#D3402B"><b>REJECT</b></a>&nbsp;
+		<b><input class="button js-modal-close" value="APPROVE" type="submit" onClick="approveBill('1')"></b>&nbsp;
+		<a href="#" class="js-modal-close" style="color:#D3402B" onClick="approveBill('-1')"><b>REJECT</b></a>&nbsp;
 		<a href="#" class="js-modal-close" style="color:#D3402B"><b>LATER</b></a>
 	  </footer>
 	</div>

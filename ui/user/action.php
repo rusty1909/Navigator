@@ -133,6 +133,19 @@ switch($action) {
 		$detail['location'] = $mExpense->getLocation();
 		
 		echo json_encode($detail);
+		break;
+	
+	case "billapproval" : if(!(isset($_GET['id']) && isset($_GET['approval']))) {
+			break;
+		}
+		$id = $_GET['id'];
+		$approval = $_GET['approval'];
+		$mExpense = new Expense($id);
+		if($mExpense->updateStatus($approval))
+			echo "success";
+		else
+			echo "fail";
+		break;
 		
 }
 ?>
