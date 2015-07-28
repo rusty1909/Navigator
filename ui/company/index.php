@@ -340,7 +340,7 @@ ini_set('display_errors', 1);
 		</header>
 		<div class="modal-body" id="item-list">
 						
-            
+     <!---------------------------------------------------------------------------------------------------------------------------------->       
             <form action="action.php?action=registerEmployee" method="POST" onSubmit="return validate()">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
@@ -399,18 +399,20 @@ ini_set('display_errors', 1);
 										<br><small>A small description of the field</small>-->
 								</p>
 								
-													
-						
+								</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->					
+				
 <!----------------------------------------------------------------------------------------------------------------------------->
 
 	  <footer>
 		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
 		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
 	  </footer>
-                            </fieldset>
+                            
 	  </form>
 
-		</div>
+		</div>		
 	</div>
 			
 			<!-- End Notifications -->
