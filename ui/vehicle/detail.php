@@ -297,11 +297,11 @@ if(!isset($_SESSION['user']))
     
     function showTrack(id){
 		if(track_marker != null){
-			alert("clearing map 1");
+			console.log("clearing map 1");
 			track_marker.setMap(null);
 		}
 		if(snappedPolyline != null){
-			alert("clearing map 2");
+			console.log("clearing map 2");
 			snappedPolyline.setMap(null);
 		}
 
@@ -312,7 +312,7 @@ if(!isset($_SESSION['user']))
             alert("Enter start and end date.");
             return;
         }
-				document.getElementById("from_date").disabled = true; 
+		document.getElementById("from_date").disabled = true; 
 		document.getElementById("to_date").disabled = true; 
         
         jQuery.ajax({
@@ -333,8 +333,12 @@ if(!isset($_SESSION['user']))
     }
 	
 	function reload(){
-		//location.reload(true);
-		$('#trace_info').load(document.URL +  ' #trace_info');
+		document.getElementById("distance").innerHTML="";
+		$('#distance').load(document.URL +  ' #distance');
+		document.getElementById("from_date").value="";
+		document.getElementById("to_date").value="";
+		document.getElementById("from_date").disabled = false; 
+		document.getElementById("to_date").disabled = false;
 		initialize();
 		//$('#googleMap').load(document.URL +  ' #googleMap');
 	}
