@@ -176,6 +176,12 @@ ini_set('display_errors', 1);
 		$(window).resize();
 		 
 		});
+        
+        function onDelete(id){
+            if(confirm("You really want to delete this vehicle?"))
+                window.location.href = "action.php?action=delete&id="+id;
+           }
+        
 	</script>
     
     

@@ -111,6 +111,12 @@ if(!isset($_SESSION['user']))
 	$(window).resize();
 	 
 	});
+        
+    function onDelete(id){
+		if(confirm("You really want to delete this User?"))
+			window.location.href = "action.php?action=delete&id="+id;
+	}
+        
 	</script>
 
 	<script>

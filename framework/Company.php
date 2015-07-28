@@ -112,8 +112,11 @@ class Company {
 
     public static function addEmployee($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
    
-        if(!empty($_SESSION['user']['company'])) 
-            return User::add($name, '', $email, 'findgaddi', $phone, $phone, $email, $_SESSION['user']['company']);
+        if(!empty($_SESSION['user']['company'])){ 
+            if(User::add($name, '', $email, 'findgaddi', $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
+                return User::activate(User::getIdByEmail($email));
+            }
+        }
         else
             return false;
     }

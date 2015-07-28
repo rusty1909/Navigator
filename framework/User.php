@@ -21,6 +21,14 @@ class User {
 	private $ipAddress;
 	private $dateAdded;
 	private $activated;
+    
+    
+	private $address_1;
+	private $address_2;
+	private $city;
+	private $state;
+	private $landmark;
+	private $pincode; 
 
 	function __construct($id=-1) {
         
@@ -52,6 +60,15 @@ class User {
                     $this->ipAddress = $row['ip_address'];
                     $this->dateAdded = $row['date_added'];
                     $this->activated = $row['activated'];
+                    
+                    
+                    $this->address_1 = $row['address_1'];
+                    $this->address_2 = $row['address_2'];
+                    $this->city = $row['city'];
+                    $this->state = $row['state'];
+                    $this->landmark = $row['landmark'];
+                    $this->pincode = $row['pincode'];
+                    
                 }
             }
         }
@@ -85,11 +102,11 @@ class User {
 		return $mUser;
 	}
 
-	public static function add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email, $company=-1){
+	public static function add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email, $address_1, $address_2, $landmark, $city, $state, $pincode,$company=-1){
 		$db = new Connection();
 		$conn = $db->connect();
 		//add user
-		$user = "INSERT INTO user (firstname, lastname, username, password, phone_m, phone_o, email, company_id) VALUES ('$firstname', '$lastname', '$username', '$password', '$phone_m', '$phone_o', '$email', '$company')";
+		$user = "INSERT INTO user (firstname, lastname, username, password, phone_m, phone_o, email, company_id, `address_1`, `address_2`, `city`, `state`, `landmark`, `pincode`) VALUES ('$firstname', '$lastname', '$username', '$password', '$phone_m', '$phone_o', '$email', '$company', '$address_1', '$address_2', '$city', '$state', '$landmark', '$pincode')";
 		//echo $user."<br>";
 		//echo "1<br>";
 		if (mysqli_query($conn, $user)) {
@@ -953,9 +970,11 @@ class User {
 	}
 	
 	function getAddress() {
-        $add = !empty($this->address1) ? $this->address1 : "";
+        $add = !empty($this->address_1) ? $this->address_1 : "";
         $add .= "<br>";
-        $add .= !empty($this->address2) ? $this->address2 : "";
+        $add .= !empty($this->address_2) ? $this->address_2 : "";
+        $add .= "<br>";        
+        $add .= !empty($this->landmark) ? $this->landmark : "";
         $add .= "<br>";
         $add .= !empty($this->city) ? $this->city : "";
         $add .= "<br>";
@@ -990,6 +1009,22 @@ class User {
 	function getActivatedState() {
 		return $this->activated;
 	}
+    
+    function delete() {
+	
+        $db = new Connection();
+		$conn = $db->connect();
+		
+        if($this->id == $_SESSION['user']['id'])
+            return false;
+        
+        $sql = "UPDATE vehicle SET activated = '0' AND status = '0' WHERE id = '$this->id'";
+        mysqli_query($conn, $sql);
+        
+        return true;
+	}
+    
+    
 }
 
 //User::resetpasswordmail('dheerajagrawal19@gmail.com');

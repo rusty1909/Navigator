@@ -66,21 +66,30 @@ switch($action) {
 			echo "<script>alert('Sorry, some error occured.');</script>";
 		}
 		break;
-	case "nocompany" : $mUser = new User();
+	case "nocompany" :
+        $mUser = new User();
 		if($mUser->setIndividualAccount()) {
 			header('Location:../user/');
 		} else {
 			header('Location:register.php');
 		}
 		break;
-		
+    case "delete" :
+        $id = $_GET['id'];
+		$mUser = new User($id);
+
+		if($mUser->delete())
+			header('Location:index.php');
+		else {
+            header('Location:index.php');
+        }
+			
+        break;
 	case "update" :
 		$mUser = new User();
 		
 		$mCompany = new Company($mUser->getCompany());
 	
-		//$name = $_POST['name'];
-		//$tin_number = $_POST['tin_number'];
 		$address_1 = $_POST['address_1'];
 		$address_2 = $_POST['address_2'];
 		$landmark = $_POST['landmark'];
