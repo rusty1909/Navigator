@@ -272,7 +272,7 @@ ini_set('display_errors', 1);
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<a class="button" class='js-open-modal' href='#' data-modal-id='add-employee' >Add Driver</a>
+											<a class="button" class='js-open-modal' href='#' data-modal-id='add-employee' >Add Employee</a>
 										</div>
 										
 										<!--<div class="pagination">
@@ -293,10 +293,10 @@ ini_set('display_errors', 1);
 								$mEployeelist = Company::totalEmployeeArray();
 								for($i=0; $i<sizeof($mEployeelist); $i++) {
                                     //echo $mEployeelist[$i];
-									$mEmployee = new Employee($mEployeelist[$i]);
+									$mEmployee = new User($mEployeelist[$i]);
 									echo "<tr>";
-									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getName()."</b></td>";
-									echo "<td>".$mEmployee->getPhone()."</td>";
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getFullName()."</b></td>";
+									echo "<td>".$mEmployee->getPhoneMobile()."</td>";
 									echo "<td>".$mEmployee->getAddress()."</td>";
 									echo "									<td>
 										<!-- Icons -->

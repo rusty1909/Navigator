@@ -60,17 +60,10 @@ switch($action) {
         $description ='';
 		
 		if(Company::addEmployee($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
-			$mUser = new User();
-			$username = $_SESSION['user']['username'];
-			$password = $_SESSION['user']['password'];
-			$mUser->login($username, $password);
 			echo "<script>alert('Employee added successfully!!!');</script>";
 			echo "<script>window.location.href = '../user/login.php'</script>";
-			//header('Location:../user/login.php');
 		} else {
 			echo "<script>alert('Sorry, some error occured.');</script>";
-			//echo "<script>window.location.href = 'register.php'</script>";
-			//header('Location:register.php?error=1');
 		}
 		break;
 	case "nocompany" : $mUser = new User();

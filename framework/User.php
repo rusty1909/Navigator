@@ -22,32 +22,42 @@ class User {
 	private $dateAdded;
 	private $activated;
 
-	function __construct() {
-		if(isset($_SESSION['user'])) {
-			$user_id = $_SESSION['user']['id'];			
-			/* opening db connection*/
-			$db = new Connection();
-			$conn = $db->connect();
-			$sql = "SELECT * FROM user WHERE id='$user_id'";
-			$action = mysqli_query($conn, $sql);
-			if (mysqli_num_rows($action) > 0) {
-				while($row = mysqli_fetch_assoc($action)) {
-					$this->id = $row['id'];
-					$this->firstname = $row['firstname'];
-					$this->username = $row['username'];
-					$this->lastname = $row['lastname'];
-					$this->companyId = $row['company_id'];
-					$this->phoneMobile = $row['phone_m'];
-					$this->phoneOffice = $row['phone_o'];
-					$this->email = $row['email'];
-					$this->isLoggedIn = $row['logged_in'];
-					$this->ipAddress = $row['ip_address'];
-					$this->dateAdded = $row['date_added'];
-					$this->activated = $row['activated'];
-				}
-			}
-		}
+	function __construct($id=-1) {
+        
+        //logic to check if user id has been passed or need to fetch from session...
+        if($id==-1){
+            if(isset($_SESSION['user'])) 
+			     $user_id = $_SESSION['user']['id'];
+            else
+                 $user_id = null;
+        }else
+            $user_id = $id;
+        
+        if($user_id !=null){
+            $db = new Connection();
+            $conn = $db->connect();
+            $sql = "SELECT * FROM user WHERE id='$user_id'";
+            $action = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($action) > 0) {
+                while($row = mysqli_fetch_assoc($action)) {
+                    $this->id = $row['id'];
+                    $this->firstname = $row['firstname'];
+                    $this->username = $row['username'];
+                    $this->lastname = $row['lastname'];
+                    $this->companyId = $row['company_id'];
+                    $this->phoneMobile = $row['phone_m'];
+                    $this->phoneOffice = $row['phone_o'];
+                    $this->email = $row['email'];
+                    $this->isLoggedIn = $row['logged_in'];
+                    $this->ipAddress = $row['ip_address'];
+                    $this->dateAdded = $row['date_added'];
+                    $this->activated = $row['activated'];
+                }
+            }
+        }
+        
 	}
+    
 	function SetCookieforUser($u, $p, $id) {
 		
 		$time1 =  time() + 86400*30;
@@ -943,7 +953,18 @@ class User {
 	}
 	
 	function getAddress() {
-		return $this->address1."<br>".$this->address2."<br>".$this->city.", ".$this->state."-".$this->pincode;
+        $add = !empty($this->address1) ? $this->address1 : "";
+        $add .= "<br>";
+        $add .= !empty($this->address2) ? $this->address2 : "";
+        $add .= "<br>";
+        $add .= !empty($this->city) ? $this->city : "";
+        $add .= "<br>";
+        $add .= !empty($this->state) ? $this->state : "";
+        $add .= "<br>";
+        $add .= !empty($this->pincode) ? $this->pincode : "";
+        $add .= "<br>";
+        
+		return $add;
 	}
 	
 	function getLandmark(){
