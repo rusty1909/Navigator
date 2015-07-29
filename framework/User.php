@@ -993,7 +993,7 @@ class User {
 	
 	function isCompanyAdmin(){
 		$self = new User();
-		$selfCompany = new Company($self->getCompany);
+		$selfCompany = new Company($self->getCompany());
 		if($self->getId() == $selfCompany->getAdmin()) return true;
 		else return false;
 	}

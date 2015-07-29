@@ -302,7 +302,7 @@ ini_set('display_errors', 1);
 									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getFullName()."</b></td>";
 									echo "<td>".$mEmployee->getPhoneMobile()."</td>";
 									echo "<td>".$mEmployee->getAddress()."</td>";
-									if(!$mUser->isAdmin || $mUser->getId() != $mEmployee->getId()) {
+									if(!$mUser->isCompanyAdmin() || $mUser->getId() != $mEmployee->getId()) {
 										echo "<td>
 											<!-- Icons -->
 											 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
@@ -399,8 +399,8 @@ ini_set('display_errors', 1);
 								</p>
 								
 								<p class="column-left">
-									<label>Email</label>
-									<input class="text-input medium-input" id="email" name="email" type="email" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<label>Email <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="email" name="email" type="email" required style="width:45.5%  !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
