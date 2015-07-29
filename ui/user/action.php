@@ -23,15 +23,15 @@ switch($action) {
 		$password = $_POST['password'];
 		$rememberme = $_POST['rememberme'];
 		
-		if($mUser->login($username, $password)) {
-			$mUser = new User($username, $password, $mUser->getCompany());
+        if($mUser->login($username, $password)) {
+			$mUser = new User();
 			if($mUser->getActivatedState()==1) {
 				if($rememberme) $mUser->SetCookieforUser($username, $password, $mUser->getCompany());
 				echo "Redirecting to dashboard.";
 				echo "<script>window.location.href = 'index.php'</script>";
 				//header('Location:index.php');
 			} else{
-				echo "<script>window.location.href = 'activate.php'</script>";
+                echo "<script>window.location.href = 'activate.php'</script>";
 			}
 		} else {
 			echo "<script>alert('Username or Password incorrect. Please try again.');</script>";
