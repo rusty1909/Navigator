@@ -121,48 +121,6 @@ class Company {
             return false;
     }
     
-     public static function totalEmployee() {
-       
-        if(empty($_SESSION['user']))
-            return null;
-
-        $db = new Connection();
-        $conn = $db->connect();
-
-        $company_id = $_SESSION['user']['company'];
-
-        $sql = "SELECT id FROM user WHERE company_id = '$company_id'";
-        $action = mysqli_query($conn, $sql);
-
-        return mysqli_num_rows($action);  
-    }
-    
-    public static function totalEmployeeArray() {
-   
-     	$db = new Connection();
-		$conn = $db->connect();
-        
-         if(empty($_SESSION['user']))
-            return null;
-        
-        
-		$company_id = $_SESSION['user']['company'];
-		$result = array();
-		
-		$sql = "SELECT id FROM user WHERE company_id = '$company_id'";
-		
-        $action = mysqli_query($conn, $sql);
-
-		if (mysqli_num_rows($action) > 0) {
-		  while($row = mysqli_fetch_assoc($action)) {
-				array_push($result, $row['id']);
-			}
-		}
-		//echo sizeof($result)."    < size";
-		return $result;
-        
-    }
-    
     public static function isCompanyRegistered($id) {
         $db = new Connection();
         $conn = $db->connect();
