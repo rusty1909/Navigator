@@ -449,7 +449,7 @@ class User {
 		if($oldPassword != $_SESSION['user']['password']) return false;
 		
 		$sql = "UPDATE user SET password = '$newPassword' WHERE id = '$this->id' AND password = '$oldPassword'";
-		print_r($sql);
+		//print_r($sql);
 		//$action = mysqli_query($conn, $sql);
 
 		if (mysqli_query($conn, $sql)) {
