@@ -7,6 +7,7 @@ if(!isset($_SESSION))
 
 require_once 'Connection.php';
 require_once 'Mailer.php';
+require_once 'Company.php';
 
 class User {
 	private $id;
@@ -988,6 +989,13 @@ class User {
 	
 	function getLandmark(){
 		return $this->landmark;
+	}
+	
+	function isCompanyAdmin(){
+		$self = new User();
+		$selfCompany = new Company($self->getCompany);
+		if($self->getId() == $selfCompany->getAdmin()) return true;
+		else return false;
 	}
 	
 	function getPhoneOffice(){

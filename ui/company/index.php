@@ -302,7 +302,7 @@ ini_set('display_errors', 1);
 									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getFullName()."</b></td>";
 									echo "<td>".$mEmployee->getPhoneMobile()."</td>";
 									echo "<td>".$mEmployee->getAddress()."</td>";
-									if($mUser->getId() != $mEmployee->getId()) {
+									if(!$mUser->isAdmin || $mUser->getId() != $mEmployee->getId()) {
 										echo "<td>
 											<!-- Icons -->
 											 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
