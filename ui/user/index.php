@@ -304,7 +304,7 @@ if(!isset($_SESSION['user']))
 					</ul><!-- End .shortcut-buttons-set -->
 				</div> <!-- End .content-box -->
 				<div class="clear"></div>
-				<div class="content-box column-left" style="width:49%;height:50%">				
+				<div class="content-box column-left" style="width:100%;height:50%">				
 					<div class="content-box-header">					
 						<h3 style="cursor: s-resize;">Pending Bills (<?php echo sizeof($mPendingExpenseList);?>)</h3>				
 					</div> <!-- End .content-box-header -->				
@@ -322,9 +322,19 @@ if(!isset($_SESSION['user']))
 									$mExpense = new Expense($mPendingExpenseList[$i]);
 									$vehicleId = $mExpense->getVehicle();
 									$mVehicle = new Vehicle($vehicleId);
+									
+									$driverId = $mExpense->getDriver();
+									$mDriver = new Driver($driverId);
+									
 									$reason = $mExpense->getReason();
 									$amount = $mExpense->getAmount();
-									echo "<tr onMouseOver='this.bgColor='#EEEEEE''><td style='width:50%'><b><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td><td>".$reason."</td><td><b>Rs.".$amount."</b></td><td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='../../res/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td></tr>";
+									echo "<tr onMouseOver='this.bgColor='#EEEEEE''>
+											<td style='width:30%'><b><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td>
+											<td style='width:30%'><b><a href='../vehicle/detail.php?id=".$mDriver->getId()."'>".$mDriver->getName()."</a></b></td>
+											<td>".$reason."</td>
+											<td><b>Rs.".$amount."</b></td>
+											<td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='../../res/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td>
+										</tr>";
 								}
 							?>
 							</tbody>
@@ -333,11 +343,14 @@ if(!isset($_SESSION['user']))
 					
 					</div> <!-- End .content-box-content -->			
 				</div> <!-- End .content-box -->
+				<!----------------- REMINDER TAB -------------------------------------------------------------------------------------
 				<div class="content-box column-right" style="width:49%;height:50%">				
 					<div class="content-box-header">					
 						<h3 style="cursor: s-resize;">Reminders</h3>
 						<a href="#" style="color:#57a000; float:right;padding:15px 10px 0 0 !important"><b>Add Reminder</b></a>		
-					</div> <!-- End .content-box-header -->				
+					</div> 
+					
+					
 					<div style="display: block;padding:0px;height:85%;overflow-y:auto" class="content-box-content">
 					
 						<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
@@ -352,8 +365,10 @@ if(!isset($_SESSION['user']))
 							</table>
 						</div>      
 					
-					</div> <!-- End .content-box-content -->
+					</div> 
+					
 				</div>
+				---------------------------------------------------------------------------------------------------------------------------->
 			</div>
 			
 			
