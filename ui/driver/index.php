@@ -422,7 +422,7 @@ if(!isset($_SESSION['user']))
 								
 								<p class="column-right">
 									<label>Phone</label>
-										<b>+91- </b><input class="text-input medium-input" name="phone" id="phone" type="number" required placeholder='0123456789' min='1000000000' max='9999999999'> 
+										<b>+91- </b><input class="text-input medium-input" name="phone" id="phone" type="number" maxlength="13" required placeholder='0123456789' min='1000000000' max='9999999999'> 
 								</p>
 
 								<p>

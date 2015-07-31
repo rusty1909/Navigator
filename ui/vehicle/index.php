@@ -836,7 +836,7 @@ if(!isset($_SESSION['user']))
 
 								<p>
 									<label>Vehicle Number</label>
-										<input class="text-input small-input" name="vehicle_number" id="vehicle_number" type="text" required placeholder='DL 12 UB 1234'> <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
+										<input class="text-input small-input" name="vehicle_number" id="vehicle_number" type="text" required placeholder='DL 12 UB 1234' pattern=".{5, 15}"> <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
 								</p>
 								
 								<p>

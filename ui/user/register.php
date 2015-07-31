@@ -200,7 +200,7 @@
 								
 								<p class="column-right">
 									<label>Mobile <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="phone_m" name="phone_m" type="number"  style="width:95% !important" required placeholder='0123456789'> 
+									<input class="text-input medium-input" id="phone_m" name="phone_m" type="number" maxlength="13" style="width:95% !important" required placeholder='0123456789'> 
 								</p>
 								
 									<p class="column-left">
@@ -232,7 +232,7 @@
 								
 								<p class="column-right">
 									<label>Pin Code <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="pincode" name="pincode" type="number"  required placeholder="110091" style="width:45.5% !important"> 
+									<input class="text-input medium-input" id="pincode" name="pincode" type="number"  maxlength="6" required placeholder="110091" style="width:45.5% !important"> 
 								</p>
 								
 								<p>

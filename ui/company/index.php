@@ -362,12 +362,12 @@ ini_set('display_errors', 1);
 								
 								<p class="column-right">
 									<label>Pin Code <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="pincode" name="pincode" type="text"  style="width:45.5% !important"> 
+									<input class="text-input medium-input" id="pincode" name="pincode" type="text" maxlength="6" style="width:45.5% !important"> 
 								</p>
 
 								<p class="column-left">
 									<label>Phone <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="phone" name="phone" type="number" style="width:45.5% !important"  required placeholder="0123456789"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="phone" name="phone" type="number" maxlength="13" style="width:45.5% !important"  required placeholder="0123456789"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
