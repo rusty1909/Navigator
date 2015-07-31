@@ -127,6 +127,7 @@ class Notification {
 		$resArray['long'] = $this->longitude;
 		$resArray['priority'] = $this->priority;
 		$resArray['type'] = $this->type;
+		$resArray['driver'] = $this->driver;
 		
 		return $resArray;
 	}
