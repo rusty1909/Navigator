@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 	require_once "../../framework/User.php";
 	require_once "../../framework/Vehicle.php";
 	require_once "../../framework/Job.php";

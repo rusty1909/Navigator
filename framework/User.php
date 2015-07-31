@@ -8,6 +8,7 @@ if(!isset($_SESSION))
 require_once 'Connection.php';
 require_once 'Mailer.php';
 require_once 'Company.php';
+require_once 'Security.php';
 
 class User {
 	private $id;
@@ -108,9 +109,8 @@ class User {
 		$conn = $db->connect();
 		//add user
 		$user = "INSERT INTO user (firstname, lastname, username, password, phone_m, phone_o, email, company_id, `address_1`, `address_2`, `city`, `state`, `landmark`, `pincode`) VALUES ('$firstname', '$lastname', '$username', '$password', '$phone_m', '$phone_o', '$email', '$company', '$address_1', '$address_2', '$city', '$state', '$landmark', '$pincode')";
-		//echo $user."<br>";
-		//echo "1<br>";
-		if (mysqli_query($conn, $user)) {
+		
+        if (mysqli_query($conn, $user)) {
 			$getUser = "SELECT * FROM user WHERE username='$username' AND password='$password'";
 			$action = mysqli_query($conn, $getUser);
 			if (mysqli_num_rows($action) > 0) {
@@ -123,10 +123,8 @@ class User {
 				/*sending activation mail*/
                 $securityKey = Security::getSecurityKey($id);
 				Mailer::sendActivationMessage($firstname." ".$lastname, $username, $email, $securityKey);
-				/*echo "2<br>";*/
-				return true;
+                return true;
 			} else {
-				//echo "3<br>";
 				return false;
 			}
 		}

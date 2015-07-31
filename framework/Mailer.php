@@ -1,5 +1,8 @@
 <?php
-include_once( 'Security.php');
+error_reporting(E_ALL);
+ini_set('display_errors',1);
+
+
 //Company Details...
 define ("WEB_FULL_NAME", "FindGaddi.com"); // set database host
 define ("WEBSITE_NAME", "www.findgaddi.com"); // set database host
