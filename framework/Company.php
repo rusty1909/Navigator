@@ -110,10 +110,10 @@ class Company {
         return $this->name;
     }
 
-    public static function addEmployee($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
+    public static function addEmployee($name, $emp_id, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
    
         if(!empty($_SESSION['user']['company'])){ 
-            if(User::add($name, '', $email, 'findgaddi', $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
+            if(User::add($name, '', $emp_id, 'findgaddi', $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
                 User::activate(User::getIdByEmail($email));
                 $muser = new User(User::getIdByEmail($email));
                 $muser->SetAddedby($_SESSION['user']['id']);
@@ -225,13 +225,13 @@ class Company {
         $db = new Connection();
         $conn = $db->connect();
 
-       	$sql = "SELECT id FROM user WHERE company_id='$com_id' AND status='1'";
+       	$sql = "SELECT username FROM user WHERE company_id='$com_id' AND status='1'";
 		
 		$action = mysqli_query($conn, $sql);
 
 		if (mysqli_num_rows($action) > 0) {
 		  while($row = mysqli_fetch_assoc($action)) {
-				if($emp_id == $row['id'])
+				if($emp_id == $row['username'])
                     return true;
 			}
 		}

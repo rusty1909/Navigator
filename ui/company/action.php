@@ -46,7 +46,7 @@ switch($action) {
 		break;
     case "registerEmployee" : 
 		$name = $_POST['name'];
-		$tin_number = $_POST['tin_number'];
+		$emp_id = $_POST['emp_id'];
 		$address_1 = $_POST['address_1'];
 		$address_2 = $_POST['address_2'];
 		$landmark = $_POST['landmark'];
@@ -59,7 +59,7 @@ switch($action) {
         $website = '';
         $description ='';
 		
-		if(Company::addEmployee($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
+		if(Company::addEmployee($name, $emp_id, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
 			echo "<script>alert('Employee added successfully!!!');</script>";
 			echo "<script>window.location.href = '../user/login.php'</script>";
 		} else {
