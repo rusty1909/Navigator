@@ -220,6 +220,24 @@ class Company {
         return false;
     }
     
+    public static function isEmployeeExists($com_id, $emp_id) {
+        // opening db connection
+        $db = new Connection();
+        $conn = $db->connect();
+
+       	$sql = "SELECT id FROM user WHERE company_id='$com_id' AND status='1'";
+		
+		$action = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($action) > 0) {
+		  while($row = mysqli_fetch_assoc($action)) {
+				if($emp_id == $row['id'])
+                    return true;
+			}
+		}
+        return false;
+    }
+    
     function getAdmin(){
 		return $this->admin;
 	}
