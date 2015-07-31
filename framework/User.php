@@ -1019,17 +1019,18 @@ class User {
 	}
     
     function delete() {
-	
-        $db = new Connection();
+		$db = new Connection();
 		$conn = $db->connect();
 		
         if($this->id == $_SESSION['user']['id'])
             return false;
         
-        $sql = "UPDATE vehicle SET activated = '0' AND status = '0' WHERE id = '$this->id'";
-        mysqli_query($conn, $sql);
-        
-        return true;
+        $sql = "UPDATE user SET activated = '0' , status = '0' WHERE id = '$this->id'";
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
     
     
