@@ -211,12 +211,12 @@ ini_set('display_errors', 1);
 								
 								<p class="column-right">
 									<label>Pin Code <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="pincode" name="pincode" type="number" maxlength="6" required placeholder="110091" style="width:45.5% !important"> 
+									<input class="text-input medium-input" id="pincode" name="pincode" type="text" maxlength="6" required placeholder="110091" style="width:45.5% !important"> 
 								</p>
 
 								<p class="column-left">
 									<label>Phone <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="phone" name="phone" type="number" maxlength="13"  required placeholder="011 23456789" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<input class="text-input medium-input" id="phone" name="phone" type="text" maxlength="10"  required placeholder="011 23456789" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
