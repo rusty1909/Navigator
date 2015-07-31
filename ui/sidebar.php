@@ -59,7 +59,7 @@ if($mIsCompanyRegistered){
 					Vehicles
 					</a>
 					<ul style="display: block;">
-						<li><a class="<?php if(($url[3] == 'vehicle') && ($url[4] == '' || $url[4] == 'index.php' || $url[4] == 'edit.php' || explode("?", $url[4])/*[0]*/ == 'detail.php')) echo 'current'; ?>" href="/navigator/ui/vehicle/">Manage Vehicles</a></li> //check comment after explode
+						<li><a class="<?php if(($url[3] == 'vehicle') && ($url[4] == '' || $url[4] == 'index.php' || $url[4] == 'edit.php' || explode("?", $url[4])[0] == 'detail.php')) echo 'current'; ?>" href="/navigator/ui/vehicle/">Manage Vehicles</a></li>
 						<!--<li><a href="#">Servicing Details</a></li>-->
 					</ul>
 				</li>
