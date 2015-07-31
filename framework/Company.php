@@ -8,6 +8,7 @@ if(!isset($_SESSION))
 
 require_once 'Connection.php';
 require_once 'User.php';
+require_once 'Mailer.php';
 
 class Company {
     private $id;
@@ -117,6 +118,7 @@ class Company {
                 User::activate(User::getIdByEmail($email));
                 $muser = new User(User::getIdByEmail($email));
                 $muser->SetAddedby($_SESSION['user']['id']);
+                Mailer::sendEmployeeAddedMessage($name,$emp_id, $email, 'findgaddi');
                 return true;
             }
         }

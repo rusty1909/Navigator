@@ -96,6 +96,36 @@ class Mailer {
             return $msgToUser;
     }
 
+    public static function sendEmployeeAddedMessage($pfullname, $pusername, $pemail, $password){
+        $msgToUser = "";
+        $subject = 'Complete Your ' . WEB_FULL_NAME . ' Registeration';
+        $message = "Hi ".strtoupper($pfullname).",<br /><br />
+
+            You have successfully created account with .<br />
+            Account Details :<br /><br />
+            Name : $pfullname<br />
+            UserName : $pusername<br />
+            Email ID: $pemail<br /><br /><br />
+            Password: $password<br /><br /><br />
+            Complete this step to activate your account at ".WEB_FULL_NAME."<br />";
+
+          $message .= "Please change your password as soon as possible."; 
+            
+            $message = Mailer::makeMessage($message); 
+
+           if(mail($pemail, $subject, $message, activation_headers)) {
+               $msgToUser = "<h2>One Last Step - Activate through Email</h2><h4>$pfullname, there is one last step to verify your email identity:</h4><br />
+               In a moment you will be sent an Activation link to your email address.<br /><br />
+               <br />	   ";
+           }else {		
+            //second case if email link is not working.....	
+                 $msgToUser = "<h2>$pfullname,<span> you have successfully registered with us.</span></h2><br />
+                                Please <a href='./index.php'>Login</a>...<br /><br />";
+            }
+
+            return $msgToUser;
+    }
+
     public static function SendMessagebyPHP($puserid,$subject,$message ){
         $msgToUser = "";
 
@@ -196,6 +226,47 @@ class Mailer {
        }else{
             $msgToUser = "<h3>There was some technical fault, please try again...</h3>";
        }
+
+        return $msgToUser;
+    }
+
+    //payment mails...
+    public static function SendPaymentNotifcation($pfullname, $pemail, $amount, $pass){
+
+        $msg = "Dear $pfullname";
+        if($pass)
+            $msg .= "Congrats, You have successfully made transaction of $amount .";
+        else
+            $msg .= "Unfortunately, Transaction of $amount was not successful.";
+        
+        if($pass)
+            Mailer::SendPaymentSuccessMessage($pemail, $msg);
+        else
+            Mailer::SendPaymentFailureMessage($pemail, $msg);
+        
+    }
+    
+    public static function SendPaymentSuccessMessage($puserid,$message ){
+        $msgToUser = "";
+        $message = makeMessage($message); 
+       if(mail($puserid, "Payment was successful...", $message, Def_headers)) {
+           $msgToUser = "Payment was successful...
+           ";
+       }else {		
+             $msgToUser = "Some Technical Faults...";
+        }
+
+        return $msgToUser;
+    }
+
+    public static function SendPaymentFailureMessage($puserid,$message ){
+        $msgToUser = "";
+        $message = makeMessage($message); 
+       if(mail($puserid, "There was a transaction failure.", $message, Def_headers)) {
+           $msgToUser = "There was a transaction failure.";
+       }else {		
+        $msgToUser = "Some Technical Faults...";
+        }
 
         return $msgToUser;
     }
