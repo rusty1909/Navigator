@@ -74,6 +74,52 @@ if(!isset($_SESSION['user']))
     
 	<script>
 	
+	var vehicle_id;
+	
+	function setId(id){
+		vehicle_id = id;
+		//alert(vehicle_id);
+	}
+	
+	function fetchNotification(){
+		var data = "";
+        jQuery.ajax({
+            type: 'POST',
+            url: 'notification.php?id='+vehicle_id+"&date=today",
+            cache: false,
+            success: function(response){
+				if(response == 0){
+				}
+				else {					
+					var notiList = JSON.parse(response);
+					for(var i=0; i<notiList.length; i++){
+						var image = "alert_ok";
+						switch(notiList[i].type){
+							case "expenses" : image = "alert_upload"; break;
+							case "power_battery_plugged" : image = "alert_ok"; break;
+							case "location" : image = "alert_location"; break;
+							case "power_battery_low" :
+							case "power_shutdown" :
+							case "power_battery_unplugged" : image = "alert_high"; break;
+							default : image = "alert_ok"; break;
+						}
+						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
+						console.log(i);
+					}
+					//alert(data);
+					document.getElementById("noti_body").innerHTML = data;
+					document.getElementById("noti_count").innerHTML = notiList.length;
+					//$("#noti_table").find("tbody").find('#main-content table').;
+					data="";
+				}
+            }
+        });
+       
+        
+	}
+	
+	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
+	
 	function setDriver(id, driver_id){
 		//alert(id+" "+driver_id);
         jQuery.ajax({
@@ -251,11 +297,11 @@ if(!isset($_SESSION['user']))
     
     function showTrack(id){
 		if(track_marker != null){
-			alert("clearing map 1");
+			console.log("clearing map 1");
 			track_marker.setMap(null);
 		}
 		if(snappedPolyline != null){
-			alert("clearing map 2");
+			console.log("clearing map 2");
 			snappedPolyline.setMap(null);
 		}
 
@@ -266,7 +312,7 @@ if(!isset($_SESSION['user']))
             alert("Enter start and end date.");
             return;
         }
-				document.getElementById("from_date").disabled = true; 
+		document.getElementById("from_date").disabled = true; 
 		document.getElementById("to_date").disabled = true; 
         
         jQuery.ajax({
@@ -287,8 +333,12 @@ if(!isset($_SESSION['user']))
     }
 	
 	function reload(){
-		//location.reload(true);
-		$('#trace_info').load(document.URL +  ' #trace_info');
+		document.getElementById("distance").innerHTML="";
+		$('#distance').load(document.URL +  ' #distance');
+		document.getElementById("from_date").value="";
+		document.getElementById("to_date").value="";
+		document.getElementById("from_date").disabled = false; 
+		document.getElementById("to_date").disabled = false;
 		initialize();
 		//$('#googleMap').load(document.URL +  ' #googleMap');
 	}
@@ -465,7 +515,7 @@ if(!isset($_SESSION['user']))
 	</script>
 </head>
   
-	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+	<body onload='setId(<?php echo $mId?>);fetchNotification();'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		<input type=hidden value="<?php echo $mId; ?>" id="id_value">
 	<?php include('../sidebar.php');?>
 		
@@ -506,9 +556,9 @@ if(!isset($_SESSION['user']))
 					?>
 					<div class="content-box-content-detail" style="width:30%;height:100%;float:right;overflow-y:auto">
 					
-						<div id="vehicle_number" style="margin:15px 5px 20px 10px">
+						<div id="vehicle_details" style="margin:15px 5px 20px 10px">
 							<img id="type" height="45" width="45" src="../../res/vehicle_types/<?php echo $mVehicle->getType();?>.png" title="<?php echo $mVehicle->getType()." : ".$mVehicle->getModel();?>" alt="<?php echo $mVehicle->getType();?>"> <span style="vertical-align:12px;"><b style="font-size:30px;"><?php echo $mVehicle->getVehicleNumber(); ?> </b>	</span>	
-							<br><br><input class="button" type='button' value='View full details'> &nbsp;&nbsp;&nbsp; <input class="button" type='button' value='Notifications'>
+							<br><br><input class="button" type='button' value='View full details'>
 							<br><br><br>
 							<div id="location_info">
 								<table>
@@ -552,8 +602,27 @@ if(!isset($_SESSION['user']))
 								<tr><td colspan='3' style="width:20px;padding:7px;"><b><span id="distance" style='vertical-align:2px;'><input class="button" type="submit" value="Show Route" onClick="showTrack(<?php echo $mId; ?>)"></span></b><td><tr>
 								</table>
 							</div>
-
-						</div>											
+						</div>
+						<div id="notifications">
+							<div class="content-box-header" style="padding:0px;"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
+								<h3 style="cursor: s-resize;">Events of the day (<span id='noti_count'></span>)</h3>
+							</div> <!-- End .content-box-header -->
+							
+							<div class="content-box-content" style="display: block;padding:0px;overflow-y:auto;height:46%">
+								
+								<div style="display:block;" class="tab-content default-tab" id="item-list">
+								
+									<table id="noti_table">
+									<thead>
+									<tr></tr>
+									</thead>
+									<tbody style="border-bottom:0px" id="noti_body">
+									<tr><td><b>Loading Notifications</b></td></tr>
+									</tbody>
+									</table>
+								</div> <!-- End #tab3 -->  
+							</div> <!-- End .content-box-content -->
+						</div>						
 					</div> 
 					</div>
 					

@@ -111,9 +111,16 @@ if(!isset($_SESSION['user']))
 	$(window).resize();
 	 
 	});
+        
+    function onDelete(id){
+		if(confirm("You really want to delete this User?"))
+			window.location.href = "action.php?action=delete&id="+id;
+	}
+        
 	</script>
 
 	<script>
+	var bill_id;
 	function fetchBillDetails(id){
 		var data = "";
         jQuery.ajax({
@@ -125,6 +132,7 @@ if(!isset($_SESSION['user']))
 				}
 				else {
 					//alert(response)
+					bill_id = id;
 					var billDetail = JSON.parse(response);
 					
 					var vehicle_image = '../../res/vehicle_types/'+billDetail.vehicle.type+'.png';
@@ -136,23 +144,68 @@ if(!isset($_SESSION['user']))
 					document.getElementById("driver").innerHTML = driver_text;
 					
 					var bill_image_path = '../../res/bills/'+billDetail.vehicle.number+'/'+billDetail.filename+'.jpg';
-					var bill_image_text = "<img src='"+bill_image_path+"'>";
+					var bill_image_text = "<img width='100' src='"+bill_image_path+"'>";
 					document.getElementById("bill_image").innerHTML = bill_image_text;
 					
 					var reason_image = '../../res/info.png';
 					var reason_text = "<img height='18' width='18' src='"+reason_image+"'>&nbsp;&nbsp<b>"+billDetail.reason+"</b>";
 					document.getElementById("reason").innerHTML = reason_text;
 					
-					document.getElementById("amount").innerHTML = "<b>Rs."+billDetail.amount+"</b>";
+					var amount_image = '../../res/amount.png';
+					document.getElementById("amount").innerHTML = "<img height='18' width='18' src='"+amount_image+"'>&nbsp;&nbsp<b>Rs."+billDetail.amount+"</b>";
 					
 					var calendar_image = '../../res/calendar.png';
 					var date_added_text = "<img height='15' width='15' src='"+calendar_image+"'>&nbsp;&nbsp<b>"+billDetail.date_added+"</b>";
 					document.getElementById("date_added").innerHTML = date_added_text;
 					
-					document.getElementById("latlng").innerHTML = billDetail.location.lat+","+billDetail.location.lng;
+					//document.getElementById("latlng").innerHTML = billDetail.location.lat+","+billDetail.location.lng;
+					
+					updateAddressView(billDetail.location.lat, billDetail.location.lng);
 				}
             }
         });
+	}
+	
+	function approveBill(isApproval) {
+		jQuery.ajax({
+            type: 'POST',
+            url: 'action.php?action=billapproval&id='+bill_id+'&approval='+isApproval,
+            cache: false,
+            success: function(response){
+				if(response == 0){
+				}
+				else {
+					if(response=='success'){
+						location.reload();
+						if(isApproval==1){
+							alert("Bill Approved!!!");
+						} else {
+							alert("Bill Rejected!!!");
+						}
+					} else{
+						alert("some problem occurred");
+					}
+				}
+            }
+        });
+	}
+	
+	function updateAddressView(latitude, longitude){
+		var geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(latitude, longitude);
+		geocoder.geocode({'location': latlng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results[1]) {
+					var formatted_address = results[1].formatted_address;
+					var calendar_image = '../../res/location_icon.png';
+					document.getElementById("address").innerHTML = "<img height='15' width='15' src='"+calendar_image+"'>&nbsp;&nbsp<b>"+formatted_address+"<br>("+latitude+","+longitude+")</b>";
+				} else {
+					console.log('No results found');
+				}
+			} else {
+				console.log('Geocoder failed due to: ' + status);
+			}
+		});
 	}
 	
 	function fetchNotification(){
@@ -251,7 +304,7 @@ if(!isset($_SESSION['user']))
 					</ul><!-- End .shortcut-buttons-set -->
 				</div> <!-- End .content-box -->
 				<div class="clear"></div>
-				<div class="content-box column-left" style="width:49%;height:50%">				
+				<div class="content-box column-left" style="width:100%;height:50%">				
 					<div class="content-box-header">					
 						<h3 style="cursor: s-resize;">Pending Bills (<?php echo sizeof($mPendingExpenseList);?>)</h3>				
 					</div> <!-- End .content-box-header -->				
@@ -269,9 +322,19 @@ if(!isset($_SESSION['user']))
 									$mExpense = new Expense($mPendingExpenseList[$i]);
 									$vehicleId = $mExpense->getVehicle();
 									$mVehicle = new Vehicle($vehicleId);
+									
+									$driverId = $mExpense->getDriver();
+									$mDriver = new Driver($driverId);
+									
 									$reason = $mExpense->getReason();
 									$amount = $mExpense->getAmount();
-									echo "<tr onMouseOver='this.bgColor='#EEEEEE''><td style='width:50%'><b><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td><td>".$reason."</td><td><b>Rs.".$amount."</b></td><td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='../../res/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td></tr>";
+									echo "<tr onMouseOver='this.bgColor='#EEEEEE''>
+											<td style='width:30%'><b><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td>
+											<td style='width:30%'><b><a href='../vehicle/detail.php?id=".$mDriver->getId()."'>".$mDriver->getName()."</a></b></td>
+											<td>".$reason."</td>
+											<td><b>Rs.".$amount."</b></td>
+											<td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='../../res/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td>
+										</tr>";
 								}
 							?>
 							</tbody>
@@ -280,11 +343,14 @@ if(!isset($_SESSION['user']))
 					
 					</div> <!-- End .content-box-content -->			
 				</div> <!-- End .content-box -->
+				<!----------------- REMINDER TAB -------------------------------------------------------------------------------------
 				<div class="content-box column-right" style="width:49%;height:50%">				
 					<div class="content-box-header">					
 						<h3 style="cursor: s-resize;">Reminders</h3>
 						<a href="#" style="color:#57a000; float:right;padding:15px 10px 0 0 !important"><b>Add Reminder</b></a>		
-					</div> <!-- End .content-box-header -->				
+					</div> 
+					
+					
 					<div style="display: block;padding:0px;height:85%;overflow-y:auto" class="content-box-content">
 					
 						<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
@@ -299,8 +365,10 @@ if(!isset($_SESSION['user']))
 							</table>
 						</div>      
 					
-					</div> <!-- End .content-box-content -->
+					</div> 
+					
 				</div>
+				---------------------------------------------------------------------------------------------------------------------------->
 			</div>
 			
 			
@@ -338,31 +406,36 @@ if(!isset($_SESSION['user']))
 		
 	</div>
 	
-	<div id="bill_popup" class="modal-box">  
+	<div id="bill_popup" class="modal-box" style="width:40%;">  
 	  <header>
 		<h3>Bill Details</h3>
 	  </header>
 	  <div class="modal-body" id="item-list" style="padding-left:10px;padding-right:10px">
-	  
-		<table>
-		<tbody>
-			<tr><td colspan='3' id="vehicle">vehicle...</td><td colspan='2' rowspan='5' id="bill_image" style='vertical-align:bottom'>bill_image...</td></tr>
-			<tr><td colspan='3' id="driver">driver...</td></tr>
-			<tr><td colspan='3' id="reason">reason...</td></tr>
-			<tr><td colspan='3' id="amount">amount...</td></tr>
-			<tr><td colspan='3' id="date_added">date_added...</td></tr>
-			<tr></tr>
-			<tr><td colspan='5'>Updated at</td></tr>
-			<tr><td colspan='4' id='address'>Loading</td><td rowspan='2' id='map'>map</td></tr>
-			<tr><td id='latlng'>Loading</td></tr>
-			
-		</tbody>
-		</table>
-		
+		<div style="float:left;width:250px">
+			<table>
+			<tbody style="border-bottom: 0px;">
+				<tr style="border-bottom: 0px;"><td id="vehicle">vehicle...</td></tr>
+				<tr style="border-bottom: 0px;"><td id="driver">driver...</td></tr>
+				<tr style="border-bottom: 0px;"><td id="reason">reason...</td></tr>
+				<tr style="border-bottom: 0px;"><td id="amount">amount...</td></tr>
+				
+			</tbody>
+			</table>
+		</div>
+		<div style="float:right;" id="bill_image">
+		</div>
+		<div style="width:100%">
+			<table>
+			<tbody>
+				<tr style="border-bottom: 0px;"><td id='address'>Loading</td><!--<td id='map'>map</td>--></tr>
+				<tr style="border-bottom: 0px;"><td id="date_added">date_added...</td></tr>				
+			</tbody>
+			</table>
+		</div>
 	  </div>
 	  <footer>
-		<b><input class="button js-modal-close" value="APPROVE"></b>&nbsp;
-		<a href="#" class="js-modal-close" style="color:#D3402B"><b>REJECT</b></a>&nbsp;
+		<b><input class="button js-modal-close" value="APPROVE" type="submit" onClick="approveBill('1')"></b>&nbsp;
+		<a href="#" class="js-modal-close" style="color:#D3402B" onClick="approveBill('-1')"><b>REJECT</b></a>&nbsp;
 		<a href="#" class="js-modal-close" style="color:#D3402B"><b>LATER</b></a>
 	  </footer>
 	</div>

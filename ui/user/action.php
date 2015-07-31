@@ -23,15 +23,15 @@ switch($action) {
 		$password = $_POST['password'];
 		$rememberme = $_POST['rememberme'];
 		
-		if($mUser->login($username, $password)) {
-			$mUser = new User($username, $password, $mUser->getCompany());
+        if($mUser->login($username, $password)) {
+			$mUser = new User();
 			if($mUser->getActivatedState()==1) {
 				if($rememberme) $mUser->SetCookieforUser($username, $password, $mUser->getCompany());
 				echo "Redirecting to dashboard.";
 				echo "<script>window.location.href = 'index.php'</script>";
 				//header('Location:index.php');
 			} else{
-				echo "<script>window.location.href = 'activate.php'</script>";
+                echo "<script>window.location.href = 'activate.php'</script>";
 			}
 		} else {
 			echo "<script>alert('Username or Password incorrect. Please try again.');</script>";
@@ -39,18 +39,25 @@ switch($action) {
 			//header('Location:login.php');
 		}
 		break;
-	case "register" : $firstname = $_POST['firstname'];
+	case "register" : 
+        $firstname = $_POST['firstname'];
 		$lastname = $_POST['lastname'];
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 		$phone_m = $_POST['phone_m'];
 		$phone_o = $_POST['phone_o'];
 		$email = $_POST['email'];
-		if(User::add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email)) {
+        
+		$address_1 = $_POST['address_1'];
+		$address_2 = $_POST['address_2'];
+		$landmark = $_POST['landmark'];
+		$city = $_POST['city'];
+		$state = $_POST['state'];
+		$pincode = $_POST['pincode'];
+        
+		if(User::add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email, $address_1, $address_2, $landmark, $city, $state, $pincode)) {
 			echo "<script>alert('User registered successfully!!!');</script>";
 			echo "<script>window.location.href = '../user/login.php'</script>";
-			//echo "<script>window.location.href = '../company/register.php'</script>";
-			//header('Location:../company/register.php');
 		} else {
 			echo "<script>alert('Sorry, some error occured.');</script>";
 			echo "<script>window.location.href = 'register.php'</script>";
@@ -133,6 +140,18 @@ switch($action) {
 		$detail['location'] = $mExpense->getLocation();
 		
 		echo json_encode($detail);
-		
+		break;
+	
+	case "billapproval" : if(!(isset($_GET['id']) && isset($_GET['approval']))) {
+			break;
+		}
+		$id = $_GET['id'];
+		$approval = $_GET['approval'];
+		$mExpense = new Expense($id);
+		if($mExpense->updateStatus($approval))
+			echo "success";
+		else
+			echo "fail";
+		break;	
 }
 ?>

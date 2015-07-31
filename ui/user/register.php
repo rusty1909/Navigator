@@ -177,13 +177,13 @@
 								</p>
 
 								<p class="column-left">
-									<label>Password</label>
+									<label>Password <span class="mandatory">*</span></label>
 									<input class="text-input medium-input" id="password" name="password" type="password" style="width:95% !important" required> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
 								<p class="column-right">
-									<label>Re-Type Password </label>
+									<label>Re-Type Password <span class="mandatory">*</span></label>
 									<input class="text-input medium-input" id="retype" name="retype" type="password"  style="width:95% !important" onBlur="checkPassword()" required><br><span class="input-notification error png_bg" id="pass_error"></span><span class="input-notification success png_bg" id="pass_success"></span>
 								</p>
 
@@ -201,6 +201,38 @@
 								<p class="column-right">
 									<label>Mobile <span class="mandatory">*</span></label>
 									<input class="text-input medium-input" id="phone_m" name="phone_m" type="number"  style="width:95% !important" required placeholder='0123456789'> 
+								</p>
+								
+									<p class="column-left">
+									<label>Address Line 1 <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="address_1"  required placeholder="Indira Bazar" name="address_1" type="text" style="width:99.5% !important">
+								</p>
+							
+								<p class="column-right">
+									<label>Address Line 2</label>
+									<input class="text-input medium-input" id="address_2" name="address_2" type="text" style="width:99.5% !important">
+								</p>
+								
+								<p class="column-left">
+									<label>Landmark </label>
+									<input class="text-input medium-input" id="landmark" name="landmark" type="text"  placeholder="Sanganeri Gate" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+										<br><small>A small description of the field</small>-->
+								</p>
+								
+								<p class="column-right">
+									<label>City <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="city" name="city" type="text"   required placeholder="New Delhi" style="width:45.5% !important"> 
+								</p>
+				
+								<p class="column-left">
+									<label>State <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="state" name="state" type="text" style="width:45.5% !important"  required placeholder="Delhi"> <!--<span class="input-notification success png_bg">Successful message</span> 
+										<br><small>A small description of the field</small>-->
+								</p>
+								
+								<p class="column-right">
+									<label>Pin Code <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="pincode" name="pincode" type="number"  required placeholder="110091" style="width:45.5% !important"> 
 								</p>
 								
 								<p>

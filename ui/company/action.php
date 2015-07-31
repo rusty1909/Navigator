@@ -60,34 +60,36 @@ switch($action) {
         $description ='';
 		
 		if(Company::addEmployee($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
-			$mUser = new User();
-			$username = $_SESSION['user']['username'];
-			$password = $_SESSION['user']['password'];
-			$mUser->login($username, $password);
 			echo "<script>alert('Employee added successfully!!!');</script>";
 			echo "<script>window.location.href = '../user/login.php'</script>";
-			//header('Location:../user/login.php');
 		} else {
 			echo "<script>alert('Sorry, some error occured.');</script>";
-			//echo "<script>window.location.href = 'register.php'</script>";
-			//header('Location:register.php?error=1');
 		}
 		break;
-	case "nocompany" : $mUser = new User();
+	case "nocompany" :
+        $mUser = new User();
 		if($mUser->setIndividualAccount()) {
 			header('Location:../user/');
 		} else {
 			header('Location:register.php');
 		}
 		break;
-		
+    case "delete" :
+        $id = $_GET['id'];
+		$mUser = new User($id);
+
+		if($mUser->delete())
+			header('Location:index.php');
+		else {
+            header('Location:index.php');
+        }
+			
+        break;
 	case "update" :
 		$mUser = new User();
 		
 		$mCompany = new Company($mUser->getCompany());
 	
-		//$name = $_POST['name'];
-		//$tin_number = $_POST['tin_number'];
 		$address_1 = $_POST['address_1'];
 		$address_2 = $_POST['address_2'];
 		$landmark = $_POST['landmark'];

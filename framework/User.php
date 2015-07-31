@@ -7,6 +7,7 @@ if(!isset($_SESSION))
 
 require_once 'Connection.php';
 require_once 'Mailer.php';
+require_once 'Company.php';
 
 class User {
 	private $id;
@@ -21,33 +22,60 @@ class User {
 	private $ipAddress;
 	private $dateAdded;
 	private $activated;
+    
+    
+	private $address_1;
+	private $address_2;
+	private $city;
+	private $state;
+	private $landmark;
+	private $pincode; 
 
-	function __construct() {
-		if(isset($_SESSION['user'])) {
-			$user_id = $_SESSION['user']['id'];			
-			/* opening db connection*/
-			$db = new Connection();
-			$conn = $db->connect();
-			$sql = "SELECT * FROM user WHERE id='$user_id'";
-			$action = mysqli_query($conn, $sql);
-			if (mysqli_num_rows($action) > 0) {
-				while($row = mysqli_fetch_assoc($action)) {
-					$this->id = $row['id'];
-					$this->firstname = $row['firstname'];
-					$this->username = $row['username'];
-					$this->lastname = $row['lastname'];
-					$this->companyId = $row['company_id'];
-					$this->phoneMobile = $row['phone_m'];
-					$this->phoneOffice = $row['phone_o'];
-					$this->email = $row['email'];
-					$this->isLoggedIn = $row['logged_in'];
-					$this->ipAddress = $row['ip_address'];
-					$this->dateAdded = $row['date_added'];
-					$this->activated = $row['activated'];
-				}
-			}
-		}
+	function __construct($id=-1) {
+        
+        //logic to check if user id has been passed or need to fetch from session...
+        if($id==-1){
+            if(isset($_SESSION['user'])) 
+			     $user_id = $_SESSION['user']['id'];
+            else
+                 $user_id = null;
+        }else
+            $user_id = $id;
+        
+        if($user_id !=null){
+            $db = new Connection();
+            $conn = $db->connect();
+            $sql = "SELECT * FROM user WHERE id='$user_id'";
+            $action = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($action) > 0) {
+                while($row = mysqli_fetch_assoc($action)) {
+                    $this->id = $row['id'];
+                    $this->firstname = $row['firstname'];
+                    $this->username = $row['username'];
+                    $this->lastname = $row['lastname'];
+                    $this->companyId = $row['company_id'];
+                    $this->phoneMobile = $row['phone_m'];
+                    $this->phoneOffice = $row['phone_o'];
+                    $this->email = $row['email'];
+                    $this->isLoggedIn = $row['logged_in'];
+                    $this->ipAddress = $row['ip_address'];
+                    $this->dateAdded = $row['date_added'];
+                    $this->activated = $row['activated'];
+                    
+                    
+                    $this->address_1 = $row['address_1'];
+                    $this->address_2 = $row['address_2'];
+                    $this->city = $row['city'];
+                    $this->state = $row['state'];
+                    $this->landmark = $row['landmark'];
+                    $this->pincode = $row['pincode'];
+                    
+                }
+            }
+        }
+        
 	}
+    
 	function SetCookieforUser($u, $p, $id) {
 		
 		$time1 =  time() + 86400*30;
@@ -75,11 +103,11 @@ class User {
 		return $mUser;
 	}
 
-	public static function add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email, $company=-1){
+	public static function add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email, $address_1, $address_2, $landmark, $city, $state, $pincode,$company=-1){
 		$db = new Connection();
 		$conn = $db->connect();
 		//add user
-		$user = "INSERT INTO user (firstname, lastname, username, password, phone_m, phone_o, email, company_id) VALUES ('$firstname', '$lastname', '$username', '$password', '$phone_m', '$phone_o', '$email', '$company')";
+		$user = "INSERT INTO user (firstname, lastname, username, password, phone_m, phone_o, email, company_id, `address_1`, `address_2`, `city`, `state`, `landmark`, `pincode`) VALUES ('$firstname', '$lastname', '$username', '$password', '$phone_m', '$phone_o', '$email', '$company', '$address_1', '$address_2', '$city', '$state', '$landmark', '$pincode')";
 		//echo $user."<br>";
 		//echo "1<br>";
 		if (mysqli_query($conn, $user)) {
@@ -422,7 +450,7 @@ class User {
 		if($oldPassword != $_SESSION['user']['password']) return false;
 		
 		$sql = "UPDATE user SET password = '$newPassword' WHERE id = '$this->id' AND password = '$oldPassword'";
-		print_r($sql);
+		//print_r($sql);
 		//$action = mysqli_query($conn, $sql);
 
 		if (mysqli_query($conn, $sql)) {
@@ -943,11 +971,31 @@ class User {
 	}
 	
 	function getAddress() {
-		return $this->address1."<br>".$this->address2."<br>".$this->city.", ".$this->state."-".$this->pincode;
+        $add = !empty($this->address_1) ? $this->address_1 : "";
+        $add .= "<br>";
+        $add .= !empty($this->address_2) ? $this->address_2 : "";
+        $add .= "<br>";        
+        $add .= !empty($this->landmark) ? $this->landmark : "";
+        $add .= "<br>";
+        $add .= !empty($this->city) ? $this->city : "";
+        $add .= "<br>";
+        $add .= !empty($this->state) ? $this->state : "";
+        $add .= "<br>";
+        $add .= !empty($this->pincode) ? $this->pincode : "";
+        $add .= "<br>";
+        
+		return $add;
 	}
 	
 	function getLandmark(){
 		return $this->landmark;
+	}
+	
+	function isCompanyAdmin(){
+		$self = new User();
+		$selfCompany = new Company($self->getCompany());
+		if($self->getId() == $selfCompany->getAdmin()) return true;
+		else return false;
 	}
 	
 	function getPhoneOffice(){
@@ -969,6 +1017,22 @@ class User {
 	function getActivatedState() {
 		return $this->activated;
 	}
+    
+    function delete() {
+	
+        $db = new Connection();
+		$conn = $db->connect();
+		
+        if($this->id == $_SESSION['user']['id'])
+            return false;
+        
+        $sql = "UPDATE vehicle SET activated = '0' AND status = '0' WHERE id = '$this->id'";
+        mysqli_query($conn, $sql);
+        
+        return true;
+	}
+    
+    
 }
 
 //User::resetpasswordmail('dheerajagrawal19@gmail.com');

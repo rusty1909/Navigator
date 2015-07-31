@@ -16,8 +16,8 @@ $mUser = User::getCurrentUser();
 switch($action) {
 	case "change" : $old = $_POST['old'];
 		$new = $_POST['new'];
-		echo $old."     ";
-		echo $new;
+		//echo $old."     ";
+		//echo $new;
 		if($mUser->updatePassword($old, $new)) {
 			echo "<script>alert('Updated Successfully!!!')</script>";
 			

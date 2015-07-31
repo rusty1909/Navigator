@@ -9,6 +9,8 @@ ini_set('display_errors', 1);
 	$mUser = new User();
 
 	$mCompany = new Company($mUser->getCompany());
+	
+	$mEmployeeList = $mCompany->getEmployeeList();
 
 ?>
 
@@ -143,39 +145,45 @@ ini_set('display_errors', 1);
 		});
 
 		$(function(){
-		console.log("started");
-		var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+			console.log("started");
+			var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
 
-		  $('a[data-modal-id]').click(function(e) {
-			e.preventDefault();
-			$("body").append(appendthis);
-			$(".modal-overlay").fadeTo(500, 0.7);
-			//$(".js-modalbox").fadeIn(500);
-			var modalBox = $(this).attr('data-modal-id');
-			if(modalBox == "detail-popup"){
-				//alert("sdvdskvds");
-				//$('#'+modalBox).load("edit.php");
-			}
-			$('#'+modalBox).fadeIn($(this).data());
-		  });  
-		  
+			$('a[data-modal-id]').click(function(e) {
+				e.preventDefault();
+				$("body").append(appendthis);
+				$(".modal-overlay").fadeTo(500, 0.7);
+				//$(".js-modalbox").fadeIn(500);
+				var modalBox = $(this).attr('data-modal-id');
+				if(modalBox == "detail-popup"){
+					//alert("sdvdskvds");
+					//$('#'+modalBox).load("edit.php");
+				}
+				$('#'+modalBox).fadeIn($(this).data());
+				});  
 
-		$(".js-modal-close, .modal-overlay").click(function() {
-		  $(".modal-box, .modal-overlay").fadeOut(500, function() {
-			$(".modal-overlay").remove();
-		  });
-		});
 
-		$(window).resize(function() {
-		  $(".modal-box").css({
-			top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
-			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
-		  });
-		});
+			$(".js-modal-close, .modal-overlay").click(function() {
+				$(".modal-box, .modal-overlay").fadeOut(500, function() {
+					$(".modal-overlay").remove();
+				});
+			});
+
+			$(window).resize(function() {
+				$(".modal-box").css({
+					top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
+					left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+				});
+			});
+
+			$(window).resize();
 		 
-		$(window).resize();
-		 
 		});
+        
+        function onDelete(id){
+            if(confirm("You really want to delete this staff? This action cannot be reverted."))
+                window.location.href = "action.php?action=delete&id="+id;
+        }
+        
 	</script>
     
     
@@ -204,7 +212,7 @@ ini_set('display_errors', 1);
 					
 					<ul class="content-box-tabs">
 						<li><a href="#info" class="default-tab current">Basic Information</a></li> <!-- href must be unique and match the id of target div -->
-						<li><a href="#staff">Staff</a></li>
+						<li><a href="#staff">Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
 						<li><a href="#payment">Payments</a></li>
 						<li><a href="#setting">Settings</a></li>
 					</ul>
@@ -243,11 +251,9 @@ ini_set('display_errors', 1);
 					</div>
 					                    
                    <div style="display: block;" class="tab-content" id="staff">	
-						 Existing Employee Count : <?php echo  Company::totalEmployee();?>
                        
 						<?php
-						$mEployeelist = Company::totalEmployee();
-						if(sizeof($mEployeelist) == 0) {
+						if(sizeof($mEmployeeList) == 0) {
 						?>
 						<div class="notification attention png_bg">
 							<div>
@@ -272,7 +278,7 @@ ini_set('display_errors', 1);
 								<tr>
 									<td colspan="6">
 										<div class="bulk-actions align-left">
-											<a class="button" class='js-open-modal' href='#' data-modal-id='add-employee' >Add Driver</a>
+											<a class="button" class='js-open-modal' href='#' data-modal-id='add-employee' >Add Employee</a>
 										</div>
 										
 										<!--<div class="pagination">
@@ -290,20 +296,19 @@ ini_set('display_errors', 1);
 						 
 							<tbody>
 								<?php
-								$mEployeelist = Company::totalEmployeeArray();
-								for($i=0; $i<sizeof($mEployeelist); $i++) {
-                                    //echo $mEployeelist[$i];
-									$mEmployee = new Employee($mEployeelist[$i]);
+								for($i=0; $i<sizeof($mEmployeeList); $i++) {
+									$mEmployee = new User($mEmployeeList[$i]);
 									echo "<tr>";
-									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getName()."</b></td>";
-									echo "<td>".$mEmployee->getPhone()."</td>";
+									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getFullName()."</b></td>";
+									echo "<td>".$mEmployee->getPhoneMobile()."</td>";
 									echo "<td>".$mEmployee->getAddress()."</td>";
-									echo "									<td>
-										<!-- Icons -->
-										 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
-										 <a href='#' title='Delete' onClick='onDelete(".$mEmployee->getId().")'><img src='../../res/cross.png' alt='Delete'></a>&nbsp;&nbsp;
-										 <a href='#' title='Edit Meta'><img src='../../res/hammer_screwdriver.png' alt='Edit Meta'></a>
-									</td>";
+									if(!$mUser->isCompanyAdmin() || $mUser->getId() != $mEmployee->getId()) {
+										echo "<td>
+											<!-- Icons -->
+											 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
+											 <a href='#' title='Delete' onClick='onDelete(".$mEmployee->getId().")'><img src='../../res/cross.png' alt='Delete'></a>
+										</td>";
+									}
 									echo "</tr>";	
 								}
 								?>
@@ -336,11 +341,11 @@ ini_set('display_errors', 1);
             <!-- //////////////// POP UP Box for adding employee-->
     <div id="add-employee" class="modal-box" style="width:50%;">  
 		<header>
-			<h3>Add Driver</h3>
+			<h3>Add Staff</h3>
 		</header>
 		<div class="modal-body" id="item-list">
 						
-            
+     <!---------------------------------------------------------------------------------------------------------------------------------->       
             <form action="action.php?action=registerEmployee" method="POST" onSubmit="return validate()">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
@@ -394,23 +399,25 @@ ini_set('display_errors', 1);
 								</p>
 								
 								<p class="column-left">
-									<label>Email</label>
-									<input class="text-input medium-input" id="email" name="email" type="email" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
+									<label>Email <span class="mandatory">*</span></label>
+									<input class="text-input medium-input" id="email" name="email" type="email" required style="width:45.5%  !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
 										<br><small>A small description of the field</small>-->
 								</p>
 								
-													
-						
+								</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->					
+				
 <!----------------------------------------------------------------------------------------------------------------------------->
 
 	  <footer>
 		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
 		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
 	  </footer>
-                            </fieldset>
+                            
 	  </form>
 
-		</div>
+		</div>		
 	</div>
 			
 			<!-- End Notifications -->

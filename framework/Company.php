@@ -8,7 +8,6 @@ if(!isset($_SESSION))
 
 require_once 'Connection.php';
 require_once 'User.php';
-require_once 'Employee.php';
 
 class Company {
     private $id;
@@ -113,41 +112,13 @@ class Company {
 
     public static function addEmployee($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
    
-        if(!empty($_SESSION['user']['company'])) 
-            return Employee::add($_SESSION['user']['company'], $name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $email);
+        if(!empty($_SESSION['user']['company'])){ 
+            if(User::add($name, '', $email, 'findgaddi', $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
+                return User::activate(User::getIdByEmail($email));
+            }
+        }
         else
             return false;
-    }
-    
-     public static function totalEmployee() {
-   
-            return Employee::workingEmployee($_SESSION['user']['company']);
-    }
-    
-    public static function totalEmployeeArray() {
-   
-     	$db = new Connection();
-		$conn = $db->connect();
-        
-         if(empty($_SESSION['user']))
-            return null;
-        
-        
-		$company_id = $_SESSION['user']['company'];
-		$result = array();
-		
-		$sql = "SELECT id FROM employee WHERE company = '$company_id'";
-		
-        $action = mysqli_query($conn, $sql);
-
-		if (mysqli_num_rows($action) > 0) {
-		while($row = mysqli_fetch_assoc($action)) {
-				array_push($result, $row['id']);
-			}
-		}
-		//echo sizeof($result)."    < size";
-		return $result;
-        
     }
     
     public static function isCompanyRegistered($id) {
