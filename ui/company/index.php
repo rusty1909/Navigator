@@ -281,6 +281,8 @@ ini_set('display_errors', 1);
 											 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
 											 <a href='#' title='Delete' onClick='onDelete(".$mEmployee->getId().")'><img src='../../res/cross.png' alt='Delete'></a>
 										</td>";
+									} else{
+										echo "<td></td>";
 									}
 									echo "</tr>";	
 								}
