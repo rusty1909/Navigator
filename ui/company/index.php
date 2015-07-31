@@ -211,8 +211,8 @@ ini_set('display_errors', 1);
 					<h3 style="cursor: s-resize;"><?php echo $mCompany->getName(); ?></h3>
 					
 					<ul class="content-box-tabs">
-						<li><a href="#info" class="default-tab current">Basic Information</a></li> <!-- href must be unique and match the id of target div -->
-						<li><a href="#staff">Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
+						<li><a href="#info" <?php if(!isset($_GET['page'])) echo "class='default-tab current'" ?>>Basic Information</a></li> <!-- href must be unique and match the id of target div -->
+						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
 						<li><a href="#payment">Payments</a></li>
 						<li><a href="#setting">Settings</a></li>
 					</ul>
@@ -221,7 +221,7 @@ ini_set('display_errors', 1);
 					
 				</div>
 				<div class="content-box-content">
-					<div style="display: block;" class="tab-content default-tab" id="info">
+					<div style="display: block;" class="tab-content <?php if(!isset($_GET['page'])) echo " default-tab" ?>" id="info">
 						<div id="basic">
 							<form action="edit.php"><fieldset>
 								<p class="column-left">
@@ -250,7 +250,7 @@ ini_set('display_errors', 1);
 						
 					</div>
 					                    
-                   <div style="display: block;" class="tab-content" id="staff">	
+                   <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']='staff') echo " default-tab" ?>" id="staff">	
                        
 						<?php
 						if(sizeof($mEmployeeList) == 0) {

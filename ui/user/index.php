@@ -281,7 +281,7 @@ if(!isset($_SESSION['user']))
 							<b><?php echo sizeof($mAvailableDriverList) ?></b> available<br>
 						</span></a></li>
 						
-						<li><a class="shortcut-button" href="#"><span>
+						<li><a class="shortcut-button" href="../company/index.php?page=staff"><span>
 							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">STAFFS</span></b>
 							<img src="../../res/staff.png" alt="icon"><br>
 							<?php
