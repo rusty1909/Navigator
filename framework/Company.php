@@ -115,9 +115,8 @@ class Company {
         if(!empty($_SESSION['user']['company'])){ 
             if(User::add($name, '', $email, 'findgaddi', $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
                 User::activate(User::getIdByEmail($email));
-                
-                $msuer = new User(User::getIdByEmail($email));
-                $msuer->SetAddedby($_SESSION['user']['id']);
+                $muser = new User(User::getIdByEmail($email));
+                $muser->SetAddedby($_SESSION['user']['id']);
                 return true;
             }
         }
