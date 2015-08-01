@@ -58,45 +58,6 @@ if(!isset($_SESSION['user']))
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	
     <script type="text/javascript">
-		function fetchNotification(){
-		//alert(id+" "+driver_id);
-		var data = "";
-        jQuery.ajax({
-            type: 'POST',
-            url: 'notification.php',
-            cache: false,
-            success: function(response){
-				if(response == 0){
-				}
-				else {					
-					var notiList = JSON.parse(response);
-					for(var i=0; i<50 && i<notiList.length; i++){
-						var image = "alert_ok";
-						switch(notiList[i].type){
-							case "expenses" : image = "alert_upload"; break;
-							case "power_battery_plugged" : image = "alert_ok"; break;
-							case "location" : image = "alert_location"; break;
-							case "power_battery_low" :
-							case "power_shutdown" :
-							case "power_battery_unplugged" : image = "alert_high"; break;
-							default : image = "alert_ok"; break;
-						}
-						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
-						console.log(image);
-					}
-					//alert(data);
-					document.getElementById("noti_body").innerHTML = data;
-					//$("#noti_table").find("tbody").find('#main-content table').;
-					data="";
-				}
-            }
-        });
-       
-        
-	}
-	
-	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
-
 	function onDelete(id){
 		if(confirm("You really want to delete this vehicle?"))
 			window.location.href = "action.php?action=delete&id="+id;
@@ -162,11 +123,11 @@ if(!isset($_SESSION['user']))
 		
 	</head>
   
-	<body onload='fetchNotification()'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		
 	<?php include('../sidebar.php');?>
 		
-		<div id="main-content" style="height:88%"> <!-- Main Content Section with everything -->
+		<div id="main-content"> <!-- Main Content Section with everything -->
 			
 			<noscript> <!-- Show a notification if the user has disabled javascript -->
 				<div class="notification error png_bg">
@@ -376,21 +337,26 @@ if(!isset($_SESSION['user']))
 				
 			</div> <!-- End .content-box -->
 			
-			<div class="content-box column-right" style="width:35%;height:100%;">
+			<div class="content-box column-right" style="width:35%">
 				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
 					<h3 style="cursor: s-resize;">Notifications</h3>
 				</div> <!-- End .content-box-header -->
 				
-				<div style="display: block;padding:0px;height:93%;overflow-y:auto" class="content-box-content">
+				<div style="display: block;" class="content-box-content">
 					
-					<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
+					<div style="display: block;" class="tab-content default-tab">
 					
-						<table id="noti_table">
+						<table>
 						<thead>
 						<tr></tr>
 						</thead>
-						<tbody style="border-bottom:0px" id="noti_body">
-						<tr><td><b>Loading Notifications</b></td></tr>
+						<tbody>
+						<?php
+							echo "<tr></tr>";
+							echo "<tr><td>Total Vehicles</td><td></td></tr>";
+							echo "<tr><td>Already Deployed</td><td></td></tr>";
+							echo "<tr><td>Waiting Deployement</td><td></td></tr>";
+						?>
 						</tbody>
 						</table>
 					</div> <!-- End #tab3 -->  
