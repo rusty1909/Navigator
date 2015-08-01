@@ -66,7 +66,7 @@ class Mailer {
     public static function sendActivationMessage($pfullname, $pusername, $pemail,$securityKey){
         $msgToUser = "";
         $subject = 'Complete Your ' . WEB_FULL_NAME . ' Registeration';
-        $message = "Hi ".strtoupper($pfullname).",<br /><br />
+        $message = "Dear ".strtoupper($pfullname).",<br /><br />
 
             You have successfully created account with .<br />
             Account Details :<br /><br />
@@ -98,8 +98,8 @@ class Mailer {
 
     public static function sendEmployeeAddedMessage($pfullname, $pusername, $pemail, $password){
         $msgToUser = "";
-        $subject = 'Complete Your ' . WEB_FULL_NAME . ' Registeration';
-        $message = "Hi ".strtoupper($pfullname).",<br /><br />
+        $subject = 'You have been added as Employee For ' . WEB_FULL_NAME ;
+        $message = "Dear ".strtoupper($pfullname).",<br /><br />
 
             You have successfully created account with .<br />
             Account Details :<br /><br />
@@ -270,8 +270,7 @@ class Mailer {
 
         return $msgToUser;
     }
-
-
+    
 }
 
 //echo Mailer::SendResetPasswd('dheerajagrawal19@gmail.com', 'dheerajagrawal19@gmail.com', 'dheerajagrawal19@gmail.com');

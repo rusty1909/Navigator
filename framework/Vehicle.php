@@ -637,13 +637,22 @@ class Vehicle {
 	}
 
 	function getMakeYear(){
-		return $this->makeYear;
+		return strftime("%b %d, %Y", strtotime($this->makeYear));
 	}
 	
 	function isDeployed(){
 		return $this->isDeployed;
 	}
 	
+    function getDateAdded(){
+        return 	strftime("%b %d, %Y", strtotime($this->dateAdded));
+    }
+    function getVehicleDepolyDate(){
+        return 	strftime("%b %d, %Y", strtotime($this->dateAdded));
+    }
+    function getVehicleDeActivatedDate(){
+        return 	strftime("%b %d, %Y", strtotime($this->dateAdded));
+    }    
 	function isOnTrip(){
 		return $this->isOnJob;
 	}
