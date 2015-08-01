@@ -185,7 +185,9 @@
 						<li><a href="#info" <?php if(!isset($_GET['page'])) echo "class='default-tab current'" ?>>Basic Information</a></li> <!-- href must be unique and match the id of target div -->
 						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
 						<li><a href="#payment">Payments</a></li>
-						<li><a href="#setting">Settings</a></li>
+						<li><a href="#timeline" >Timeline</a></li>
+						<li><a href="#setting">Settings</a></li>						
+						
 					</ul>
 					
 					<div class="clear"></div>

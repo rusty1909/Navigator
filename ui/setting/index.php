@@ -78,7 +78,6 @@
 						<li><a href="#profile" class="default-tab current">My Profile</a></li> 
 						<li><a href="#update_contact" >Update Contact </a></li>
 						<li><a href="#update_password" >Update Password</a></li>
-						<li><a href="#timeline" >Timeline</a></li>
 					</ul>
 					
 					<div class="clear"></div>
