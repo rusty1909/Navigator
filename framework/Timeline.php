@@ -15,11 +15,12 @@ class Timeline {
 	private $type;
 	private $vehicle;
 	private $driver;
-	private $staff;
+	private $employee;
 	private $company;
 	private $admin;
 	private $addedBy;
 	private $dateAdded;
+	private $stringRes;
 	
 	function __construct($id) {
 		// opening db connection
@@ -34,7 +35,7 @@ class Timeline {
 				$this->type = $row['type'];
 				$this->driver = $row['driver'];
 				$this->vehicle = $row['vehicle'];
-				$this->staff = $row['staff'];
+				$this->employee = $row['employee'];
 				$this->company = $row['company'];
 				$this->admin = $row['admin'];
 				$this->addedBy = $row['added_by'];
@@ -46,24 +47,28 @@ class Timeline {
 	function getResource(){
 		$resArray = array();
 		$resArray['id'] = $this->id;
+		
+		$addedById = $this->addedBy;
+		$mAddedBy = new User($addedById);
+		
 		switch($this->type){
-			case "search" : $driverId = $this->driver;
-				$mDriver = new Driver($driverId);
-				$item = $this->searchItem;
-				$vehicleId = $this->vehicle;
+			case "vehicle_addition" : $vehicleId = $this->vehicle;
 				$mVehicle = new Vehicle($vehicleId);
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> searched for <b>".$item."</b> from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
+				$resArray['image'] = "vehicle_icon";
+				
+				$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> was added by ";
 				break;
 				
-			case "location" : $vehicleId = $this->vehicle;
-				$mVehicle = new Vehicle($vehicleId);
-				$city = $this->city;
+			case "driver_addition" : $driverId = $this->driver;
+				$mDriver = new Driver($driverId);
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> reached <b>".$city."</b>";
+				$resArray['image'] = "driver_icon";
+				
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was added by ";
 				break;
 			
-			case "expenses" : $vehicleId = $this->vehicle;
+			case "driver_allotment" : $vehicleId = $this->vehicle;
 				$mVehicle = new Vehicle($vehicleId);
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
@@ -72,50 +77,32 @@ class Timeline {
 				$expenseAmount = $mExpense->getAmount();
 				$expenseReason = $mExpense->getReason();
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> uploaded bill of <b>Rs.".$expenseAmount."</b> for <b>".$expenseReason."</b> from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
+				$resArray['image'] = "allotment_icon";
+				
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was assigned to <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by";
 				break;
 			
-			case "power_battery_low" : $vehicleId = $this->vehicle;
+			case "staff_addition" : $vehicleId = $this->vehicle;
 				$mVehicle = new Vehicle($vehicleId);
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
 				
-				$resArray['string'] = "<b>Low Battery</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
+				$resArray['image'] = "staff_icon";
+				
+				$resArray['string'] = "<a href='#'><b>".$mVehicle->getVehicleNumber()."</b></a> was added by ";
 				break;
 				
-			case "power_shutdown" : $vehicleId = $this->vehicle;
-				$mVehicle = new Vehicle($vehicleId);
-				$driverId = $this->driver;
-				$mDriver = new Driver($driverId);
-				
-				$resArray['string'] = "<b>Device shutdown</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
-				break;
-			
-			case "power_battery_unplugged" : $vehicleId = $this->vehicle;
-				$mVehicle = new Vehicle($vehicleId);
-				$driverId = $this->driver;
-				$mDriver = new Driver($driverId);
-				
-				$resArray['string'] = "<b>Power Unplugged</b> reported for <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
-				break;
-			
-			case "power_battery_plugged" : $vehicleId = $this->vehicle;
-				$mVehicle = new Vehicle($vehicleId);
-				$driverId = $this->driver;
-				$mDriver = new Driver($driverId);
-				
-				$resArray['string'] = "Power is back on <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a>";
-				break;
-				
-			default : $resArray['string'] = "";
+			default : $resArray['string'] = "Qwerty";
+				$resArray['image'] = "alert_ok";
 				break;
 		}
-		//echo $resArray['string']."<br>";
+		
+		$resAddedBy = "<a href='#'><b>".$mAddedBy->getFullName()."</b></a>";
+		
+		$resArray['string'].=$resAddedBy;
+		
 		$date = $this->dateAdded;
 		$resArray['time'] = date("d-m-Y H:i:s", strtotime($date));
-		$resArray['lat'] = $this->latitude;
-		$resArray['long'] = $this->longitude;
-		$resArray['priority'] = $this->priority;
 		$resArray['type'] = $this->type;
 		
 		return $resArray;

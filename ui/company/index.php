@@ -52,6 +52,34 @@
     
 		<script>
 		
+	function fetchNotification(){
+		//alert(id+" "+driver_id);
+		var data = "";
+        jQuery.ajax({
+            type: 'POST',
+            url: 'timeline.php',
+            cache: false,
+            success: function(response){
+				if(response == 0){
+				}
+				else {					
+					var notiList = JSON.parse(response);
+					for(var i=0; i<50 && i<notiList.length; i++){
+						var image = notiList[i].image;
+						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
+						console.log(image);
+					}
+					//alert(data);
+					document.getElementById("timeline_body").innerHTML = data;
+					//$("#noti_table").find("tbody").find('#main-content table').;
+					data="";
+				}
+            }
+        }); 
+	}
+	
+	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
+		
 		$(document).ready(function(){
 			$('#emp_id').blur(checkEmpID); //use keyup,blur, or change
 		});
@@ -160,7 +188,7 @@
     
 </head>
   
-	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+	<body onload='fetchNotification()'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		
 	<?php include('../sidebar.php');?>
 		
@@ -176,7 +204,7 @@
 			
 			<div class="clear"></div> <!-- End .clear -->
 			
-			<div class="content-box">				
+			<div class="content-box column-left" style="width:63%">				
 				<div class="content-box-header">
 					
 					<h3 style="cursor: s-resize;"><?php echo $mCompany->getName(); ?></h3>
@@ -310,6 +338,27 @@
                     
 				</div> <!-- End .content-box-content -->				
 			</div> <!-- End .content-box -->
+			<div class="content-box column-right" style="width:35%;height:88%;">
+				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
+					<h3 style="cursor: s-resize;">Notifications</h3>
+				</div> <!-- End .content-box-header -->
+				
+				<div style="display: block;padding:0px;height:93%;overflow-y:auto" class="content-box-content">
+					
+					<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
+					
+						<table id="timeline_table">
+						<thead>
+						<tr></tr>
+						</thead>
+						<tbody style="border-bottom:0px" id="timeline_body">
+						<tr><td><b>Loading Notifications</b></td></tr>
+						</tbody>
+						</table>
+					</div> <!-- End #tab3 -->  
+				</div> <!-- End .content-box-content -->
+				
+			</div>
 
 			<div class="clear"></div>
             
