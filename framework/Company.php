@@ -151,7 +151,7 @@ class Company {
         $mUser = new User();
         $userid = $mUser->getId();
 
-        $sql = "SELECT * FROM company WHERE id='$id' AND admin_user='$userid'";
+        $sql = "SELECT * FROM company WHERE id='$id'";
         $action = mysqli_fetch_assoc(mysqli_query($conn, $sql));
         if($action != null)
             return true;
