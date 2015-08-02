@@ -1,6 +1,7 @@
 <?php
 require_once 'Connection.php';
 require_once 'User.php';
+require_once 'Timeline.php';
 
 class Vehicle {
 	private $id;
@@ -68,7 +69,9 @@ class Vehicle {
 		$sql = "INSERT INTO vehicle (type, model, vehicle_number, make_year, company_id, added_by, description) VALUES ('$type','$model','$vehicle_number','$make_year','$companyId','$userId','$description')";
 		
 		if (mysqli_query($conn, $sql)) {
-			return true;
+			$vehicleId = Vehicle::getIdByNumber($vehicle_number);
+			//echo "hello";
+			return Timeline::addTimelineEvent("vehicle_addition", $vehicleId, "", "", $userId);
 		} else {
 			return false;
 		}
