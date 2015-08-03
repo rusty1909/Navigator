@@ -82,14 +82,12 @@ class Timeline {
 				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was assigned to <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by";
 				break;
 			
-			case "staff_addition" : $vehicleId = $this->vehicle;
-				$mVehicle = new Vehicle($vehicleId);
-				$driverId = $this->driver;
-				$mDriver = new Driver($driverId);
+			case "staff_addition" : $employeeId = $this->employee;
+				$mEmployee = new User($employeeId);
 				
 				$resArray['image'] = "staff_icon";
 				
-				$resArray['string'] = "<a href='#'><b>".$mVehicle->getVehicleNumber()."</b></a> was added by ";
+				$resArray['string'] = "<a href='#'><b>".$mEmployee->getFullName()."</b></a> was added by ";
 				break;
 				
 			default : $resArray['string'] = "Qwerty";
@@ -135,7 +133,7 @@ class Timeline {
 
 		
 		$sql = "INSERT INTO `timeline` (`type`, `vehicle`, `driver`, `employee`, `company`, `admin`, `added_by`, `date_added`) VALUES ('$type', '$vehicle', '$driver', '$employee', '$companyId', '$adminId', '$addedBy', '$fgDate')";
-		echo $sql;
+		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {

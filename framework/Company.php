@@ -9,6 +9,7 @@ if(!isset($_SESSION))
 require_once 'Connection.php';
 require_once 'User.php';
 require_once 'Mailer.php';
+require_once 'Timeline.php';
 
 class Company {
     private $id;
@@ -130,14 +131,18 @@ class Company {
     }
 
     public static function addEmployee($name, $emp_id, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description) {
+		
+		$defaultPassword = 'findgaddi';
    
         if(!empty($_SESSION['user']['company'])){ 
-            if(User::add($name, '', $emp_id, 'findgaddi', $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
+            if(User::add($name, '', $emp_id, $defaultPassword, $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
                 User::activate(User::getIdByEmail($email));
-                $muser = new User(User::getIdByEmail($email));
-                $muser->SetAddedby($_SESSION['user']['id']);
-                Mailer::sendEmployeeAddedMessage($name,$emp_id, $email, 'findgaddi');
-                return true;
+                $mEmployee = new User(User::getIdByEmail($email));
+				$mAddedBy = new User();
+                $mEmployee->SetAddedby($mAddedBy->getId());
+                Mailer::sendEmployeeAddedMessage($name, $emp_id, $email, $defaultPassword);
+				return Timeline::addTimelineEvent("staff_addition", "", "", $mEmployee->getId(), $mAddedBy->getId());
+                //return true;
             }
         }
         else
