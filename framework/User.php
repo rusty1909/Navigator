@@ -990,9 +990,8 @@ class User {
 	}
 	
 	function isCompanyAdmin(){
-		$self = new User();
-		$selfCompany = new Company($self->getCompany());
-		if($self->getId() == $selfCompany->getAdmin()) return true;
+		$selfCompany = new Company(User::getCompany());
+		if($this->id == $selfCompany->getAdmin()) return true;
 		else return false;
 	}
 	
@@ -1020,12 +1019,18 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 		
-        if($this->id == $_SESSION['user']['id'])
+        if($this->id == User::getCurrentUser())
             return false;
-        
+        $mUser = new User($this->id);
         $sql = "UPDATE user SET activated = '0' , status = '0' WHERE id = '$this->id'";
 		if (mysqli_query($conn, $sql)) {
-			return true;
+			//echo "<br>".$mUser->getFullName()." ".$mUser->isCompanyAdmin();
+			if(!$mUser->isCompanyAdmin()){
+				$mAddedBy = User::getCurrentUser();
+				//echo "User  delete staff";
+				return Timeline::addTimelineEvent("staff_addition", "", "", $this->getId(), $mAddedBy->getId(), -1);
+			} else
+				return true;
 		} else {
 			return false;
 		}

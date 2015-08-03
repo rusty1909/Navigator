@@ -21,6 +21,7 @@ class Timeline {
 	private $addedBy;
 	private $dateAdded;
 	private $stringRes;
+	private $action;
 	
 	function __construct($id) {
 		// opening db connection
@@ -39,6 +40,7 @@ class Timeline {
 				$this->company = $row['company'];
 				$this->admin = $row['admin'];
 				$this->addedBy = $row['added_by'];
+				$this->action = $row['action'];
 				$this->dateAdded = $row['date_added'];
 			}
 		}
@@ -56,8 +58,10 @@ class Timeline {
 				$mVehicle = new Vehicle($vehicleId);
 				
 				$resArray['image'] = "vehicle_icon";
-				
-				$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> was added by ";
+				if($this->action == '1')
+					$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> was added by ";
+				else
+					$resArray['string'] = "<a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> was removed by ";
 				break;
 				
 			case "driver_addition" : $driverId = $this->driver;
@@ -65,7 +69,10 @@ class Timeline {
 				
 				$resArray['image'] = "driver_icon";
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was added by ";
+				if($this->action == '1')
+					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was added by ";
+				else 
+					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was removed by ";
 				break;
 			
 			case "driver_allotment" : $vehicleId = $this->vehicle;
@@ -87,7 +94,10 @@ class Timeline {
 				
 				$resArray['image'] = "staff_icon";
 				
-				$resArray['string'] = "<a href='#'><b>".$mEmployee->getFullName()."</b></a> was added by ";
+				if($this->action == '1')
+					$resArray['string'] = "<a href='#'><b>".$mEmployee->getFullName()."</b></a> was added by ";
+				else
+					$resArray['string'] = "<a href='#'><b>".$mEmployee->getFullName()."</b></a> was removed by ";
 				break;
 				
 			default : $resArray['string'] = "Qwerty";
