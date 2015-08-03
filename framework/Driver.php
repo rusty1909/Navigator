@@ -6,6 +6,7 @@ if(!isset($_SESSION))
 	session_start();
 require_once 'Connection.php';
 require_once 'User.php';
+require_once 'Timeline.php';
 
 class Driver {
 	private $id;
@@ -58,12 +59,32 @@ class Driver {
 		
 		$sql = "INSERT INTO driver (name, phone, address, date_join, description, company_id, added_by) 
 					VALUES ('$name', '$phone', '$address', '$dateJoin', '$description', '$companyId', '$userId')";
-		echo $sql;
+		
 		if (mysqli_query($conn, $sql)) {
-			return true;
+			$driverId = Driver::getLastDriverIdByDetails($name, $companyId, $userId);
+			echo "<br>".$driverId;
+			return Timeline::addTimelineEvent("driver_addition", "", $driverId, "", $userId, 1);
 		} else {
 			return false;
 		}
+	}
+	
+	public static function getLastDriverIdByDetails($name, $companyId, $userId){
+		$db = new Connection();
+		$conn = $db->connect();
+        
+        $sql = "SELECT id FROM driver WHERE name = '$name' AND company_id = '$companyId' AND added_by = '$userId' ORDER BY id ASC";
+		echo "<br>".$sql;
+		$action = mysqli_query($conn, $sql);
+        
+		if (mysqli_num_rows($action) > 0) {
+			while($row = mysqli_fetch_assoc($action)) {
+				$result = $row['id'];
+			}
+        } else{
+            return null;
+        }
+		return $result;
 	}
 	
 	function delete($id) {
