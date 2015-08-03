@@ -5,6 +5,7 @@ ini_set('display_errors',1);
 if(!isset($_SESSION))
 	session_start();
 require_once 'Connection.php';
+require_once 'User.php';
 
 class Driver {
 	private $id;
@@ -51,9 +52,9 @@ class Driver {
 		$db = new Connection();
 		$conn = $db->connect();
 		
-		//if(Driver::exists($conn, $name, $phone)) return false;
-		$companyId = $_SESSION['user']['company'];
-		$userId = $_SESSION['user']['id'];
+		$mUser = new User();
+		$userId = $mUser->getId();
+		$companyId = $mUser->getCompany();
 		
 		$sql = "INSERT INTO driver (name, phone, address, date_join, description, company_id, added_by) 
 					VALUES ('$name', '$phone', '$address', '$dateJoin', '$description', '$companyId', '$userId')";
