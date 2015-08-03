@@ -350,12 +350,24 @@ class Vehicle {
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
+		
+		$vehicle = new Vehicle($this->id);
+		$prevDriver = $vehicle->getDriver();
+		$mUser = new User();
+		
 		$sql = "UPDATE vehicle SET driver = '$driver' WHERE id = '$this->id'";
 		//print_r($sql);
 
+
 		if (mysqli_query($conn, $sql)) {
 			//print_r("<br>Record updated successfully");
-            return true;
+			if($driver != 0){
+				$action = 1; //assigning driver
+			} else{
+				$action = -1; //removing driver
+				$driver = $prevDriver;
+			}
+			return Timeline::addTimelineEvent("driver_allotment", $this->id, $driver, "", $mUser->getId(), $action);
 		} else {
 			//print_r("<br>Error updating record: " . mysqli_error($conn));
             return false;

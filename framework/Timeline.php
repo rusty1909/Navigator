@@ -79,14 +79,13 @@ class Timeline {
 				$mVehicle = new Vehicle($vehicleId);
 				$driverId = $this->driver;
 				$mDriver = new Driver($driverId);
-				$receiptId = $this->receipt;
-				$mExpense = new Expense($receiptId);
-				$expenseAmount = $mExpense->getAmount();
-				$expenseReason = $mExpense->getReason();
 				
 				$resArray['image'] = "allotment_icon";
 				
-				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was assigned to <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by";
+				if($this->action == '1')
+					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was assigned to <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by";
+				else
+					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was removed from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by";
 				break;
 			
 			case "staff_addition" : $employeeId = $this->employee;
