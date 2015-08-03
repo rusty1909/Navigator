@@ -213,7 +213,6 @@
 						<li><a href="#info" <?php if(!isset($_GET['page'])) echo "class='default-tab current'" ?>>Basic Information</a></li> <!-- href must be unique and match the id of target div -->
 						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
 						<li><a href="#payment">Payments</a></li>
-						<li><a href="#timeline" >Timeline</a></li>
 						<li><a href="#setting">Settings</a></li>						
 						
 					</ul>
@@ -303,7 +302,7 @@
 									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getFullName()."</b></td>";
 									echo "<td>".$mEmployee->getPhoneMobile()."</td>";
 									echo "<td>".$mEmployee->getAddress()."</td>";
-									if(!$mUser->isCompanyAdmin() || $mUser->getId() != $mEmployee->getId()) {
+									if($mUser->isCompanyAdmin() && $mUser->getId() != $mEmployee->getId()) {
 										echo "<td>
 											<!-- Icons -->
 											 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
@@ -340,7 +339,7 @@
 			</div> <!-- End .content-box -->
 			<div class="content-box column-right" style="width:35%;height:88%;">
 				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
-					<h3 style="cursor: s-resize;">Notifications</h3>
+					<h3 style="cursor: s-resize;">Timeline</h3>
 				</div> <!-- End .content-box-header -->
 				
 				<div style="display: block;padding:0px;height:93%;overflow-y:auto" class="content-box-content">
