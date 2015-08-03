@@ -72,13 +72,15 @@ class Driver {
 		$db = new Connection();
 		$conn = $db->connect();
 		
+		$mUser = new User();
+		
 		//if(!Driver::exists($conn, $driver)) return false;
 		
 		// sql to delete a record
 		$sql = "UPDATE driver SET status = '0' WHERE id='$id'";
 
 		if (mysqli_query($conn, $sql)) {
-			return true;
+			return Timeline::addTimelineEvent("driver_addition", "", $id, "", $mUser->getId(), -1);
 		} else {
 			return false;
 		}
