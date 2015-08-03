@@ -141,7 +141,7 @@ class Company {
 				$mAddedBy = new User();
                 $mEmployee->SetAddedby($mAddedBy->getId());
                 Mailer::sendEmployeeAddedMessage($name, $emp_id, $email, $defaultPassword);
-				return Timeline::addTimelineEvent("staff_addition", "", "", $mEmployee->getId(), $mAddedBy->getId());
+				return Timeline::addTimelineEvent("staff_addition", "", "", $mEmployee->getId(), $mAddedBy->getId(), 1);
                 //return true;
             }
         }

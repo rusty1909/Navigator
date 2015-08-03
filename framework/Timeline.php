@@ -106,7 +106,7 @@ class Timeline {
 		return $resArray;
 	}
 	
-	public static function addTimelineEvent($type, $vehicle, $driver, $employee, $addedBy) {
+	public static function addTimelineEvent($type, $vehicle, $driver, $employee, $addedBy, $action) {
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
@@ -132,7 +132,7 @@ class Timeline {
 		$adminId = $mCompany->getAdmin();
 
 		
-		$sql = "INSERT INTO `timeline` (`type`, `vehicle`, `driver`, `employee`, `company`, `admin`, `added_by`, `date_added`) VALUES ('$type', '$vehicle', '$driver', '$employee', '$companyId', '$adminId', '$addedBy', '$fgDate')";
+		$sql = "INSERT INTO `timeline` (`type`, `vehicle`, `driver`, `employee`, `company`, `admin`, `added_by`, `action`, `date_added`) VALUES ('$type', '$vehicle', '$driver', '$employee', '$companyId', '$adminId', '$addedBy', '$action', '$fgDate')";
 		//echo $sql;
 		if (mysqli_query($conn, $sql)) {
 			return true;

@@ -71,7 +71,7 @@ class Vehicle {
 		if (mysqli_query($conn, $sql)) {
 			$vehicleId = Vehicle::getIdByNumber($vehicle_number);
 			//echo "hello";
-			return Timeline::addTimelineEvent("vehicle_addition", $vehicleId, "", "", $userId);
+			return Timeline::addTimelineEvent("vehicle_addition", $vehicleId, "", "", $userId, 1);
 		} else {
 			return false;
 		}
