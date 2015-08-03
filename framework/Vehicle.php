@@ -90,7 +90,13 @@ class Vehicle {
             return false;
         
         $sql = "UPDATE vehicle SET date_deactivate = now() WHERE id = '$this->id'";
-        mysqli_query($conn, $sql);
+		
+        if (mysqli_query($conn, $sql)) {
+			$mUser = new User();
+			return Timeline::addTimelineEvent("vehicle_addition", $this->id, "", "", $mUser->getId(), -1);
+		} else {
+			return false;
+		}
             
 		// sql to delete a record
         /*
