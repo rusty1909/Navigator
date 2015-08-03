@@ -50,6 +50,8 @@ class Timeline {
 		$resArray = array();
 		$resArray['id'] = $this->id;
 		
+		$mUser = new User();
+		
 		$addedById = $this->addedBy;
 		$mAddedBy = new User($addedById);
 		
@@ -83,9 +85,9 @@ class Timeline {
 				$resArray['image'] = "allotment_icon";
 				
 				if($this->action == '1')
-					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was assigned to <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by";
+					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was assigned to <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by ";
 				else
-					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was removed from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by";
+					$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a> was removed from <a href=\"/navigator/ui/vehicle/detail.php?id=".$vehicleId."\"><b>".$mVehicle->getVehicleNumber()."</b></a> by ";
 				break;
 			
 			case "staff_addition" : $employeeId = $this->employee;
@@ -104,7 +106,10 @@ class Timeline {
 				break;
 		}
 		
-		$resAddedBy = "<a href='#'><b>".$mAddedBy->getFullName()."</b></a>";
+		if($mUser == $mAddedBy)
+			$resAddedBy = "<a href='/navigator/ui/setting'><b>you</b></a>";
+		else
+			$resAddedBy = "<a href='#'><b>".$mAddedBy->getFullName()."</b></a>";
 		
 		$resArray['string'].=$resAddedBy;
 		
