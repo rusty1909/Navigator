@@ -353,6 +353,7 @@ class Vehicle {
 		
 		$vehicle = new Vehicle($this->id);
 		$prevDriver = $vehicle->getDriver();
+		if($prevDriver == $driver) return false;
 		$mUser = new User();
 		
 		$sql = "UPDATE vehicle SET driver = '$driver' WHERE id = '$this->id'";
