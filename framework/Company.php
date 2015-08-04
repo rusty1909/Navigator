@@ -90,6 +90,27 @@ class Company {
         }
     }
 	
+	function getAllNotifications(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+        $result = array();
+        
+		$sql = "SELECT id FROM notification WHERE company = '$this->id' ORDER BY date_added DESC ";
+		
+        //print_r($sql);
+		$action = mysqli_query($conn, $sql);
+		
+		if (mysqli_num_rows($action) > 0) {
+			// output data of each row
+			while($row = mysqli_fetch_assoc($action)) {
+				array_push($result, $row['id']);
+			}
+		}
+		
+		return $result;
+	}
+	
 	function getEmployeeList(){
 		$db = new Connection();
         $conn = $db->connect();

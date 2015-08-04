@@ -4,11 +4,20 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 	require_once '../../framework/Vehicle.php';
+	require_once '../../framework/User.php';
 	require_once '../../framework/Notification.php';
+	require_once '../../framework/Company.php';
+	
+	$mUser = new User();
+	$companyId = $mUser->getCompany();
+	$mCompany = new Company($companyId);
 	
 	$mNotiResourceList = array();
 	if(!isset($_GET['id'])){
-		$mNotificationList = Vehicle::getAllNotifications();
+		if($mCompany != null)
+			$mNotificationList = $mCompany->getAllNotifications();
+		else
+			$mNotificationList = $mUser->getAllNotifications();
 		//echo sizeof($mNotificationList);
 		for($i=0;$i<sizeof($mNotificationList);$i++){
 			$noti = new Notification($mNotificationList[$i]);
