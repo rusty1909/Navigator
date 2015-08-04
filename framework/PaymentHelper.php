@@ -30,16 +30,22 @@ class PaymentHelper {
         $this->userId = new User();
         $mDeployedVehicleList = $this->userId->getDeployedVehicleList(); //currently running vehicles...
         
+        $this->totalAmount = $this->totalPaidAmount = $this->amountreqfornextcycle = $this->totalRemainingAmount =  0;
+       
+        
         for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
             $mVehicle = new Vehicle($mDeployedVehicleList[$i]);
             
-            $mVehPayments = new Payments($mDeployedVehicleList[$i], $companyId);
+            $mVehPayments = new Payments($mVehicle->getId(), $this->companyId);
             
-            $this->totalAmount +=  $mVehPayments->getTotalAmount();       
-            $this->totalPaidAmount +=  $mVehPayments->getPaidpayment();       
-            $this->amountreqfornextcycle +=  $mVehPayments->getDuepayment();       
-            $this->totalRemainingAmount +=  $mVehPayments->getRemainingAmount();       
-            
+         if($mVehPayments->getId() != ""){
+                
+                $this->totalAmount +=  $mVehPayments->getTotalAmount();       
+                $this->totalPaidAmount +=  $mVehPayments->getPaidpayment();       
+                $this->amountreqfornextcycle +=  $mVehPayments->getDuepayment();       
+                $this->totalRemainingAmount +=  $mVehPayments->getRemainingAmount();       
+
+            }
 		
         }
         
@@ -60,7 +66,10 @@ class PaymentHelper {
 		return $this->userId;
 	}
     
-    
+    function getTotalAmount(){
+		return $this->totalAmount;
+	}
+	
 	function getTotalPaidpayment(){
 		return $this->totalPaidAmount;
 	}
@@ -91,5 +100,10 @@ class PaymentHelper {
 	}
     
 }
+/*
+$myPay = new PaymentHelper();
+echo $myPay->getTotalAmount();
+echo "<br>";
+echo $myPay->getDuepayment(); */
 
 ?>
