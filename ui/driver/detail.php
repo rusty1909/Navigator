@@ -271,7 +271,7 @@ if(!isset($_SESSION['user']))
 				<div class="clear"></div>
 				<div class="content-box column-right" style="width:100%;height:66%;">
 					<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
-						<h3 style="cursor: s-resize;">Notifications</h3>
+						<h3 style="cursor: s-resize;">Events of the day (<span id='noti_count'></span>)</h3>
 					</div> <!-- End .content-box-header -->
 					
 					<div style="display: block;padding:0px;height:93%;overflow-y:auto" class="content-box-content">
