@@ -26,7 +26,8 @@ class Payments {
 	private $prevpaymentDate;
 	private $nextpaymentDate;
     
-	
+	private $paymetID;
+    
 	function __construct($veh_id, $com_id){
 		
 		 // opening db connection
@@ -57,14 +58,34 @@ class Payments {
                     $this->vehActivationDate = $row['veh_activation_date'];
 
                     $this->prevpaymentDate = $row['timestamp'];
-                    $this->nextpaymentDate = $row['timestamp'];
+                    $this->nextpaymentDate = $row['timestamp'] + 86400*30;
                 }
                
 			}
 		}
 	}
 	
-    public static function add($amount, $is_success, $pay_type, $veh_id) {
+    
+    function isDue(){
+        $amountPaid = $this->getPaidpayment();
+        $amountPaid = $amountPaid - $this->getVehicleActivationAmount();
+        $diff1 = $this->getMonthsCountOfVehicleRun();
+        
+        $expextedPaidAmount = $diff1 * $this->getVehicleMonthlyDueAmount();
+        
+        //if 
+        if($expextedPaidAmount > $amountPaid + $this->getVehicleMonthlyDueAmount())
+            return $expextedPaidAmount - $amountPaid + $this->getVehicleMonthlyDueAmount();
+        
+        if($expextedPaidAmount > $amountPaid)
+            return $expextedPaidAmount - $amountPaid;
+        
+        if($expextedPaidAmount < $amountPaid)
+            return 0;
+        
+    }
+    
+    public static function add($paymetID, $amount, $is_success, $pay_type, $veh_id) {
 		
 		$companyId = $_SESSION['user']['company'];
 		$userId = $_SESSION['user']['id'];
@@ -77,7 +98,7 @@ class Payments {
             $paid_amount = 0;
             $act_date = now();
         }else{
-            $act_date = Payments::getVehicleActivationDate($veh);
+            $act_date = Payments::getVehicleActivationDateFromDB($veh);
             $paid_amount = Payments::getPreviousPaymentForVehicle($veh_id, $companyId);
         }
         $total_amount = DEF_MEM_AMOUNT;
@@ -86,7 +107,7 @@ class Payments {
         $paid_per = 100 - (($total_amount - $paid_amount)/$total_amount)*100;
         $rest_amount = $total_amount - $paid_amount;
         
-		$sql = "INSERT INTO `payments`(`amount`, `company_id`, `user_id`, `timestamp`, `is_success`, `pay_type`, `rest_amount`, `paid_perc`, `paid_amount`, `total_amount`, `vehicle_id`, `veh_activation_date`) VALUES  ('$amount','$companyId','$userId',now(),'$is_success','$pay_type','$rest_amount','$paid_per','$paid_amount','$total_amount', '$veh_id', '$act_date')";
+		$sql = "INSERT INTO `payments`(`amount`, `company_id`, `user_id`, `timestamp`, `is_success`, `pay_type`, `rest_amount`, `paid_perc`, `paid_amount`, `total_amount`, `vehicle_id`, `veh_activation_date`, `paymentId`) VALUES  ('$amount','$companyId','$userId',now(),'$is_success','$pay_type','$rest_amount','$paid_per','$paid_amount','$total_amount', '$veh_id', '$act_date', '$paymetID')";
 		
 		if (mysqli_query($conn, $sql)) {
 			return true;
@@ -96,13 +117,10 @@ class Payments {
 	}
 	
 	function delete() {
-		//require_once '../framework/DBConnect.php';
 		
 		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
-		
-		//if(!Vehicle::exists($conn, $vehicle_number)) return false;
 		
         if($this->isDeployed())
             return false;
@@ -110,17 +128,6 @@ class Payments {
         $sql = "UPDATE vehicle SET date_deactivate = now() WHERE id = '$this->id'";
         mysqli_query($conn, $sql);
             
-		// sql to delete a record
-        /*
-		$sql = "DELETE FROM vehicle WHERE id='$this->id'";
-
-		if (mysqli_query($conn, $sql)) {
-			return true;
-		} else {
-			return false;
-		}
-        */
-        
         return true;
 	}
 		
@@ -140,6 +147,28 @@ class Payments {
 		return $this->userId;
 	}
     
+    funtion getVehicleActivationAmount(){
+        return 3000;
+    }
+    
+    funtion getVehicleMonthlyDueAmount(){
+        return 600;
+    }
+    
+    function getMonthsCountOfVehicleRun(){
+        $ts1 = strtotime($this->getVehicleActivationDate());
+        $ts2 = strtotime(time());
+
+        $year1 = date('Y', $ts1);
+        $year2 = date('Y', $ts2);
+
+        $month1 = date('m', $ts1);
+        $month2 = date('m', $ts2);
+
+        $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+        return $diff;
+    }
+    
     function getTotalAmount(){
        $this->totalpayment;// return 6000; //default for each vehicle...
     }
@@ -152,7 +181,7 @@ class Payments {
 		return $this->duepaymentfornextmonth;
 	}
     
-    public static function getVehicleActivationDate($veh){
+    public static function getVehicleActivationDateFromDB($veh){
         $conn = (new Connection())->connect();
 		$sql = "SELECT * FROM payments WHERE vehicle_id='$veh_id'";
       	$action = mysqli_query($conn, $sql);

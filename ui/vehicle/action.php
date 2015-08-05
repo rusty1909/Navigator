@@ -1,5 +1,7 @@
 <?php
 require_once '../../framework/Vehicle.php';
+require_once '../../framework/VehicleMailer.php';
+
 /*if(!isset($_SESSION['user'])){
 	echo "<script>window.location.href = '../user/login.php'</script>";
 	//header('Location:../user/login.php');
@@ -18,6 +20,11 @@ switch($action) {
 		$vehicle_number = $_POST['vehicle_number'];
 		$description = $_POST['description'];
 		if(Vehicle::add($type, $model, $vehicle_number, $make_year, $description)){
+            //mail to admin..
+            $veh_id = Vehicle::getIdByNumber($vehicle_number);
+            $adder = new VehicleMailer($veh_id);
+            $adder->sendVehicleAddedMessage();
+            
 			header('Location:index.php');
 		} else {
 			header('Location:abc.php');
@@ -39,9 +46,11 @@ switch($action) {
             break;
         }
     
-		if($mVehicle->delete())
-			header('Location:index.php');
-		else {
+		if($mVehicle->delete()){
+            $adder = new VehicleMailer($id);
+            $adder->sendVehicleDeletedMessage();
+            header('Location:index.php');
+        }else {
             header('Location:index.php');
         }
 			//header('Location:abc.php');

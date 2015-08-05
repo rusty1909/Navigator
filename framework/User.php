@@ -209,13 +209,7 @@ class User {
 	}
 	
 	function updateLoggedinState($login) {				
-		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} else {
-			$ip = $_SERVER['REMOTE_ADDR'];
-		}
+		
 		$value = 0;
 
 		if(isset($_SESSION['user']['id'])) {
@@ -229,6 +223,8 @@ class User {
 		$db = new Connection();
 		$conn = $db->connect();
 
+        $ip = $db->getIPAddress();
+        
 		$sql = "UPDATE user SET logged_in = '$value', ip_address = '$ip' WHERE id = '$this->id'";
 		$action = mysqli_query($conn, $sql);
 		if (mysqli_query($conn, $sql)) {
