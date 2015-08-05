@@ -181,7 +181,7 @@ class Payments {
 		return $this->duepaymentfornextmonth;
 	}
     
-    public static function getVehicleActivationDateFromDB($veh){
+    public static function getVehicleActivationDateFromDB($veh_id){
         $conn = (new Connection())->connect();
 		$sql = "SELECT * FROM payments WHERE vehicle_id='$veh_id'";
       	$action = mysqli_query($conn, $sql);
