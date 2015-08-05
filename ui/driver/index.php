@@ -63,7 +63,7 @@ if(!isset($_SESSION['user']))
 			window.location.href = "action.php?action=delete&id="+id;
 	}
 	
-		function fetchNotification(){
+	function fetchNotification(){
 		//alert(id+" "+driver_id);
 		var data = "";
         jQuery.ajax({
