@@ -13,20 +13,20 @@ require_once 'Timeline.php';
 
 class Company {
     private $id;
-    public $name;
-    public $tinNumber;
-    public $address1;
-    public $address2;
-    public $landmark;
-    public $city;
-    public $state;
-    public $pincode;
-    public $email;
-    public $phone;
-    public $fax;
-    public $website;
+    private $name;
+    private $tinNumber;
+    private $address1;
+    private $address2;
+    private $landmark;
+    private $city;
+    private $state;
+    private $pincode;
+    private $email;
+    private $phone;
+    private $fax;
+    private $website;
     private $admin;
-    public $description;
+    private $description;
     private $dateAdded;
 
     function __construct($id) {
@@ -63,7 +63,7 @@ class Company {
         $db = new Connection();
         $conn = $db->connect();
         //user details
-        $userId = $_SESSION['user']['id'];
+        $userId = $_SESSION['user']['id']; 
         $username = $_SESSION['user']['username'];
         $sql = "INSERT INTO `company`( `name`, `tin_number`, `address_1`, `address_2`, `landmark`, `city`, `state`, `pincode`, `phone`, `fax`, `email`, `website`, `admin_user`, `description`) VALUES ('$name', '$tin_number', '$address_1', '$address_2', '$landmark', '$city', '$state', '$pincode', '$phone', '$fax', '$email', '$website', '$userId', '$description')";
 
