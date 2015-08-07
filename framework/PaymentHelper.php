@@ -130,8 +130,10 @@ class PaymentHelper {
 
                 $amount /=  sizeof($mDeployedVehicleList);
 
+               // echo sizeof($mDeployedVehicleList);
                 for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
-                    Payments::add($paymetID, $amount, '1', $pay_type, $mDeployedVehicleList[$i]);
+                   // echo $mDeployedVehicleList[$i] . "<br>";
+                    Payments::add($paymetID, $amount, $is_success, $pay_type, $mDeployedVehicleList[$i]);
                 }
             
             }else{
@@ -140,7 +142,7 @@ class PaymentHelper {
                 $amount /=  sizeof($mDeployedVehicleList);
 
                 for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
-                    Payments::add($paymetID, $amount, '1', $pay_type, $mDeployedVehicleList[$i]);
+                    Payments::add($paymetID, $amount, $is_success, $pay_type, $mDeployedVehicleList[$i]);
                 }
             }
            

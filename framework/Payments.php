@@ -52,10 +52,12 @@ class Payments {
                     $this->restpayment = $row['rest_amount'];
                     $this->paymentPercentage = $row['paid_perc'];
 
+                    $this->vehActivationDate = $row['veh_activation_date'];
+                    
                     $this->paymenttype = $row['pay_type'];
                     $this->paymentstatus = $row['is_success'];
 
-                    $this->vehActivationDate = $row['veh_activation_date'];
+                    
 
                     $this->prevpaymentDate = $row['timestamp'];
                     $this->nextpaymentDate = $row['timestamp'] + 86400*30;
@@ -102,18 +104,21 @@ class Payments {
             $paid_amount = Payments::getPreviousPaymentForVehicle($veh_id, $companyId);
         }
         $total_amount = DEF_MEM_AMOUNT;
-        $paid_amount += $amount;
+        $paid_amount += $amount; 
      
         $paid_per = 100 - (($total_amount - $paid_amount)/$total_amount)*100;
         $rest_amount = $total_amount - $paid_amount;
         
-		$sql = "INSERT INTO `payments`(`amount`, `company_id`, `user_id`, `timestamp`, `is_success`, `pay_type`, `rest_amount`, `paid_perc`, `paid_amount`, `total_amount`, `vehicle_id`, `veh_activation_date`, `paymentId`) VALUES  ('$amount','$companyId','$userId',now(),'$is_success','$pay_type','$rest_amount','$paid_per','$paid_amount','$total_amount', '$veh_id', '$act_date', '$paymetID')";
+		$sql = "INSERT INTO `payments`(`amount`, `company_id`, `user_id`, `timestamp`, `is_success`, `pay_type`, `rest_amount`, `paid_perc`, `paid_amount`, `vehicle_id`, `total_amount`, `veh_activation_date`, `paymentId`) VALUES ('$amount','$companyId','$userId',now(),'$is_success','$pay_type','$rest_amount','$paid_per','$paid_amount', '$veh_id', '$total_amount', '$act_date', '$paymetID')";
 		
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
-			return false;
+           // echo $sql;
+			return mysqli_error($conn);
 		}
+        
+        return false;
 	}
 	
 	function delete() {

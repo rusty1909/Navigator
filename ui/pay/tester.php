@@ -16,7 +16,7 @@
 
     $payHelper = new PaymentHelper();
 
-$amount = 12000;
+$amount = 1200;
 $productinfo = 'activation';
 $txnid = '121212';
    echo  $payHelper->ProcessPayment($amount, $productinfo , 'payu', $txnid, 1);
