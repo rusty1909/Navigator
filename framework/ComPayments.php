@@ -63,7 +63,7 @@ class ComPayments {
         $ip = $db->getIPAddress();
         $device_details = $db->getDeviceDetails();
                
-		$sql = "INSERT INTO `compayments`(`paymetID`, `companyId`, `userId`, `amount`, `paymenttype`, `paymentdate`, `is_success`, `paymentmethod`, `paymentdescription`, `deviceinfo`, `ipinfo`) VALUES  ('$paymetID','$companyId','$userId', '$amount','$pay_type',now(),'$is_success','$paid_per','$paymentmethod','$paymentdescription', '$device_details', '$ip')";
+		$sql = "INSERT INTO `compayments`(`paymetID`, `companyId`, `userId`, `amount`, `paymenttype`, `paymentdate`, `is_success`, `paymentmethod`, `paymentdescription`, `deviceinfo`, `ipinfo`) VALUES  ('$paymetID','$companyId','$userId', '$amount','$pay_type',now(),'$is_success', '$paymentmethod','$paymentdescription', '$device_details', '$ip')";
 		
 		if (mysqli_query($conn, $sql)) {
 			return true;

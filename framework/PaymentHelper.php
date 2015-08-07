@@ -117,7 +117,7 @@ class PaymentHelper {
 	}
     
     function CreatePaymentID(){
-        return $this->getCompany() . $this->getUserId() . time();
+        return $this->getCompany() . $this->getUserId()->getId() . time();
     }
     
     function ProcessPayment($amount, $pay_type, $paymentmethod, $paymentdescription, $is_success){
@@ -125,15 +125,25 @@ class PaymentHelper {
         
         if(ComPayments::add($paymetID, $amount, $is_success, $pay_type, $paymentmethod, $paymentdescription)){
         
-            if($is_success == '1'){
-                $mDeployedVehicleList = $this->userId->getDeployedVehicleList(); //currently running vehicles...
-                
+            if(strtolower($pay_type) == strtolower('activation')){
+                $mDeployedVehicleList = $this->userId->getWaitingVehicleList(); //currently running vehicles...
+
                 $amount /=  sizeof($mDeployedVehicleList);
-                
+
+                for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
+                    Payments::add($paymetID, $amount, '1', $pay_type, $mDeployedVehicleList[$i]);
+                }
+            
+            }else{
+                $mDeployedVehicleList = $this->userId->getDeployedVehicleList(); //currently running vehicles...
+
+                $amount /=  sizeof($mDeployedVehicleList);
+
                 for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
                     Payments::add($paymetID, $amount, '1', $pay_type, $mDeployedVehicleList[$i]);
                 }
             }
+           
         }else{
             echo 'unable to process payments for company<br>';
             die();

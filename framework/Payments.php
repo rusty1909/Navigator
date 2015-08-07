@@ -96,7 +96,7 @@ class Payments {
         
         if($pay_type == 'activation'){
             $paid_amount = 0;
-            $act_date = now();
+            $act_date = time();
         }else{
             $act_date = Payments::getVehicleActivationDateFromDB($veh);
             $paid_amount = Payments::getPreviousPaymentForVehicle($veh_id, $companyId);
