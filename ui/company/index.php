@@ -7,6 +7,7 @@
     require_once "../../framework/PaymentHelper.php";
 
 	$mUser = new User();
+	$isCompanyAdmin = $mUser->isCompanyAdmin();
 
 	$mCompany = new Company($mUser->getCompany());
 	
@@ -217,7 +218,13 @@
 					<ul class="content-box-tabs">
 						<li><a href="#info" <?php if(!isset($_GET['page'])) echo "class='default-tab current'" ?>>Basic Information</a></li> <!-- href must be unique and match the id of target div -->
 						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
-						<li><a href="#payment" <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?>>Due Payment(<?php echo $duePayment; ?>)</a></li>
+						
+						<!--<li><a <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?> 
+							<?php if(!$isCompanyAdmin) {echo "style='cursor:not-allowed' title='This feature is available only to Company Admin.'";} else { echo "href='#payment'";} ?>>Due Payment(<?php echo $duePayment; ?>)</a></li>-->
+							
+						<?php if($isCompanyAdmin) { ?>
+							<li><a href="#payment" <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?> >Due Payment(<?php echo $duePayment; ?>)</a></li>
+						<?php } ?>
 						<li><a href="#setting">Settings</a></li>						
 						
 					</ul>
