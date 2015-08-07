@@ -22,5 +22,16 @@ switch($action) {
 			//header('Location:abc.php');
 		}
 		break;
+	case "update" : $id = $_POST['id'];
+		$phone = $_POST['phone'];
+		$address = $_POST['address'];
+		$description = $_POST['description'];
+		$mDriver = new Driver($id);
+		if($mDriver->update($phone, $address, $description)){
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
+		} else {
+			header('Location:index.php');
+		}
+		break;
 }
 ?>

@@ -108,6 +108,27 @@ class Driver {
 		}
 	}
 
+	function update($phone, $address, $description){
+		//require_once '../framework/DBConnect.php';
+		
+		// opening db connection
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$mUser = new User();
+		
+		//if(!Driver::exists($conn, $driver)) return false;
+		
+		// sql to delete a record
+		$sql = "UPDATE driver SET phone = '$phone', address='$address', description='$description' WHERE id='$this->id'";
+
+		if (mysqli_query($conn, $sql)) {
+			return Timeline::addTimelineEvent("driver_update", "", $this->id, "", $mUser->getId(), 1);
+		} else {
+			return false;
+		}
+	}
+
     function getCurrentVehicle(){
 		
 		// opening db connection

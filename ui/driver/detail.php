@@ -357,44 +357,44 @@ if(!isset($_SESSION['user']))
             <!-- //////////////// POP UP Box for adding employee-->
     <div id="edit-popup" class="modal-box" style="width:50%;">  
 				<header>
-			<h3>Add Driver</h3>
+			<h3><?php echo $mDriver->getName(); ?></h3>
 		</header>
 		<div class="modal-body" id="item-list">
-						<form action="action.php?action=add" method="POST">
-							
-							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
-															
-								<p class="column-left">
-									<label>Name</label>
-										<input class="text-input medium-input" id="name" name="name" disabled value="<?php echo $mDriver->getName(); ?>" type="text" required placeholder='Rudra XYZ'> 
-								</p>
-								
-								<p class="column-right">
-									<label>Phone</label>
-										<b>+91- </b><input class="text-input medium-input" name="phone" value="<?php echo $mDriver->getPhone(); ?>" id="phone" type="text" maxlength="10" required placeholder='0123456789' min='1000000000' max='9999999999'> 
-								</p>
+			<form action="action.php?action=update" method="POST">
+				<input hidden type="text" value="<?php echo $mDriver->getId(); ?>" name="id">
+				<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+												
+					<p class="column-left">
+						<label>Name</label>
+							<input class="text-input medium-input" id="name" name="name" disabled value="<?php echo $mDriver->getName(); ?>" type="text" required placeholder='Rudra XYZ'> 
+					</p>
+					
+					<p class="column-right">
+						<label>Phone</label>
+							<b>+91- </b><input class="text-input medium-input" name="phone" value="<?php echo $mDriver->getPhone(); ?>" id="phone" type="text" maxlength="10" required placeholder='0123456789' min='1000000000' max='9999999999'> 
+					</p>
 
-								<p>
-									<label>Address</label>
-										<textarea name="address" id="address" required placeholder="House #12 , mayur vihar , new delhi"><?php echo $mDriver->getAddress(); ?></textarea>
-								</p>
+					<p>
+						<label>Address</label>
+							<textarea name="address" id="address" required placeholder="House #12 , mayur vihar , new delhi"><?php echo $mDriver->getAddress(); ?></textarea>
+					</p>
 
-								<p>
-									<label>Description</label>
-									<input class="text-input large-input" name="description" id="description" value="<?php echo $mDriver->getDescription(); ?>" type="text" required placeholder="I was working in this company or having much experience.">
-									<br><small>A small description of the driver which will help in identifying the driver with ease.</small>
-								</p>
-							
-								<p class="column-left">
-									<label>Joining Date</label>
-										<input class="text-input medium-input" id="date_join" disabled value="<?php echo $mDriver->getJoiningDate(); ?>" name="date_join" type="text" required> 
-								</p>
-								
-								
-								
-							</fieldset>
-							
-							<div class="clear"></div><!-- End .clear -->
+					<p>
+						<label>Description</label>
+						<input class="text-input large-input" name="description" id="description" value="<?php echo $mDriver->getDescription(); ?>" type="text" required placeholder="I was working in this company or having much experience.">
+						<br><small>A small description of the driver which will help in identifying the driver with ease.</small>
+					</p>
+				
+					<p class="column-left">
+						<label>Joining Date</label>
+							<input class="text-input medium-input" id="date_join" disabled value="<?php echo $mDriver->getJoiningDate(); ?>" name="date_join" type="text" required> 
+					</p>
+					
+					
+					
+				</fieldset>
+				
+				<div class="clear"></div><!-- End .clear -->
 							
 						
 <!----------------------------------------------------------------------------------------------------------------------------->
