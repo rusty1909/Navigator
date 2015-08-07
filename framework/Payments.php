@@ -147,11 +147,11 @@ class Payments {
 		return $this->userId;
 	}
     
-    funtion getVehicleActivationAmount(){
+    function  getVehicleActivationAmount(){
         return 3000;
     }
     
-    funtion getVehicleMonthlyDueAmount(){
+    function  getVehicleMonthlyDueAmount(){
         return 600;
     }
     
@@ -170,7 +170,7 @@ class Payments {
     }
     
     function getTotalAmount(){
-       $this->totalpayment;// return 6000; //default for each vehicle...
+       return DEF_MEM_AMOUNT; //$this->totalpayment;// return 6000; //default for each vehicle...
     }
     
 	function getPaidpayment(){

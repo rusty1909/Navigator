@@ -11,6 +11,7 @@ class PaymentHelper {
 	private $totalReqAmount;
 	private $totalPaidAmount;
     private $amountreqfornextcycle;
+    private $activationamount;
     
     private $paymenttype;
     private $paymentstatus;
@@ -31,7 +32,7 @@ class PaymentHelper {
         $this->userId = new User();
         $mDeployedVehicleList = $this->userId->getDeployedVehicleList(); //currently running vehicles...
         
-        $this->totalAmount = $this->totalPaidAmount = $this->amountreqfornextcycle = $this->totalRemainingAmount =  0;
+        $this->activationamount = $this->totalAmount = $this->totalPaidAmount = $this->amountreqfornextcycle = $this->totalRemainingAmount =  0;
        
         
         for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
@@ -52,8 +53,17 @@ class PaymentHelper {
 		
         }
         
-        ///calculate amount with respect to the previous deployed vehicels...
-         $mPreviousVehicleList = $this->userId->getPreviousVehicleList();  //previous used vehicles...
+        ///calculate amount with respect to the initate vehicels...
+         $mPreviousVehicleList = $this->userId->getWaitingVehicleList();  //previous used vehicles...
+        
+         for($i=0; $i<sizeof($mPreviousVehicleList); $i++) {
+            $mVehicle = new Vehicle($mPreviousVehicleList[$i]);
+            
+            $mVehPayments = new Payments($mVehicle->getId(), $this->companyId);
+            
+            $this->activationamount +=  $mVehPayments->getVehicleActivationAmount();      
+            
+        }
        
 	}
     	
@@ -79,6 +89,10 @@ class PaymentHelper {
 	
 	function getDuepayment(){
 		return $this->amountreqfornextcycle;
+	}
+    
+    function getDuepaymentForActivation(){
+		return $this->activationamount;
 	}
     
 	function getRemainingAmount(){

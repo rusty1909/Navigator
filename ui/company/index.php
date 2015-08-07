@@ -4,12 +4,17 @@
 	require_once "../../framework/Job.php";
 	require_once "../../framework/Driver.php";
 	require_once "../../framework/Company.php";
+    require_once "../../framework/PaymentHelper.php";
+
 	$mUser = new User();
 
 	$mCompany = new Company($mUser->getCompany());
 	
 	$mEmployeeList = $mCompany->getEmployeeList();
 
+    $payHelper = new PaymentHelper();
+
+    $duePayment = -($payHelper->getDuepaymentForActivation() + $payHelper->getDuepayment());
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
@@ -212,7 +217,7 @@
 					<ul class="content-box-tabs">
 						<li><a href="#info" <?php if(!isset($_GET['page'])) echo "class='default-tab current'" ?>>Basic Information</a></li> <!-- href must be unique and match the id of target div -->
 						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
-						<li><a href="#payment">Payments</a></li>
+						<li><a href="#payment" <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?>>Due Payment(<?php echo $duePayment; ?>)</a></li>
 						<li><a href="#setting">Settings</a></li>						
 						
 					</ul>
@@ -249,7 +254,16 @@
 						</div>
 						
 					</div>
-					                    
+<!-- payments -->
+         <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']='payment') echo " default-tab" ?>" id="payment">	
+             <table>
+                 <tr><td>Due Amount For Next Month :</td><td> <?php echo $payHelper->getDuepayment() ?> </td></tr>
+                 <tr><td>Activate Your Waiting Vehicles in just :</td><td> <?php echo $payHelper->getDuepaymentForActivation() ?> </td></tr>
+             </table>        
+              
+             <button><a href='../pay/paymoney.php'>Pay Now</a></button><br>
+					</div> <!-- End #payments -->
+                    
                    <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']='staff') echo " default-tab" ?>" id="staff">	
                        
 						<?php
@@ -318,7 +332,7 @@
 							
 						</table>
 						<?php } ?>
-					</div> <!-- End #prev -->
+					</div> <!-- End #staff -->
                 
                 
                     
