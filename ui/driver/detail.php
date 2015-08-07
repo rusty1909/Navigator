@@ -51,7 +51,11 @@ if(!isset($_SESSION['user']))
 		<script type="text/javascript" src="../../res/jquery.htm"></script>
 		<script type="text/javascript" src="../../res/jquery.js"></script>
 		<script src="http://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&key=AIzaSyBcmYGGYTH1hGEEr31Odpiou8thwx55f_o&sensor=false&libraries=places,geometry,drawing"></script>
-		
+
+	  <!--  //modal box jquery -->
+		<link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 		<script>
 	var vehicle_id;
 	
@@ -141,6 +145,51 @@ if(!isset($_SESSION['user']))
 		}
 		
 		setInterval(function(){ fetchLocation() }, 2000);
+		
+		</script>
+		<script>
+
+/* modal box display */
+		$(document).ready(function () {
+			console.log("clicked");
+			$('#dialog_link').click(function () {
+				$('#dialog').dialog('open');
+				return false;
+			});
+			
+			//$("#edit-form").load("edit.php");
+		});
+
+		$(function(){
+		console.log("started");
+		var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+
+		  $('a[data-modal-id]').click(function(e) {
+			e.preventDefault();
+			$("body").append(appendthis);
+			$(".modal-overlay").fadeTo(500, 0.7);
+			//$(".js-modalbox").fadeIn(500);
+			var modalBox = $(this).attr('data-modal-id');
+			$('#'+modalBox).fadeIn($(this).data());
+		  });  
+		  
+
+		$(".js-modal-close, .modal-overlay").click(function() {
+		  $(".modal-box, .modal-overlay").fadeOut(500, function() {
+			$(".modal-overlay").remove();
+		  });
+		});
+
+		$(window).resize(function() {
+		  $(".modal-box").css({
+			top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
+			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+		  });
+		});
+		 
+		$(window).resize();
+		 
+		});
 		</script>
 
 </head>
@@ -181,7 +230,7 @@ if(!isset($_SESSION['user']))
 						<div id="basic">
 							<form action="edit.php"><fieldset>
 								<p class="column-left">
-									<input class="button" value="   Edit   " type="submit" id="edit_button">
+									<a class="button" class='js-open-modal' href='#' data-modal-id='edit-popup' >Edit Info</a>
 									<br><br>
 									<img id="address_icon" height="20" width="20" src="../../res/address.png" title="Address" alt="Address">&nbsp;
 									<b><span id="address_view" style='vertical-align:2px;'>
@@ -296,88 +345,6 @@ if(!isset($_SESSION['user']))
 			</div>
 
 			<div class="clear"></div>
-            
-            <!-- //////////////// POP UP Box for adding employee-->
-    <div id="edit-employee" class="modal-box" style="width:50%;">  
-		<header>
-			<h3>Add Staff</h3>
-		</header>
-		<div class="modal-body" id="item-list">
-						
-     <!---------------------------------------------------------------------------------------------------------------------------------->       
-            <form action="action.php?action=registerEmployee" method="POST" onSubmit="return validate()">
-							
-							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
-							
-								<p class="column-left">
-									<label>Employee Name <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="name" name="name" type="text" style="width:45.5% !important" required placeholder="Ranjan Singh"> <span class="input-notification error png_bg" id="name_error"></span><span class="input-notification success png_bg" id="name_success"></span>  
-								</p>
-							
-								<p class="column-right">
-									<label>Employee ID <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="emp_id" name="emp_id" type="text" style="width:45.5% !important"  required placeholder="11223344h"> <span class="input-notification error png_bg" id="tin_error"></span><span class="input-notification success png_bg" id="tin_success"></span>  
-								</p>
-								
-								<p class="column-left">
-									<label>Address Line 1 <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="address_1" name="address_1" type="text" style="width:99.5% !important"  required placeholder="Chawri bazar">
-								</p>
-							
-								<p class="column-right">
-									<label>Address Line 2</label>
-									<input class="text-input medium-input" id="address_2" name="address_2" type="text" style="width:99.5% !important">
-								</p>
-								
-								<p class="column-left">
-									<label>Landmark </label>
-									<input class="text-input medium-input" id="landmark" name="landmark" type="text" style="width:45.5% !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
-										<br><small>A small description of the field</small>-->
-								</p>
-								
-								<p class="column-right">
-									<label>City <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="city" name="city" type="text"  style="width:45.5% !important"  required placeholder="New Delhi"> 
-								</p>
-				
-								<p class="column-left">
-									<label>State <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="state" name="state" type="text" style="width:45.5% !important"  required placeholder="Delhi"> <!--<span class="input-notification success png_bg">Successful message</span> 
-										<br><small>A small description of the field</small>-->
-								</p>
-								
-								<p class="column-right">
-									<label>Pin Code <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="pincode" name="pincode" type="text" maxlength="6" style="width:45.5% !important"> 
-								</p>
-
-								<p class="column-left">
-									<label>Phone <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="phone" name="phone" type="text" maxlength="10" style="width:45.5% !important"  required placeholder="0123456789"> <!--<span class="input-notification success png_bg">Successful message</span> 
-										<br><small>A small description of the field</small>-->
-								</p>
-								
-								<p class="column-left">
-									<label>Email <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="email" name="email" type="email" required style="width:45.5%  !important"> <!--<span class="input-notification success png_bg">Successful message</span> 
-										<br><small>A small description of the field</small>-->
-								</p>
-								
-								</fieldset>
-							
-							<div class="clear"></div><!-- End .clear -->					
-				
-<!----------------------------------------------------------------------------------------------------------------------------->
-
-	  <footer>
-		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
-		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
-	  </footer>
-                            
-	  </form>
-
-		</div>		
-	</div>
 			
 			<!-- End Notifications -->
 			
@@ -386,4 +353,59 @@ if(!isset($_SESSION['user']))
 		</div> <!-- End #main-content -->
 		
 	</div>
+
+            <!-- //////////////// POP UP Box for adding employee-->
+    <div id="edit-popup" class="modal-box" style="width:50%;">  
+				<header>
+			<h3>Add Driver</h3>
+		</header>
+		<div class="modal-body" id="item-list">
+						<form action="action.php?action=add" method="POST">
+							
+							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+															
+								<p class="column-left">
+									<label>Name</label>
+										<input class="text-input medium-input" id="name" name="name" disabled value="<?php echo $mDriver->getName(); ?>" type="text" required placeholder='Rudra XYZ'> 
+								</p>
+								
+								<p class="column-right">
+									<label>Phone</label>
+										<b>+91- </b><input class="text-input medium-input" name="phone" value="<?php echo $mDriver->getPhone(); ?>" id="phone" type="text" maxlength="10" required placeholder='0123456789' min='1000000000' max='9999999999'> 
+								</p>
+
+								<p>
+									<label>Address</label>
+										<textarea name="address" id="address" required placeholder="House #12 , mayur vihar , new delhi"><?php echo $mDriver->getAddress(); ?></textarea>
+								</p>
+
+								<p>
+									<label>Description</label>
+									<input class="text-input large-input" name="description" id="description" value="<?php echo $mDriver->getDescription(); ?>" type="text" required placeholder="I was working in this company or having much experience.">
+									<br><small>A small description of the driver which will help in identifying the driver with ease.</small>
+								</p>
+							
+								<p class="column-left">
+									<label>Joining Date</label>
+										<input class="text-input medium-input" id="date_join" disabled value="<?php echo $mDriver->getJoiningDate(); ?>" name="date_join" type="text" required> 
+								</p>
+								
+								
+								
+							</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->
+							
+						
+<!----------------------------------------------------------------------------------------------------------------------------->
+
+	  <footer>
+		<b><input class="button" value="SUBMIT" type="submit">&nbsp;</b>
+		<a href="#" class="js-modal-close" style="color:#D3402B"><b>CANCEL</b></a>
+	  </footer>
+	  </form>
+
+		</div>
+	</div>
+	
 </body></html>

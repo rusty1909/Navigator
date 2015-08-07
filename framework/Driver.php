@@ -237,6 +237,10 @@ class Driver {
 	function getSeparationDate(){
 		return $this->dateSeparate;
 	}
+	
+	function getDescription(){
+		return $this->description;
+	}
 
 }
 ?>
