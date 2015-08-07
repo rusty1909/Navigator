@@ -101,6 +101,14 @@ class Timeline {
 					$resArray['string'] = "<a href='#'><b>".$mEmployee->getFullName()."</b></a> was removed by ";
 				break;
 				
+			case "driver_update" : $driverId = $this->driver;
+				$mDriver = new Driver($driverId);
+				
+				$resArray['image'] = "driver_icon";
+				
+				$resArray['string'] = "<a href=\"/navigator/ui/driver/detail.php?id=".$driverId."\"><b>".$mDriver->getName()."</b></a>'s info was updated by ";
+				break;
+				
 			default : $resArray['string'] = "Qwerty";
 				$resArray['image'] = "alert_ok";
 				break;
