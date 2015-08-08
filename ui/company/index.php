@@ -15,7 +15,7 @@
 
     $payHelper = new PaymentHelper();
 
-    $duePayment = -($payHelper->getDuepaymentForActivation() + $payHelper->getDuepayment());
+    $duePayment = ($payHelper->getDuepaymentForActivation() + $payHelper->getDuepayment());
 
     $vehPayInfo = $payHelper->GetPaymentCode();
 
@@ -224,10 +224,10 @@
 						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
 						
 						<!--<li><a <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?> 
-							<?php if(!$isCompanyAdmin) {echo "style='cursor:not-allowed' title='This feature is available only to Company Admin.'";} else { echo "href='#payment'";} ?>>Due Payment(<?php echo $duePayment; ?>)</a></li>-->
+							<?php if(!$isCompanyAdmin) {echo "style='cursor:not-allowed' title='This feature is available only to Company Admin.'";} else { echo "href='#payment'";} ?>>Due Payment(<?php echo -($duePayment); ?>)</a></li>-->
 							
 						<?php if($isCompanyAdmin) { ?>
-							<li><a href="#payment" <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?> >Due Payment(<?php echo $duePayment; ?>)</a></li>
+							<li><a href="#payment" <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?> >Due Payment(<?php echo -($duePayment); ?>)</a></li>
 						<?php } ?>
 						<li><a href="#setting">Settings</a></li>						
 						
@@ -275,7 +275,7 @@
                 <input type="hidden" name="amount" value="<?php echo $duePayment; ?>" />
                 <input type="hidden" name="veh_pay" value="<?php echo $vehPayInfo ?>" />
                 <input type="hidden" name="vehicles" value="<?php echo $vehicleList ?>" />
-                <input class="button" value="   Register Company   " type="submit">
+                <input class="button" value="   Pay Now   " type="submit">
              </form>
             
 					</div> <!-- End #payments -->
