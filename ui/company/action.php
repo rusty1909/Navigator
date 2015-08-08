@@ -59,12 +59,14 @@ switch($action) {
         $website = '';
         $description ='';
 		
-		if(Company::addEmployee($name, $emp_id, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
+        $retCode = Company::addEmployee($name, $emp_id, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description);
+		if($retCode == 1){
 			echo "<script>alert('Employee added successfully!!!');</script>";
-			echo "<script>window.location.href = '../user/login.php'</script>";
-		} else {
-			echo "<script>alert('Sorry, some error occured.');</script>";
-		}
+         } else {
+            echo "<script> var retVal = " .$retCode. " alert(retVal);</script>";
+		  }
+        echo "<script>window.location.href = '../user/login.php'</script>";
+		
 		break;
 	case "nocompany" :
         $mUser = new User();

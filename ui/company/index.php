@@ -104,13 +104,13 @@
 					cache: false,
 					success: function(response){
 						if(response == 0){
-							document.getElementById("tin_error").innerHTML = "";
-							document.getElementById("tin_success").innerHTML = "<b>available ! ! !<b>";
+							document.getElementById("emp_id_error").innerHTML = "";
+							document.getElementById("emp_id_success").innerHTML = "<b>available ! ! !<b>";
 						}
 						else {
 							document.getElementById("emp_id").value = "";
-							document.getElementById("tin_success").innerHTML = "";
-							document.getElementById("tin_error").innerHTML = "<b><i>'"+tin+"'</i></b>  already exists!";	
+							document.getElementById("emp_id_success").innerHTML = "";
+							document.getElementById("emp_id_error").innerHTML = "<b><i>'"+tin+"'</i></b>  already exists!";	
 						}
 					}
 				});
@@ -221,13 +221,13 @@
 					
 					<ul class="content-box-tabs">
 						<li><a href="#info" <?php if(!isset($_GET['page'])) echo "class='default-tab current'" ?>>Basic Information</a></li> <!-- href must be unique and match the id of target div -->
-						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
+						<li><a href="#staff" <?php if(isset($_GET['page']) && $_GET['page']=='staff') echo "class='default-tab current'" ?>>Staff(<?php echo sizeof($mEmployeeList); ?>)</a></li>
 						
-						<!--<li><a <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?> 
+						<!--<li><a <?php if(isset($_GET['page']) && ($_GET['page']=='payment')) echo "class='default-tab current'" ?> 
 							<?php if(!$isCompanyAdmin) {echo "style='cursor:not-allowed' title='This feature is available only to Company Admin.'";} else { echo "href='#payment'";} ?>>Due Payment(<?php echo -($duePayment); ?>)</a></li>-->
 							
 						<?php if($isCompanyAdmin) { ?>
-							<li><a href="#payment" <?php if(isset($_GET['page']) && $_GET['page']='payment') echo "class='default-tab current'" ?> >Due Payment(<?php echo -($duePayment); ?>)</a></li>
+							<li><a href="#payment" <?php if(isset($_GET['page']) && ($_GET['page']=='payment')) echo "class='default-tab current'" ?> >Due Payment(<?php echo -($duePayment); ?>)</a></li>
 						<?php } ?>
 						<li><a href="#setting">Settings</a></li>						
 						
@@ -266,7 +266,7 @@
 						
 					</div>
 <!-- payments -->
-         <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']='payment') echo " default-tab" ?>" id="payment">	
+         <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']=='payment') echo " default-tab" ?>" id="payment">	
              <table>
                  <tr><td>Due Amount For Next Month :</td> <td>Vehicle List (<?php echo $payHelper->GetVehicleListPaymentReq(); ?>) </td> <td> <?php echo $payHelper->getDuepayment() ?> </td></tr>
                  <tr><td>Activate Your Waiting Vehicles in just :</td> <td>Activation Vehicle List (<?php echo $payHelper->GetVehicleListActivationReq(); ?>) </td> <td> <?php echo $payHelper->getDuepaymentForActivation() ?> </td></tr>
@@ -280,7 +280,7 @@
             
 					</div> <!-- End #payments -->
                     
-                   <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']='staff') echo " default-tab" ?>" id="staff">	
+                   <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']=='staff') echo " default-tab" ?>" id="staff">	
                        
 						<?php
 						if(sizeof($mEmployeeList) == 0) {
@@ -410,7 +410,7 @@
 							
 								<p class="column-right">
 									<label>Employee ID <span class="mandatory">*</span></label>
-									<input class="text-input medium-input" id="emp_id" name="emp_id" type="text" style="width:45.5% !important"  required placeholder="11223344h"> <span class="input-notification error png_bg" id="tin_error"></span><span class="input-notification success png_bg" id="tin_success"></span>  
+									<input class="text-input medium-input" id="emp_id" name="emp_id" type="text" style="width:45.5% !important"  required placeholder="11223344h"> <span class="input-notification error png_bg" id="emp_id_error"></span><span class="input-notification success png_bg" id="emp_id_success"></span>  
 								</p>
 								
 								<p class="column-left">

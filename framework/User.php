@@ -125,9 +125,11 @@ class User {
 				Mailer::sendActivationMessage($firstname." ".$lastname, $username, $email, $securityKey);
                 return true;
 			} else {
-				return false;
+				return 'Unable to add User';
 			}
 		}
+        
+        return 'Unable to add User';
 	}
     
 	function getAllNotifications(){
