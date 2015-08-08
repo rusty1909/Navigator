@@ -164,7 +164,7 @@ class Company {
                 $mEmployee = new User(User::getIdByEmail($email));
 				$mAddedBy = new User();
                 $mEmployee->SetAddedby($mAddedBy->getId());
-                Mailer::sendEmployeeAddedMessage($name, $emp_id, $email, $defaultPassword);
+                Mailer::sendEmployeeAddedMessage($name, $emp_id, $email, $defaultPassword, $_SESSION['user']['company'], $mAddedBy->getFullname());
 				return Timeline::addTimelineEvent("staff_addition", "", "", $mEmployee->getId(), $mAddedBy->getId(), 1);
                 return true;
             }            

@@ -66,6 +66,9 @@ class Mailer {
     public static function sendActivationMessage($pfullname, $pusername, $pemail,$securityKey){
         $msgToUser = "";
         $subject = 'Complete Your ' . WEB_FULL_NAME . ' Registeration';
+        
+        $link = "http://".WEBSITE_NAME."/navigator/ui/user/action.php?action=activate&email=$pemail&key=$securityKey";
+        
         $message = "Dear ".strtoupper($pfullname).",<br /><br />
 
             You have successfully created account with .<br />
@@ -76,32 +79,29 @@ class Mailer {
             Complete this step to activate your account at ".WEB_FULL_NAME."<br />
 
             Click the line below to activate when ready<br />
-            http://".WEBSITE_NAME."/navigator/ui/user/action.php?action=activate&email=$pemail&key=$securityKey<br /><br /><br />
+            <br /><br /><br /><a href=$link>Activate Account </a>
             If the URL above is not an active link, please copy and paste it into your browser address bar
-
+<br>
+$link<br><br>
             Login after successful activation using your:  <br /><br />";
 
             $message = Mailer::makeMessage($message); 
 
            if(mail($pemail, $subject, $message, activation_headers)) {
-               $msgToUser = "<h2>One Last Step - Activate through Email</h2><h4>$pfullname, there is one last step to verify your email identity:</h4><br />
-               In a moment you will be sent an Activation link to your email address.<br /><br />
-               <br />	   ";
+                return true;
            }else {		
-            //second case if email link is not working.....	
-                 $msgToUser = "<h2>$pfullname,<span> you have successfully registered with us.</span></h2><br />
-                                Please <a href='./index.php'>Login</a>...<br /><br />";
+                return false;
             }
 
-            return $msgToUser;
+            return false;
     }
 
-    public static function sendEmployeeAddedMessage($pfullname, $pusername, $pemail, $password){
+    public static function sendEmployeeAddedMessage($pfullname, $pusername, $pemail, $password, $byCom , $byUser){
         $msgToUser = "";
-        $subject = 'You have been added as Employee For ' . WEB_FULL_NAME ;
+        $subject = "You have been added as Employee For $byCom with ". WEB_FULL_NAME;
         $message = "Dear ".strtoupper($pfullname).",<br /><br />
 
-            You have successfully created account with .<br />
+            $byUser has registered your account with ". WEB_FULL_NAME ." with credentials .<br />
             Account Details :<br /><br />
             Name : $pfullname<br />
             UserName : $pusername<br />
@@ -109,21 +109,17 @@ class Mailer {
             Password: $password<br /><br /><br />
             Complete this step to activate your account at ".WEB_FULL_NAME."<br />";
 
-          $message .= "Please change your password as soon as possible."; 
+           $message .= "Please change your password as soon as possible."; 
             
-            $message = Mailer::makeMessage($message); 
+           $message = Mailer::makeMessage($message); 
 
            if(mail($pemail, $subject, $message, activation_headers)) {
-               $msgToUser = "<h2>One Last Step - Activate through Email</h2><h4>$pfullname, there is one last step to verify your email identity:</h4><br />
-               In a moment you will be sent an Activation link to your email address.<br /><br />
-               <br />	   ";
+              return true;
            }else {		
-            //second case if email link is not working.....	
-                 $msgToUser = "<h2>$pfullname,<span> you have successfully registered with us.</span></h2><br />
-                                Please <a href='./index.php'>Login</a>...<br /><br />";
+                return false;
             }
 
-            return $msgToUser;
+            return false;
     }
 
     public static function SendMessagebyPHP($puserid,$subject,$message ){
@@ -149,14 +145,15 @@ class Mailer {
 
     public static function SendMessageResettoME($puserid){
         $msgToUser = "";
-
+        $link = "http://".WEBSITE_NAME."/resetpassword.php?id=$puserid";
+        
         $message = "Dear ".$puserid;
         $message  .= "<br /><br />";
         $message .= "Complete this step to reset your account passsword at ".WEB_FULL_NAME."<br />
 
         Click the line below to activate when ready<br />
-
-        http://".WEBSITE_NAME."/resetpassword.php?id=$puserid<br /><br /><br />
+<a href=$link> Reset Password </a><br>
+        <br />$link<br />
         If the URL above is not an active link, please copy and paste it into your browser address bar
 
         Please Login after successful reset using your password:  <br /><br />
