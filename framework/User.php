@@ -188,24 +188,47 @@ class User {
 	
 	function updateCompanyToVehicle(){
 		$db = new Connection();
-
 		$conn = $db->connect();
 		
 		$companyId = $this->companyId;
 		$sql = "UPDATE vehicle SET company_id = '$companyId' WHERE added_by = '$this->id'";
 
 		$action = mysqli_query($conn, $sql);
-
-
-
 		if (mysqli_query($conn, $sql)) {
-
+			return true;
 		} else {
+			return false;
+		}		
+	}
 
-			/*echo "company not updated!!!";*/
-
-		}
+	function updateCompanyToNotification(){
+		$db = new Connection();
+		$conn = $db->connect();
 		
+		$companyId = $this->companyId;
+		$sql = "UPDATE notification SET company = '$companyId' WHERE admin = '$this->id'";
+
+		$action = mysqli_query($conn, $sql);
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}		
+	}
+
+	function updateCompanyToDriver(){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$companyId = $this->companyId;
+		$sql = "UPDATE driver SET company_id = '$companyId' WHERE added_by = '$this->id'";
+
+		$action = mysqli_query($conn, $sql);
+		if (mysqli_query($conn, $sql)) {
+			return true;
+		} else {
+			return false;
+		}		
 	}
 	
 	function updateLoggedinState($login) {				
@@ -577,10 +600,9 @@ class User {
 		
         if(empty($_SESSION['user']))
             return null;
-        
-		$company_id = $_SESSION['user']['company'];
+
 		$result = array();
-		if($company_id > 0)
+		if($this->companyId > 0)
 			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND date_deactivate IS NULL ";
 		else
 			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '1' AND date_deactivate IS NULL ";
@@ -605,11 +627,9 @@ class User {
 		
          if(empty($_SESSION['user']))
             return null;
-        
-        
-		$company_id = $_SESSION['user']['company'];
+
 		$result = array();
-		if($company_id > 0)
+		if($this->companyId > 0)
 			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND deployed='1' AND status = '1' AND date_deactivate IS NULL ";
 		else
 			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND deployed='1' AND status = '1' AND date_deactivate IS NULL ";
@@ -636,8 +656,7 @@ class User {
          if(empty($_SESSION['user']))
             return null;
         
-        
-		$company_id = $_SESSION['user']['company'];
+
 		$result = array();
 		
 		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '0' OR date_deactivate IS NOT NULL  ";
@@ -664,9 +683,8 @@ class User {
             return null;
         
         
-		$company_id = $_SESSION['user']['company'];
 		$result = array();
-		if($company_id > 0)
+		if($this->companyId > 0)
 			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND driver != '0' AND date_deactivate IS NULL ";
 		else
 			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '1' AND driver != '0' AND date_deactivate IS NULL ";
@@ -694,7 +712,7 @@ class User {
         
         
 		
-		$company_id = $_SESSION['user']['company'];
+
 		$result = array();
 		
 		$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND status = '1' AND on_job='0' AND deployed='1' AND date_deactivate IS NULL ";
@@ -719,13 +737,9 @@ class User {
 		
         if(empty($_SESSION['user']))
             return null;
-        
-      
-        
-		$company_id = $_SESSION['user']['company'];
-		$result = array();
 		
-		if($company_id > 0)
+		$result = array();
+		if($this->companyId > 0)
 			$sql = "SELECT id FROM vehicle WHERE company_id = '$this->companyId' AND deployed='0' AND date_deactivate IS NULL ";
 		else
 			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND deployed='0' AND date_deactivate IS NULL ";
@@ -748,9 +762,7 @@ class User {
 		
          if(empty($_SESSION['user']))
             return null;
-        
-        
-		$company_id = $_SESSION['user']['company'];
+
 		//echo $company_id;
 		$result = array();
 		
@@ -777,8 +789,6 @@ class User {
          if(empty($_SESSION['user']))
             return null;
         
-        
-		$company_id = $_SESSION['user']['company'];
 		$result = array();
 		
 		$sql = "SELECT id FROM client WHERE company_id = '$this->companyId'";
@@ -803,12 +813,12 @@ class User {
 		
          if(empty($_SESSION['user']))
             return null;
-        
-        
-		$company_id = $_SESSION['user']['company'];
-		$result = array();
 		
-		$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '1'";
+		$result = array();
+		if($this->companyId > 0)
+			$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '1'";
+		else
+			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '1'";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
@@ -831,11 +841,11 @@ class User {
          if(empty($_SESSION['user']))
             return null;
         
-        
-		$company_id = $_SESSION['user']['company'];
 		$result = array();
-		
-		$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '1'";
+		if($this->companyId > 0)
+			$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '1'";
+		else
+			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '1'";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
@@ -860,12 +870,11 @@ class User {
          if(empty($_SESSION['user']))
             return null;
         
-        
-		
-		$company_id = $_SESSION['user']['company'];
 		$result = array();
-		
-		$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '0'";
+		if($this->companyId > 0)
+			$sql = "SELECT id FROM driver WHERE company_id = '$this->companyId' AND status = '0'";
+		else
+			$sql = "SELECT id FROM vehicle WHERE added_by = '$this->id' AND status = '0'";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
 
@@ -890,7 +899,7 @@ class User {
         
         
 		$result = array();
-		$company_id = $_SESSION['user']['company'];
+
 		$sql = "SELECT id FROM job WHERE company_id = '$this->companyId' AND status = '0'";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);
@@ -912,7 +921,7 @@ class User {
 		$conn = $db->connect();
 		
 		$result = array();
-		$company_id = $_SESSION['user']['company'];
+
 		$sql = "SELECT id FROM job WHERE company_id = '$this->companyId' AND status = '1'";
 		//echo "--->".$sql;
 		$action = mysqli_query($conn, $sql);

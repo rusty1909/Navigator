@@ -79,6 +79,8 @@ class Company {
                     $mUser = new User();
                     $mUser->setCompany($companyId);
                     $mUser->updateCompanyToVehicle();
+					$mUser->updateCompanyToNotification();
+					$mUser->updateCompanyToDriver();
                     return true;
                 }
             } else {
