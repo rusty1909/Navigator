@@ -10,7 +10,7 @@ $SALT = "v2BK8HOx";
 $PAYU_BASE_URL = "https://secure.payu.in"; //"https://test.payu.in";
 $sucUrl = "http://www.findgaddi.com/navigator/ui/pay/success.php";
 $failUrl = "http://www.findgaddi.com/navigator/ui/pay/failure.php";
-   
+
 $action = '';
 
 $posted = array();

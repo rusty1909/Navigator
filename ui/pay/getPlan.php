@@ -1,14 +1,12 @@
 <?php
-include_once("../utils/SNMembershipPlan.php");
+require_once "../../framework/PaymentHelper.php";
 
 if(!empty($_POST["planID"])) {
     
     $id = $_POST["planID"];
-    $prod = new SNMembershipPlan($id);
     
-    $x =  $prod->getJson();
+    echo  (new PaymentHelper())->getJson($id);
     
-    echo $x;
     exit();
 }
 ?>

@@ -225,6 +225,35 @@ class PaymentHelper {
        return $this->vehListPayReq;
     }
     
+    function GetVehicleListByPayCode($p){
+        if($p == 1){
+            return $this->GetVehicleListPaymentReq();
+        }else if($p == 2){
+            return $this->GetVehicleListActivationReq();
+        }else if($p == 3){
+            return $this->GetVehicleListPaymentReq() +  $this->GetVehicleListActivationReq() ;
+        }
+        return "";
+    }
+    
+    function GetPaymentByPayCode($p){
+        if($p == 1){
+            return $this->getDuepayment();
+        }else if($p == 2){
+            return $this->getDuepaymentForActivation();
+        }else if($p == 3){
+            return $this->getDuepayment() +  $this->getDuepaymentForActivation() ;
+        }
+        return 0;
+    }
+    
+    function getJson($id){
+        $vehlist = $this->GetVehicleListByPayCode($id);
+        $getProdPrice = $this->GetPaymentByPayCode($id);
+
+        $array = array($vehlist, $getProdPrice, $id);
+        return json_encode( $array );
+    }
     
 }
 /*
