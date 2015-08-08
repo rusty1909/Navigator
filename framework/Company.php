@@ -157,22 +157,21 @@ class Company {
 		
 		$defaultPassword = 'findgaddi';
    
-        if(!empty($_SESSION['user']['company'])){ 
-            $retCode = User::add($name, '', $emp_id, $defaultPassword, $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company']);
-            if($retCode == 1){
+        if(!empty($_SESSION['user']['company'])){
+            //$retCode = User::add($name, '', $emp_id, $defaultPassword, $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company']);
+            if(User::add($name, '', $emp_id, $defaultPassword, $phone, $phone, $email,  $address_1, $address_2, $landmark, $city, $state, $pincode, $_SESSION['user']['company'])){
                 User::activate(User::getIdByEmail($email));
                 $mEmployee = new User(User::getIdByEmail($email));
 				$mAddedBy = new User();
                 $mEmployee->SetAddedby($mAddedBy->getId());
                 Mailer::sendEmployeeAddedMessage($name, $emp_id, $email, $defaultPassword);
 				return Timeline::addTimelineEvent("staff_addition", "", "", $mEmployee->getId(), $mAddedBy->getId(), 1);
-                //return true;
-            }
-            
-            return $retCode;
+                return true;
+            }            
+            return false;
         }
         else
-            return 'Unable to find Company!!!';
+            return false;
     }
     
     public static function isCompanyRegistered($id) {
