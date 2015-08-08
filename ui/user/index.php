@@ -330,7 +330,7 @@ if(!isset($_SESSION['user']))
 									$amount = $mExpense->getAmount();
 									echo "<tr onMouseOver='this.bgColor='#EEEEEE''>
 											<td style='width:30%'><b><a href='../vehicle/detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td>
-											<td style='width:30%'><b><a href='../vehicle/detail.php?id=".$mDriver->getId()."'>".$mDriver->getName()."</a></b></td>
+											<td style='width:30%'><b><a href='../driver/detail.php?id=".$mDriver->getId()."'>".$mDriver->getName()."</a></b></td>
 											<td>".$reason."</td>
 											<td><b>Rs.".$amount."</b></td>
 											<td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='../../res/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td>
