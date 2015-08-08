@@ -15,8 +15,7 @@
 
     $payHelper = new PaymentHelper();
 
-    $duePayment = -($payHelper->getDuepaymentForActivation() + $payHelper->getDuepayment());
-
+   
 
 ?>
 <?php

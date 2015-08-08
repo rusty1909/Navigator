@@ -13,6 +13,11 @@ class PaymentHelper {
     private $amountreqfornextcycle;
     private $activationamount;
     
+    private $vehList;
+    private $vehListActivationReq;
+    private $vehListPayReq;
+    
+    
     private $paymenttype;
     private $paymentstatus;
     
@@ -34,11 +39,15 @@ class PaymentHelper {
         
         $this->activationamount = $this->totalAmount = $this->totalPaidAmount = $this->amountreqfornextcycle = $this->totalRemainingAmount =  0;
        
+        $this->vehListActivationReq = $this->vehListPayReq = $this->vehList = "";
+        
         
         for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
             $mVehicle = new Vehicle($mDeployedVehicleList[$i]);
             
             $mVehPayments = new Payments($mVehicle->getId(), $this->companyId);
+            
+            $this->vehListPayReq .= $mVehicle->getId() . ", "; 
             
             if($mVehPayments->getId() != ""){
                 
@@ -58,12 +67,16 @@ class PaymentHelper {
         
          for($i=0; $i<sizeof($mPreviousVehicleList); $i++) {
             $mVehicle = new Vehicle($mPreviousVehicleList[$i]);
-            
+             
+            $this->vehListActivationReq .= $mVehicle->getId() . ", "; 
+             
             $mVehPayments = new Payments($mVehicle->getId(), $this->companyId);
             
             $this->activationamount +=  $mVehPayments->getVehicleActivationAmount();      
             
         }
+        
+        $this->vehList = $this->vehListPayReq . $this->vehListActivationReq ;
        
 	}
     	
@@ -125,8 +138,28 @@ class PaymentHelper {
         
         if(ComPayments::add($paymetID, $amount, $is_success, $pay_type, $paymentmethod, $paymentdescription)){
         
+            
+            if(($pay_type == 1 ) || ($pay_type == 3 )){  //vehicle need activcation....
+                    $amount =  $amount - $this->getDuepaymentForActivation();
+                    
+                    $mDeployedVehicleList = $this->userId->getWaitingVehicleList(); 
+                    $amount1 = $this->getDuepaymentForActivation()/sizeof($mDeployedVehicleList);
+
+                    for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
+                        Payments::add($paymetID, $amount1, $is_success, $pay_type, $mDeployedVehicleList[$i]);
+                    }
+            }else{
+                $mDeployedVehicleList = $this->userId->getDeployedVehicleList(); //currently running vehicles...
+
+                $amount /=  sizeof($mDeployedVehicleList);
+
+                for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
+                    Payments::add($paymetID, $amount, $is_success, $pay_type, $mDeployedVehicleList[$i]);
+                }
+            }
+            /*
             if(strtolower($pay_type) == strtolower('activation')){
-                $mDeployedVehicleList = $this->userId->getWaitingVehicleList(); //currently running vehicles...
+                $mDeployedVehicleList = $this->userId->getWaitingVehicleList(); //currently waiting vehicles...
 
                 $amount /=  sizeof($mDeployedVehicleList);
 
@@ -144,7 +177,7 @@ class PaymentHelper {
                 for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
                     Payments::add($paymetID, $amount, $is_success, $pay_type, $mDeployedVehicleList[$i]);
                 }
-            }
+            } */
            
         }else{
             echo 'unable to process payments for company<br>';
@@ -153,6 +186,45 @@ class PaymentHelper {
     
         return true;
     }
+   
+    function SetPaymentType(){
+    
+    }
+    
+    function GetPaymentCode(){
+            /* Payment Code Generation... */
+        if($this->getDuepaymentForActivation() && $this->getDuepayment()){
+            //both paymenst are non zero
+            $vehPayInfo = 3;
+        }else if($this->getDuepaymentForActivation()){
+            $vehPayInfo = 2;
+        }else if($this->getDuepayment()){
+            $vehPayInfo = 1;
+        }else{
+         $vehPayInfo = 0;
+        }
+        
+        return $vehPayInfo;
+    }
+    
+    
+    function GetVehicleList(){
+            /* Payment Code Generation... */
+       return $this->vehList;
+    }
+    
+    
+    function GetVehicleListActivationReq(){
+            /* Payment Code Generation... */
+       return $this->vehListActivationReq;
+    }
+    
+    
+    function GetVehicleListPaymentReq(){
+            /* Payment Code Generation... */
+       return $this->vehListPayReq;
+    }
+    
     
 }
 /*

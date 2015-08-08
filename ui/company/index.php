@@ -16,6 +16,10 @@
     $payHelper = new PaymentHelper();
 
     $duePayment = -($payHelper->getDuepaymentForActivation() + $payHelper->getDuepayment());
+
+    $vehPayInfo = $payHelper->GetPaymentCode();
+
+    $vehicleList = $payHelper->GetVehicleList();
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
@@ -264,11 +268,16 @@
 <!-- payments -->
          <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']='payment') echo " default-tab" ?>" id="payment">	
              <table>
-                 <tr><td>Due Amount For Next Month :</td><td> <?php echo $payHelper->getDuepayment() ?> </td></tr>
-                 <tr><td>Activate Your Waiting Vehicles in just :</td><td> <?php echo $payHelper->getDuepaymentForActivation() ?> </td></tr>
+                 <tr><td>Due Amount For Next Month :</td> <td>Vehicle List (<?php echo $payHelper->GetVehicleListPaymentReq(); ?>) </td> <td> <?php echo $payHelper->getDuepayment() ?> </td></tr>
+                 <tr><td>Activate Your Waiting Vehicles in just :</td> <td>Activation Vehicle List (<?php echo $payHelper->GetVehicleListActivationReq(); ?>) </td> <td> <?php echo $payHelper->getDuepaymentForActivation() ?> </td></tr>
              </table>        
-              
-             <button><a href='../pay/paymoney.php'>Pay Now</a></button><br>
+             <form action="../pay/paymoney.php" method="POST">
+                <input type="hidden" name="amount" value="<?php echo $duePayment; ?>" />
+                <input type="hidden" name="veh_pay" value="<?php echo $vehPayInfo ?>" />
+                <input type="hidden" name="vehicles" value="<?php echo $vehicleList ?>" />
+                <input class="button" value="   Register Company   " type="submit">
+             </form>
+            
 					</div> <!-- End #payments -->
                     
                    <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']='staff') echo " default-tab" ?>" id="staff">	
