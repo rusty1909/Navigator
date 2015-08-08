@@ -10,11 +10,12 @@ ini_set('display_errors', 1);
 	
 	$mUser = new User();
 	$companyId = $mUser->getCompany();
+	//echo $companyId;
 	$mCompany = new Company($companyId);
 	
 	$mNotiResourceList = array();
 	if(!isset($_GET['id'])){
-		if($mCompany != null)
+		if($companyId != -1)
 			$mNotificationList = $mCompany->getAllNotifications();
 		else
 			$mNotificationList = $mUser->getAllNotifications();

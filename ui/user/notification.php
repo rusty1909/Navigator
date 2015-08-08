@@ -11,7 +11,7 @@ ini_set('display_errors', 1);
 	
 	$mNotiResourceList = array();
 
-	if($mCompany != null)
+	if($companyId != -1)
 		$mNotificationList = $mCompany->getAllNotifications();
 	else
 		$mNotificationList = $mUser->getAllNotifications();
