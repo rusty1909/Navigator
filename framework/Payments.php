@@ -166,8 +166,8 @@ class Payments {
         return 600;
     }
     
-    function getDateofMonthEnd(){
-       $ts2 = date('Y-m-d' , time());
+    function getDateofMonthEnd($date){
+       $ts2 = date('Y-m-d' , $date);
        return  date("Y-m-t", strtotime($ts2));
     }
     
@@ -181,7 +181,7 @@ class Payments {
     
     function getMonthsCountOfVehicleRun(){
         $ts1 = $this->getVehicleActivationDate();
-        $ts2 = $this->getDateofMonthEnd();
+        $ts2 = $this->getDateofMonthEnd(time());
 
         $year1 = date('Y', $ts1);
         $year2 = date('Y', $ts2);
@@ -195,7 +195,7 @@ class Payments {
     
     function getDaysCountSinceVehicleActivation(){
         $ts1 = $this->getVehicleActivationDate();
-        $ts2 = $this->getDateofMonthEnd();
+        $ts2 = $this->getDateofMonthEnd($ts1);
 
         $year1 = date('Y', $ts1);
         $year2 = date('Y', $ts2);
@@ -270,9 +270,6 @@ class Payments {
     
     function getNextPaymentDate(){
         $activatDate = $this->getVehicleActivationDate();
-        
-        
-        //return 	strftime("%b %d, %Y", strtotime($this->nextpaymentDate));
     }
     
 	function wasPaymentSuccessful() {
