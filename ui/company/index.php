@@ -227,7 +227,7 @@
 							<?php if(!$isCompanyAdmin) {echo "style='cursor:not-allowed' title='This feature is available only to Company Admin.'";} else { echo "href='#payment'";} ?>>Due Payment(<?php echo -($duePayment); ?>)</a></li>-->
 							
 						<?php if($isCompanyAdmin) { ?>
-							<li><a href="#payment" <?php if(isset($_GET['page']) && ($_GET['page']=='payment')) echo "class='default-tab current'" ?> >Due Payment(<b><?php echo ($duePayment); ?></b>)</a></li>
+							<li><a href="#payment" <?php if(isset($_GET['page']) && ($_GET['page']=='payment')) echo "class='default-tab current'" ?> >Due Payment(<?php echo -($duePayment); ?>)</a></li>
 						<?php } ?>
 						<li><a href="#setting">Settings</a></li>						
 						
@@ -265,28 +265,22 @@
 						</div>
 						
 					</div>
-					<!-------------------------------------------- payments START ---------------------------------------------------------------------->
-					 <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']=='payment') echo " default-tab" ?>" id="payment">	
-						 <table>
-							<tbody>
-								 <tr><td>Due Amount For Next Month :</td> <td>Vehicle List (<?php echo $payHelper->GetVehicleListPaymentReq(); ?>) </td> <td> <?php echo $payHelper->getDuepayment() ?> </td></tr>
-								 <tr><td>Activate Your Waiting Vehicles in just :</td> <td>Activation Vehicle List (<?php echo $payHelper->GetVehicleListActivationReq(); ?>) </td> <td> <?php echo $payHelper->getDuepaymentForActivation() ?> </td></tr>
-							</tbody>
-							<tfoot>
-							<tr>
-								<td colspan="3">
-								<form action="../pay/paymoney.php" method="POST">
-									<input type="hidden" name="amount" value="<?php echo $duePayment; ?>" />
-									<input type="hidden" name="veh_pay" value="<?php echo $vehPayInfo ?>" />
-									<input type="hidden" name="vehicles" value="<?php echo $vehicleList ?>" />
-									<input class="button" value="   Pay Now   " type="submit">
-								 </form>
-								 </td></tr>
-							</tfoot>
-						 </table>
-            
-					</div> 
-					<!-------------------------------------------- payments END ---------------------------------------------------------------------->
+<!-- payments -->
+         <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']=='payment') echo " default-tab" ?>" id="payment">	
+             <table>
+                 <tr><td>Due Amount For Next Month :</td> <td>Vehicle List (<?php echo $payHelper->GetVehicleListPaymentReq(); ?>) </td> <td> <?php echo $payHelper->getDuepayment() ?> </td><td><button><a href='../pay/paymoney.php?id=2'>Pay Now</a></button></td></tr>
+                 <tr><td>Activate Your Waiting Vehicles in just :</td> <td>Activation Vehicle List (<?php echo $payHelper->GetVehicleListActivationReq(); ?>) </td> <td> <?php echo $payHelper->getDuepaymentForActivation() ?> </td><td><button><a href='../pay/paymoney.php?id=1'>Pay Now</a></button></td></tr>
+                  <tr><td>Activate and Pay All Dues :</td> <td>Vehicle List (<?php echo $payHelper->GetVehicleList(); ?>) </td> <td> <?php echo $duePayment ?> </td><td><button><a href='../pay/paymoney.php?id=3'>Pay Now</a></button></td></tr>
+             </table>        
+             
+         <!--    <form action="../pay/paymoney.php" method="POST">
+                <input type="hidden" name="amount" value="<?php echo $duePayment; ?>" />
+                <input type="hidden" name="veh_pay" value="<?php echo $vehPayInfo ?>" />
+                <input type="hidden" name="vehicles" value="<?php echo $vehicleList ?>" />
+                <input class="button" value="   Pay Now   " type="submit">
+             </form>
+            -->
+					</div> <!-- End #payments -->
                     
                    <div style="display: block;" class="tab-content <?php if(isset($_GET['page']) && $_GET['page']=='staff') echo " default-tab" ?>" id="staff">	
                        
@@ -304,8 +298,8 @@
 							
 							<thead>
 								<tr>
-								   <th>Name</th>
-								   <th>Phone</th>
+								   <th>Employee Name</th>
+								   <th>Employee Phone</th>
 								   <th>Address</th>
 								   <th>Action</th>
 								</tr>
@@ -357,6 +351,15 @@
 						</table>
 						<?php } ?>
 					</div> <!-- End #staff -->
+                
+                
+                    
+                    <div style="display: block;" class="tab-content" id="payment">					
+						<p>
+                        
+                        Make Payments and keep using the findgaddi services.
+                        </p>
+					</div> <!-- End #tab3 -->					
                     
                     <div style="display: block;" class="tab-content" id="setting">					
 						<p>
