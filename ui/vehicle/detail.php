@@ -75,10 +75,17 @@ if(!isset($_SESSION['user']))
 	<script>
 	
 	var vehicle_id;
+	var API_KEY = "AIzaSyCHqUJxbs3XYWSRTVeSiR6pUILkkzg5vew";
+	var gcmKey;
 	
 	function setId(id){
 		vehicle_id = id;
 		//alert(vehicle_id);
+	}
+	
+	function setGCMKey(key){
+		gcmKey = key;
+		alert(gcmKey);
 	}
 	
 	function fetchNotification(){
@@ -104,7 +111,7 @@ if(!isset($_SESSION['user']))
 							default : image = "alert_ok"; break;
 						}
 						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
-						console.log(i);
+						//console.log(i);
 					}
 					//alert(data);
 					document.getElementById("noti_body").innerHTML = data;
@@ -120,7 +127,7 @@ if(!isset($_SESSION['user']))
 	
 	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
 	
-	function setDriver(id, driver_id){
+	function setDriver(id, driver_id, gcmkey){
 		//alert(id+" "+driver_id);
         jQuery.ajax({
             type: 'POST',
@@ -131,7 +138,7 @@ if(!isset($_SESSION['user']))
                 if(response == 1){
 					$('#driver_info').load(document.URL +  ' #driver_info');
 					//$('#driver_form_div').load(document.URL +  ' #driver_form_div');
-					
+					sendGCMUpdates("DRIVER_INFO", gcmkey);
 					if(driver_id == 0) {
 						/*
 						* in case driver is removed, refresh whole page...
@@ -149,8 +156,36 @@ if(!isset($_SESSION['user']))
                 }
             }
         });
+		
         
         $('#driver_form_div').dialog('close');
+	}
+
+	function sendGCMUpdates(reason, key){
+		alert(reason);
+        url = 'https://android.googleapis.com/gcm/send?key='+API_KEY;
+		//console.log(url);
+		var xhr = createCORSRequest('GET', url);
+		if (!xhr) {
+		  throw new Error('CORS not supported');
+		}
+		//xhr.withCredentials = true;
+
+		xhr.onload = function() {
+		 var responseText = xhr.responseText;
+		 //alert(responseText);
+		 //console.log(responseText);
+		 var pathTrace = JSON.parse(responseText);
+		 processSnapToRoadResponse(pathTrace);
+		 drawSnappedPolyline();
+		 // process the response.
+		};
+
+		xhr.onerror = function() {
+		  console.log('There was an error!');
+		};
+		
+		xhr.send();
 	}
 
 	$(document).ready(function() {
@@ -190,7 +225,7 @@ if(!isset($_SESSION['user']))
 	var polylines = [];
 	var snappedPolyline;
 	
-	var API_KEY = "AIzaSyCHqUJxbs3XYWSRTVeSiR6pUILkkzg5vew";
+	
         
     function clearMap(){
 		if(marker != null)
@@ -233,7 +268,7 @@ if(!isset($_SESSION['user']))
 					console.log('No results found');
 				}
 			} else {
-				console.log('Geocoder failed due to: ' + status);
+				//console.log('Geocoder failed due to: ' + status);
 			}
 		});
 		
@@ -515,7 +550,7 @@ if(!isset($_SESSION['user']))
 	</script>
 </head>
   
-	<body onload='setId(<?php echo $mId?>);fetchNotification();'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+	<body onload='setId(<?php echo $mId?>);fetchNotification();setGCMKey(<?php echo $mVehicle->getGCMKey()?>)'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
 		<input type=hidden value="<?php echo $mId; ?>" id="id_value">
 	<?php include('../sidebar.php');?>
 		
