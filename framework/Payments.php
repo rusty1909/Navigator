@@ -67,15 +67,21 @@ class Payments {
 		}
 	}
 	
+    function getExpectedPaymentDone(){
+   
+        $diff1 = $this->getVehicleRunningDuration();
+        
+        $expextedPaidAmount = $diff1 * $this->getVehicleMonthlyDueAmount();
+        
+        return $expextedPaidAmount;
+    }
     
     function isDue(){
         $amountPaid = $this->getPaidpayment();
         $amountPaid = $amountPaid - $this->getVehicleActivationAmount();
-        $diff1 = $this->getMonthsCountOfVehicleRun();
         
-        $expextedPaidAmount = $diff1 * $this->getVehicleMonthlyDueAmount();
+        $expextedPaidAmount = $this->getExpectedPaymentDone();
         
-        //if 
         if($expextedPaidAmount > $amountPaid + $this->getVehicleMonthlyDueAmount())
             return $expextedPaidAmount - $amountPaid + $this->getVehicleMonthlyDueAmount();
         
@@ -160,9 +166,22 @@ class Payments {
         return 600;
     }
     
+    function getDateofMonthEnd(){
+       $ts2 = date('Y-m-d' , time());
+       return  date("Y-m-t", strtotime($ts2));
+    }
+    
+        
+    function getVehicleRunningDuration(){
+        
+        $duration = $this->getDaysCountSinceVehicleActivation() + $this->getMonthsCountOfVehicleRun();
+        
+        return $duration;
+    }
+    
     function getMonthsCountOfVehicleRun(){
-        $ts1 = strtotime($this->getVehicleActivationDate());
-        $ts2 = strtotime(time());
+        $ts1 = $this->getVehicleActivationDate();
+        $ts2 = $this->getDateofMonthEnd();
 
         $year1 = date('Y', $ts1);
         $year2 = date('Y', $ts2);
@@ -173,6 +192,26 @@ class Payments {
         $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
         return $diff;
     }
+    
+    function getDaysCountSinceVehicleActivation(){
+        $ts1 = $this->getVehicleActivationDate();
+        $ts2 = $this->getDateofMonthEnd();
+
+        $year1 = date('Y', $ts1);
+        $year2 = date('Y', $ts2);
+        
+        $month1 = date('m', $ts1);
+        $month2 = date('m', $ts2);
+
+        $date1 = date('m', $ts1);
+        $date2 = date('m', $ts2);
+
+        
+        $diff = /*(($year2 - $year1) * 12) + (($month2 - $month1)*30) +*/ ($date2 - $date1);
+        return $diff/$date2;
+        //return $diff;
+    }
+    
     
     function getTotalAmount(){
        return DEF_MEM_AMOUNT; //$this->totalpayment;// return 6000; //default for each vehicle...
@@ -230,7 +269,10 @@ class Payments {
     }
     
     function getNextPaymentDate(){
-        return 	strftime("%b %d, %Y", strtotime($this->nextpaymentDate));
+        $activatDate = $this->getVehicleActivationDate();
+        
+        
+        //return 	strftime("%b %d, %Y", strtotime($this->nextpaymentDate));
     }
     
 	function wasPaymentSuccessful() {

@@ -41,13 +41,13 @@ class PaymentHelper {
        
         $this->vehListActivationReq = $this->vehListPayReq = $this->vehList = "";
         
-        
+        //calcultaion for deplyoed vehicles....
         for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
             $mVehicle = new Vehicle($mDeployedVehicleList[$i]);
             
-            $mVehPayments = new Payments($mVehicle->getId(), $this->companyId);
-            
             $this->vehListPayReq .= $mVehicle->getId() . ", "; 
+         
+            $mVehPayments = new Payments($mVehicle->getId(), $this->companyId);
             
             if($mVehPayments->getId() != ""){
                 
@@ -256,10 +256,7 @@ class PaymentHelper {
     }
     
 }
-/*
-$myPay = new PaymentHelper();
-echo $myPay->ProcessPayment(11111, 1 , 12, 12, 1);
-echo "<br>";
-echo $myPay->getDuepayment(); 
-*/
+
+
+
 ?>
