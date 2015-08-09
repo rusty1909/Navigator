@@ -611,6 +611,15 @@ class Vehicle {
 	function search($customer_id, $type, $model, $vehicle_number, $destination, $deployed) {
 		
 	}
+	
+	function syncGCMKey($key){
+		$db = new Connection();
+		$conn = $db->connect();
+		
+		$sql = "UPDATE vehicle SET gcm_regkey = '$key' WHERE id = '$this->id'";
+		//print_r($sql);
+		return mysqli_query($conn, $sql);
+	}
 
 	function getId(){
 		return $this->id;
