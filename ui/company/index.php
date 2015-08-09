@@ -298,8 +298,8 @@
 							
 							<thead>
 								<tr>
-								   <th>Employee Name</th>
-								   <th>Employee Phone</th>
+								   <th>Name</th>
+								   <th>Phone</th>
 								   <th>Address</th>
 								   <th>Action</th>
 								</tr>
