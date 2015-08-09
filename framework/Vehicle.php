@@ -19,6 +19,7 @@ class Vehicle {
 	private $city;
 	private $LatLong;
 	private $driver;
+	private $gcmKey;
 	
 	function __construct($id){
 		
@@ -47,6 +48,7 @@ class Vehicle {
 				$this->address = $row['address'];
 				$this->driver = $row['driver'];
 				$this->city = $row['city'];
+				$this->gcmKey = $row['gcm_regkey'];
 				$this->LatLong["lat"] = $row['lattitude'];
 				$this->LatLong["long"] = $row['longitude'];
 			}
@@ -685,6 +687,10 @@ class Vehicle {
 	
 	function getAddedBy(){
 		return $this->addedBy;
+	}
+	
+	function getGCMKey(){
+		return $this->gcmKey;
 	}
 }
 ?>
