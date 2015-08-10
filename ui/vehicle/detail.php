@@ -127,7 +127,7 @@ if(!isset($_SESSION['user']))
 	
 	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
 	
-	function setDriver(id, driver_id, gcmkey){
+	function setDriver(id, driver_id){
 		//alert(id+" "+driver_id);
         jQuery.ajax({
             type: 'POST',
@@ -138,7 +138,7 @@ if(!isset($_SESSION['user']))
                 if(response == 1){
 					$('#driver_info').load(document.URL +  ' #driver_info');
 					//$('#driver_form_div').load(document.URL +  ' #driver_form_div');
-					sendGCMUpdates("DRIVER_INFO", gcmkey);
+					sendGCMUpdates("DRIVER_INFO", gcmKey);
 					if(driver_id == 0) {
 						/*
 						* in case driver is removed, refresh whole page...
@@ -161,31 +161,17 @@ if(!isset($_SESSION['user']))
         $('#driver_form_div').dialog('close');
 	}
 
-	function sendGCMUpdates(reason, key){
-		alert(reason);
-        url = 'https://android.googleapis.com/gcm/send?key='+API_KEY;
-		//console.log(url);
-		var xhr = createCORSRequest('GET', url);
-		if (!xhr) {
-		  throw new Error('CORS not supported');
-		}
-		//xhr.withCredentials = true;
+	function sendGCMUpdates(data, key){
+		alert(data);
 
-		xhr.onload = function() {
-		 var responseText = xhr.responseText;
-		 //alert(responseText);
-		 //console.log(responseText);
-		 var pathTrace = JSON.parse(responseText);
-		 processSnapToRoadResponse(pathTrace);
-		 drawSnappedPolyline();
-		 // process the response.
-		};
-
-		xhr.onerror = function() {
-		  console.log('There was an error!');
-		};
-		
-		xhr.send();
+        jQuery.ajax({
+            type: 'POST',
+            url: '../../app/gcmSend.php?regkey='+ key + '&message='+data,
+            cache: false,
+            success: function(response){
+				alert(response);
+            }
+        });
 	}
 
 	$(document).ready(function() {
