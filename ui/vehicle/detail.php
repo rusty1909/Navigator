@@ -162,14 +162,12 @@ if(!isset($_SESSION['user']))
 	}
 
 	function sendGCMUpdates(data, key){
-		alert(data);
-
         jQuery.ajax({
             type: 'POST',
             url: '../../app/gcmSend.php?regkey='+ key + '&message='+data,
             cache: false,
             success: function(response){
-				alert(response);
+				console.log(response);
             }
         });
 	}
