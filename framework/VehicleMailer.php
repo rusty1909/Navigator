@@ -47,11 +47,13 @@ class VehicleMailer{
 
             $message = Mailer::makeMessage($message); 
 
-           if(mail($this->admin->getEmail(), $subject, $message, activation_headers)) {
-               return true;
-           }else {		
-               return false;
-            }
+//           if(mail($this->admin->getEmail(), $subject, $message, activation_headers)) {
+//               return true;
+//           }else {		
+//               return false;
+//            }
+        
+        return Mailer::SendMail($this->admin->getEmail(), $subject, $message);
         }
 
     function sendVehicleActivatedMessage(){
@@ -81,11 +83,7 @@ class VehicleMailer{
 
             $message = Mailer::makeMessage($message); 
 
-           if(mail($this->admin->getEmail(), $subject, $message, activation_headers)) {
-               return true;
-           }else {		
-               return false;
-            }
+           return Mailer::SendMail($this->admin->getEmail(), $subject, $message);
         }
 
     function sendVehicleDeletedMessage(){
@@ -117,11 +115,7 @@ class VehicleMailer{
 
             $message = Mailer::makeMessage($message); 
 
-           if(mail($this->admin->getEmail(), $subject, $message, activation_headers)) {
-               return true;
-           }else {		
-               return false;
-            }
+           return Mailer::SendMail($this->admin->getEmail(), $subject, $message);
         }
 
     function sendPaymentReminder(){
@@ -157,12 +151,9 @@ class VehicleMailer{
 
 
         $message = Mailer::makeMessage($message); 
+        
+        return Mailer::SendMail($this->admin->getEmail(), $subject, $message);
 
-       if(mail($this->admin->getEmail(), $subject, $message, activation_headers)) {
-           return true;
-       }else {		
-           return false;
-        }
      }
 
 }

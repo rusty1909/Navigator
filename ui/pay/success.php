@@ -34,9 +34,9 @@ If (isset($_POST["additionalCharges"])) {
 	   else {
 
             $payHelper = new PaymentHelper();
-            $payHelper->ProcessPayment($amount, $productinfo , 'payu', $txnid, 1);
+            $payHelper->ProcessPaymnetSucess($amount, $productinfo , 'payu', $txnid);
            
-           header("refresh:1;url=http://www.findgaddi.com/navigator/ui/");
+           header("refresh:1;url=http://www.findgaddi.com/navigator/ui/user/");
              echo "<h3>Thank You. Your order is ". $productinfo .".</h3>";
              echo "<h4>We have received a payment of Rs. " . $amount . ". Your order will soon be shipped.</h4>";
 		   }         

@@ -135,14 +135,18 @@ $link<br><br>
 
         $message .= Mailer::addMessageFooter($puserid);
 
-        if(mail($puserid, $subject, $message, Def_headers)) {
-               $msgToUser = "We will revert you soon, please stay tuned...";
-           }else {		
-                 $msgToUser ="There was some error, please try again...";
-            }
-        return $msgToUser;
+        return Mailer::SendMail($puserid, $subject, $message);
     }
 
+    public static function SendMail($puserid, $subject, $message){
+         if(mail($puserid, $subject, $message, Def_headers)) {
+                return true;
+           }else {		
+                 return false;
+            }
+        return false;
+    }
+    
     public static function SendMessageResettoME($puserid){
         $msgToUser = "";
         $link = "http://".WEBSITE_NAME."/resetpassword.php?id=$puserid";

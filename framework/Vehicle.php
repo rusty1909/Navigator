@@ -538,8 +538,6 @@ class Vehicle {
     }
 
     function deploy() {
-		//require_once '../framework/DBConnect.php';
-		// opening db connection
 		$db = new Connection();
 		$conn = $db->connect();
 		
@@ -547,9 +545,6 @@ class Vehicle {
 		$longitude_list;
 		$last_last_update;		
 
-		/*
-		* Finally update the vehicle table with latest values
-		*/
 		$this->isDeployed = 1;
 		$fgDate = $db->getTimeNow();
 		

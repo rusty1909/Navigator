@@ -1,6 +1,8 @@
 <?php
 require_once 'Payments.php';
 require_once 'ComPayments.php';
+require_once 'VehicleMailer.php';
+require_once 'PaymentMailer.php';
 
 class PaymentHelper {
 	private $id;
@@ -133,10 +135,21 @@ class PaymentHelper {
         return $this->getCompany() . $this->getUserId()->getId() . time();
     }
     
+    function ProcessPaymnetSucess($amount, $pay_type, $paymentmethod, $paymentdescription){
+        ProcessPayment($amount, $pay_type, $paymentmethod, $paymentdescription, true);
+    }
+    
+    function ProcessPaymnetFailure($amount, $pay_type, $paymentmethod, $paymentdescription){
+        ProcessPayment($amount, $pay_type, $paymentmethod, $paymentdescription, false);
+    }
+    
     function ProcessPayment($amount, $pay_type, $paymentmethod, $paymentdescription, $is_success){
         $paymetID  = $this->CreatePaymentID();
         
-        if(ComPayments::add($paymetID, $amount, $is_success, $pay_type, $paymentmethod, $paymentdescription)){
+        $payProcessmailer = new PaymentMailer();
+        $payProcessmailer->SendPaymentReceivedMessage($amount,$pay_type, $paymentmethod, $paymentdescription, $is_success);
+        
+        if(ComPayments::add($paymetID, $amount, $is_success, $pay_type, $paymentmethod, $paymentdescription) && $is_success){
         
             
             if(($pay_type == 1 ) || ($pay_type == 3 )){  //vehicle need activcation....
@@ -147,6 +160,8 @@ class PaymentHelper {
 
                     for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
                         Payments::add($paymetID, $amount1, $is_success, $pay_type, $mDeployedVehicleList[$i]);
+                        $adder = new VehicleMailer($mDeployedVehicleList[$i]);
+                        $adder->sendVehicleActivatedMessage();
                     }
             }else{
                 $mDeployedVehicleList = $this->userId->getDeployedVehicleList(); //currently running vehicles...
@@ -155,33 +170,14 @@ class PaymentHelper {
 
                 for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
                     Payments::add($paymetID, $amount, $is_success, $pay_type, $mDeployedVehicleList[$i]);
+                    //$adder = new VehicleMailer($mDeployedVehicleList[$i]);
+                    //$adder->sendVehicleActivatedMessage();
                 }
             }
-            /*
-            if(strtolower($pay_type) == strtolower('activation')){
-                $mDeployedVehicleList = $this->userId->getWaitingVehicleList(); //currently waiting vehicles...
-
-                $amount /=  sizeof($mDeployedVehicleList);
-
-               // echo sizeof($mDeployedVehicleList);
-                for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
-                   // echo $mDeployedVehicleList[$i] . "<br>";
-                    Payments::add($paymetID, $amount, $is_success, $pay_type, $mDeployedVehicleList[$i]);
-                }
             
-            }else{
-                $mDeployedVehicleList = $this->userId->getDeployedVehicleList(); //currently running vehicles...
-
-                $amount /=  sizeof($mDeployedVehicleList);
-
-                for($i=0; $i<sizeof($mDeployedVehicleList); $i++) {
-                    Payments::add($paymetID, $amount, $is_success, $pay_type, $mDeployedVehicleList[$i]);
-                }
-            } */
-           
         }else{
             echo 'unable to process payments for company<br>';
-            die();
+           return false;// die();
         }
     
         return true;
@@ -212,13 +208,11 @@ class PaymentHelper {
             /* Payment Code Generation... */
        return $this->vehList;
     }
-    
-    
+        
     function GetVehicleListActivationReq(){
             /* Payment Code Generation... */
        return $this->vehListActivationReq;
     }
-    
     
     function GetVehicleListPaymentReq(){
             /* Payment Code Generation... */

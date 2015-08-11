@@ -29,7 +29,11 @@ If (isset($_POST["additionalCharges"])) {
          }
 		 $hash = hash("sha512", $retHashSeq);
   
-header("refresh:1;url=http://www.findgaddi.com/navigator/ui/");
+
+            $payHelper = new PaymentHelper();
+            $payHelper->ProcessPaymnetFailure($amount, $productinfo , 'payu', $txnid);
+           
+            header("refresh:1;url=http://www.findgaddi.com/navigator/ui/user/");
        if ($hash != $posted_hash) {
 	       echo "Invalid Transaction. Please try again";
 		   }

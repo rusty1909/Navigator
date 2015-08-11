@@ -2,10 +2,6 @@
 require_once '../../framework/Vehicle.php';
 require_once '../../framework/VehicleMailer.php';
 
-/*if(!isset($_SESSION['user'])){
-	echo "<script>window.location.href = '../user/login.php'</script>";
-	//header('Location:../user/login.php');
-}*/
 if(isset($_GET['action'])) {
 	//die "q";
 	$action = $_GET['action'];
