@@ -24,7 +24,7 @@ class VehicleMailer{
 
             $addedby = new User($this->vehicle->getAddedBy());    
 
-            $subject = 'Vehicle Added with' . WEB_FULL_NAME;
+            $subject = 'Vehicle Added with ' . WEB_FULL_NAME;
 
             $message = "Dear ".$this->admin->getFullName().",<br /><br />
 
@@ -60,7 +60,7 @@ class VehicleMailer{
 
             $addedby = new User($this->vehicle->getAddedBy());    
 
-            $subject = 'Vehicle Activated with' . WEB_FULL_NAME;
+            $subject = 'Vehicle Activated with ' . WEB_FULL_NAME;
 
             $message = "Dear ".$this->admin->getFullName().",<br /><br />
 
@@ -90,7 +90,7 @@ class VehicleMailer{
 
             $addedby = new User($this->vehicle->getAddedBy());    
 
-            $subject = 'Vehicle Deleted with' . WEB_FULL_NAME;
+            $subject = 'Vehicle Deleted with ' . WEB_FULL_NAME;
 
             $message = "Dear ".$this->admin->getFullName().",<br /><br />
 
@@ -119,7 +119,7 @@ class VehicleMailer{
         }
 
     function sendPaymentReminder(){
-        $subject = 'Vehicle Payment Reminder with' . WEB_FULL_NAME;
+        $subject = 'Vehicle Payment Reminder with ' . WEB_FULL_NAME;
 
         $message = "Dear ".$this->admin->getFullName().",<br /><br />
 

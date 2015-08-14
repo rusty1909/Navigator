@@ -34,14 +34,11 @@ class Connection {
         return $this->conn;
     }
     
-    function getTimeNow(){
-        $date = new DateTime();
-        $date->setTimezone(new DateTimeZone('Asia/Kolkata'));
-
-        $fdate = $date->format('Y-m-d H:i:s'); // same format as NOW()
+    function getTimeNow($time=-1){
+       if($time != -1)
+            return date('Y-m-d', strtotime($time));
         
-        return $fdate;
-    
+        return date('Y-m-d H:i:s');        
     }
     
     function getDeviceDetails(){        

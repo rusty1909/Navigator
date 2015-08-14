@@ -57,10 +57,6 @@ class Payments {
                     $this->paymenttype = $row['pay_type'];
                     $this->paymentstatus = $row['is_success'];
 
-                    
-
-                    $this->prevpaymentDate = $row['timestamp'];
-                    $this->nextpaymentDate = $row['timestamp'] + 86400*30;
                 }
                
 			}
@@ -71,6 +67,9 @@ class Payments {
    
         $diff1 = $this->getVehicleRunningDuration();
         
+        echo $diff1;
+        
+        die();
         $expextedPaidAmount = $diff1 * $this->getVehicleMonthlyDueAmount();
         
         return $expextedPaidAmount;
@@ -100,13 +99,13 @@ class Payments {
 		
         $db = new Connection();
 		$conn = $db->connect();
-		$act_date = null;
+	    $paytime = $db->getTimeNow();
         
-        if($pay_type == 'activation'){
+        if($pay_type == 2){
             $paid_amount = 0;
-            $act_date = time();
+            $act_date = $paytime;
         }else{
-            $act_date = Payments::getVehicleActivationDateFromDB($veh);
+            $act_date = Payments::getVehicleActivationDateFromDB($veh_id);
             $paid_amount = Payments::getPreviousPaymentForVehicle($veh_id, $companyId);
         }
         $total_amount = DEF_MEM_AMOUNT;
@@ -115,13 +114,12 @@ class Payments {
         $paid_per = 100 - (($total_amount - $paid_amount)/$total_amount)*100;
         $rest_amount = $total_amount - $paid_amount;
         
-		$sql = "INSERT INTO `payments`(`amount`, `company_id`, `user_id`, `timestamp`, `is_success`, `pay_type`, `rest_amount`, `paid_perc`, `paid_amount`, `vehicle_id`, `total_amount`, `veh_activation_date`, `paymentId`) VALUES ('$amount','$companyId','$userId',now(),'$is_success','$pay_type','$rest_amount','$paid_per','$paid_amount', '$veh_id', '$total_amount', '$act_date', '$paymetID')";
+		$sql = "INSERT INTO `payments`(`amount`, `company_id`, `user_id`, `timestamp`, `is_success`, `pay_type`, `rest_amount`, `paid_perc`, `paid_amount`, `vehicle_id`, `total_amount`, `veh_activation_date`, `paymentId`) VALUES ('$amount','$companyId','$userId','$paytime','$is_success','$pay_type','$rest_amount','$paid_per','$paid_amount', '$veh_id', '$total_amount', '$act_date', '$paymetID')";
 		
 		if (mysqli_query($conn, $sql)) {
 			return true;
 		} else {
-           // echo $sql;
-			return mysqli_error($conn);
+           return mysqli_error($conn);
 		}
         
         return false;
@@ -167,21 +165,14 @@ class Payments {
     }
     
     function getDateofMonthEnd($date){
-       $ts2 = date('Y-m-d' , $date);
-       return  date("Y-m-t", strtotime($ts2));
+      // $ts2 = date('Y-m-d' , $date);
+       return  date("Y-m-t", strtotime($date));
     }
     
         
-    function getVehicleRunningDuration(){
-        
-        $duration = $this->getDaysCountSinceVehicleActivation() + $this->getMonthsCountOfVehicleRun();
-        
-        return $duration;
-    }
-    
     function getMonthsCountOfVehicleRun(){
-        $ts1 = $this->getVehicleActivationDate();
-        $ts2 = $this->getDateofMonthEnd(time());
+        $ts1 = strtotime($this->getVehicleActivationDate());
+        $ts2 = strtotime($this->getDateofMonthEnd(time()));
 
         $year1 = date('Y', $ts1);
         $year2 = date('Y', $ts2);
@@ -194,8 +185,8 @@ class Payments {
     }
     
     function getDaysCountSinceVehicleActivation(){
-        $ts1 = $this->getVehicleActivationDate();
-        $ts2 = $this->getDateofMonthEnd($ts1);
+        $ts1 = strtotime($this->getVehicleActivationDate());
+        $ts2 = strtotime($this->getDateofMonthEnd($ts1));
 
         $year1 = date('Y', $ts1);
         $year2 = date('Y', $ts2);
@@ -203,14 +194,22 @@ class Payments {
         $month1 = date('m', $ts1);
         $month2 = date('m', $ts2);
 
-        $date1 = date('m', $ts1);
-        $date2 = date('m', $ts2);
+        $date1 = date('d', $ts1);
+        $date2 = date('d', $ts2);
 
         
-        $diff = /*(($year2 - $year1) * 12) + (($month2 - $month1)*30) +*/ ($date2 - $date1);
-        return $diff/$date2;
-        //return $diff;
+        $diff =  (($year2 - $year1) * 12) + (($month2 - $month1)*30) +  ($date2 - $date1);
+        $x =  ceil($diff/$date2);
+        return $x;
     }
+    
+    function getVehicleRunningDuration(){
+        
+        $duration = $this->getDaysCountSinceVehicleActivation();// +  $this->getMonthsCountOfVehicleRun();
+        
+        return $duration;
+    }
+
     
     
     function getTotalAmount(){
@@ -261,11 +260,11 @@ class Payments {
 	}
     
 	function getVehicleActivationDate(){
-		return strftime("%b %d, %Y", strtotime($this->vehActivationDate));
+		return strftime('Y-m-d', strtotime($this->vehActivationDate));
 	}
 	
     function getPrevPaymentDate(){
-        return 	strftime("%b %d, %Y", strtotime($this->prevpaymentDate));
+        return 	strftime('Y-m-d', strtotime($this->prevpaymentDate));
     }
     
     function getNextPaymentDate(){
@@ -282,5 +281,7 @@ class Payments {
     
 }
 
+$pay = new Payments('134', '1768523');
+echo $pay->isDue();
 //Payments::add('600', '1', 'qw', '121');
 ?>

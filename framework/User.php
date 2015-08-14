@@ -985,7 +985,7 @@ class User {
 	}
 	
 	function getFullName() {
-		return $this->firstname." ".$this->lastname;
+		return ucwords(strtolower($this->firstname." ".$this->lastname));
 	}
 	
 	function getUsername() {

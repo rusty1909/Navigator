@@ -17,7 +17,8 @@ class PaymentMailer{
 
             $this->company = new Company($cmp);
             $this->admin = new User($this->company->getAdmin());
-            $this->conn = (new Connection())->connect();
+            $this->db = (new Connection());
+            $this->conn = $this->db->connect();
         }
     
     function  getUserId(){
@@ -25,49 +26,48 @@ class PaymentMailer{
     }
    
     
-    function SendPaymentReceivedMessage($amount,$pay_type, $paymentmethod, $paymentdescription, $is_success){
+    function SendPaymentReceivedMessage($paymetID, $amount,$pay_type, $paymentmethod, $paymentdescription, $is_success, $vehActivated, $vehDuePaid){
         
         $message = "Dear ".$this->admin->getFullName().",<br /><br />
 
         Payment Transaction Details are given below :<br /><br />
-        Payment Transaction Type : {$paymentmethod} <br />
+        Payment Transaction Code : {$pay_type} <br />
         Payment Transaction Mode : {$paymentmethod} <br />
-        Payment Transaction Time : {$this->conn->getTimeNow()} <br /><br />
-        Payment Transaction ID: {$paymentdescription} <br /><br />
         Payment Transaction Description: {$paymentdescription} <br /><br />
+        Payment Transaction ID: {$paymetID} <br /><br />";
         
-        Premium Service Start Date : {$this->conn->getTimeNow()} <br /><br />
+        if($is_success){
+            $message .= "Number of Vehicles Activated : {$vehActivated}  <br /><br />
 
-        Premium Service End Date : {$this->conn->getTimeNow()} <br /><br />
+            Due Payment Done For Vehicles : {$vehDuePaid}  <br /><br />
 
-        Expected Payment Amount For Next Month : {$this->conn->getTimeNow()} <br /><br />
+            Payment Transaction Time : {$this->db->getTimeNow()} <br />
 
-        ";
+            Premium Service Start Date : {$this->db->getTimeNow()} <br />
 
+            Next Premium Date : {$this->db->getTimeNow('+1 month')} <br />
+         ";
 
+        }
         $message = Mailer::makeMessage($message); 
         
         
-        
-        
-        
-        
         if($is_success)
-            return SendPaymentSuccess($message);
+            return $this->SendPaymentSuccess($message);
         else
-            return SendPaymentFailure($message);
+            return $this->SendPaymentFailure($message);
         
         return false;
     }
     
     function SendPaymentSuccess($message){
-       $subject = "Payment Transaction with ". WEB_FULL_NAME . "was successfull !!!";
+       $subject = "Payment Transaction with ". WEB_FULL_NAME . " was successfull !!!";
         
        return Mailer::SendMail($this->admin->getEmail(), $subject, $message);
     }
     
     function SendPaymentFailure($message){
-       $subject = "Payment Transaction with ". WEB_FULL_NAME . "was not successfull !!!";
+       $subject = "Payment Transaction with ". WEB_FULL_NAME . " was not successfull !!!";
        return Mailer::SendMail($this->admin->getEmail(), $subject, $message);
     }
     

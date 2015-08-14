@@ -13,7 +13,7 @@ $payHelper = new PaymentHelper();
 if(!empty($_GET)) {
     $vehPayInfo = $_GET['id'];         
 }else{ 
-       $vehPayInfo = 3;
+    $vehPayInfo = 3;
 }
 
 $amount = $payHelper->GetPaymentByPayCode($vehPayInfo);
@@ -112,11 +112,11 @@ document.title = "Payment Gateway | FindGaddi ";
         </tr>
         <tr>
           <td>Product Code: </td>
-          <td ><input name="productcode" readonly value="<?php echo  $vehicleIDs; ?>" /></td>
+          <td ><input name="productcode" readonly value="<?php echo (empty($posted['productinfo'])) ? $vehPayInfo : $posted['productinfo'] ?>" /></td>
         </tr>
         <tr>
           <td>Product Info: </td>
-          <td ><input name="productinfo" readonly value="<?php echo (empty($posted['productinfo'])) ? $vehPayInfo : $posted['productinfo'] ?>" /></td>
+          <td ><input name="productinfo" readonly value="<?php echo  $vehicleIDs; ?>" /></td>
         </tr>
       </table>
         <br>

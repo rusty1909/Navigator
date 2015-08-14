@@ -139,6 +139,7 @@ $link<br><br>
     }
 
     public static function SendMail($puserid, $subject, $message){
+       
          if(mail($puserid, $subject, $message, Def_headers)) {
                 return true;
            }else {		

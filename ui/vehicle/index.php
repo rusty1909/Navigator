@@ -296,8 +296,12 @@ if(!isset($_SESSION['user']))
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mVehicle->getDriver());
+									$vehType = $mVehicle->getType();
+									if(empty($vehType))
+										$vehType = 'Truck';
 									echo "<tr>";
-									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$vehType.".png' title=".$vehType." alt=".$vehType." style='vertical-align:-5px;'></td>";
+									
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "<td>".$mDriver->getName()."</td>";
@@ -396,8 +400,11 @@ if(!isset($_SESSION['user']))
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mVehicle->getDriver());
+									$vehType = $mVehicle->getType();
+									if(empty($vehType))
+										$vehType = 'Truck';
 									echo "<tr>";
-									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$vehType.".png' title=".$vehType." alt=".$vehType." style='vertical-align:-5px;'></td>";
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><b><a style='text-transform:uppercase;' href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></b></td>";
 									if($mVehicle->getDriver() != "0"){
@@ -480,8 +487,12 @@ if(!isset($_SESSION['user']))
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
+									$vehType = $mVehicle->getType();									
+									if(empty($vehType))
+										$vehType = 'Truck';
 									echo "<tr>";
-									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$vehType.".png' title=".$vehType." alt=".$vehType." style='vertical-align:-5px;'></td>";
+									
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									/*echo "									<td>
@@ -560,8 +571,12 @@ if(!isset($_SESSION['user']))
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
+									$vehType = $mVehicle->getType();
+									if(empty($vehType))
+										$vehType = 'Truck';
 									echo "<tr>";
-									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$vehType.".png' title=".$vehType." alt=".$vehType." style='vertical-align:-5px;'></td>";
+									
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "<td>".$mJob->getCode()."</td>";
@@ -642,8 +657,12 @@ if(!isset($_SESSION['user']))
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
+									$vehType = $mVehicle->getType();
+									if(empty($vehType))
+										$vehType = 'Truck';
 									echo "<tr>";
-									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$vehType.".png' title=".$vehType." alt=".$vehType." style='vertical-align:-5px;'></td>";
+									
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "<td>".$mJob->getCode()."</td>";
@@ -748,8 +767,12 @@ if(!isset($_SESSION['user']))
 									$mVehicle = new Vehicle($mVehicleList[$i]);
 									$mJob = new Job($mVehicle->getCurrentJob());
 									$mDriver = new Driver($mJob->getDriver());
+									$vehType = $mVehicle->getType();
+									if(empty($vehType))
+										$vehType = 'Truck';
 									echo "<tr>";
-									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$mVehicle->getType().".png' title=".$mVehicle->getType()." alt=".$mVehicle->getType()." style='vertical-align:-5px;'></td>";
+									echo "<td><img id='type' height='20' width='20' src='../../res/vehicle_types/".$vehType.".png' title=".$vehType." alt=".$vehType." style='vertical-align:-5px;'></td>";
+									
 									echo "<td>".$mVehicle->getModel()."</td>";
 									echo "<td><a href='detail.php?id=".$mVehicle->getId()."'>".$mVehicle->getVehicleNumber()."</a></td>";
 									echo "<td>
@@ -836,7 +859,7 @@ if(!isset($_SESSION['user']))
 
 								<p>
 									<label>Vehicle Number</label>
-										<input class="text-input small-input" name="vehicle_number" id="vehicle_number" type="text" required placeholder='DL 12 UB 1234' pattern=".{5, 15}"> <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
+										<input class="text-input small-input" name="vehicle_number" id="vehicle_number" type="text" required placeholder='DL 12 UB 1234' > <span class="input-notification error png_bg" id="number_error"></span><span class="input-notification success png_bg" id="number_success"></span>
 								</p>
 								
 								<p>
