@@ -67,9 +67,6 @@ class Payments {
    
         $diff1 = $this->getVehicleRunningDuration();
         
-        echo $diff1;
-        
-        die();
         $expextedPaidAmount = $diff1 * $this->getVehicleMonthlyDueAmount();
         
         return $expextedPaidAmount;
@@ -80,12 +77,12 @@ class Payments {
         $amountPaid = $amountPaid - $this->getVehicleActivationAmount();
         
         $expextedPaidAmount = $this->getExpectedPaymentDone();
-        
-        if($expextedPaidAmount > $amountPaid + $this->getVehicleMonthlyDueAmount())
-            return $expextedPaidAmount - $amountPaid + $this->getVehicleMonthlyDueAmount();
+            
+        if($expextedPaidAmount >= $amountPaid + $this->getVehicleMonthlyDueAmount())
+            return $expextedPaidAmount - $amountPaid;
         
         if($expextedPaidAmount > $amountPaid)
-            return $expextedPaidAmount - $amountPaid;
+            return $expextedPaidAmount - $amountPaid  + $this->getVehicleMonthlyDueAmount();
         
         if($expextedPaidAmount < $amountPaid)
             return 0;
@@ -204,10 +201,7 @@ class Payments {
     }
     
     function getVehicleRunningDuration(){
-        
-        $duration = $this->getDaysCountSinceVehicleActivation();// +  $this->getMonthsCountOfVehicleRun();
-        
-        return $duration;
+        return $this->getDaysCountSinceVehicleActivation() +  $this->getMonthsCountOfVehicleRun();
     }
 
     
