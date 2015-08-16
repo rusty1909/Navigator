@@ -381,7 +381,7 @@ class Vehicle {
         $db = new Connection();
 		$conn = $db->connect();
         
-        $today = date('Y-m-d');
+        $today = date("%b %d, %Y");
         
 		$fgDate = $db->getTimeNow();
 		
@@ -639,7 +639,7 @@ class Vehicle {
 	}
 
 	function getMakeYear(){
-		return strftime('Y-m-d', strtotime($this->makeYear));
+		return strftime("%b %d, %Y", strtotime($this->makeYear));
 	}
 	
 	function isDeployed(){
@@ -647,13 +647,13 @@ class Vehicle {
 	}
 	
     function getDateAdded(){
-        return 	strftime('Y-m-d', strtotime($this->dateAdded));
+        return 	strftime("%b %d, %Y", strtotime($this->dateAdded));
     }
     function getVehicleDepolyDate(){
-        return 	strftime('Y-m-d', strtotime($this->dateAdded));
+        return 	strftime("%b %d, %Y", strtotime($this->dateAdded));
     }
     function getVehicleDeActivatedDate(){
-        return 	strftime('Y-m-d', strtotime($this->dateAdded));
+        return 	strftime("%b %d, %Y", strtotime($this->dateAdded));
     }    
 	function isOnTrip(){
 		return $this->isOnJob;

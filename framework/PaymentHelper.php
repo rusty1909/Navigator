@@ -64,7 +64,6 @@ class PaymentHelper {
                 $this->totalPaidAmount +=  $mVehPayments->getPaidpayment();       
                 $this->totalRemainingAmount +=  $mVehPayments->getRemainingAmount();       
                
-                echo $mVehPayments->isDue();
                 if($mVehPayments->isDue() != 0)
                     $this->amountreqfornextcycle +=  $mVehPayments->isDue();       
               
@@ -279,4 +278,9 @@ class PaymentHelper {
     
 }
 
+//$payhlp = new PaymentHelper();
+//$payhlp->ProcessPaymnetSucess('18000', 3, 'eqweq', 'wewewe');
+//echo $payhlp->getTotalPaidpayment();
+//$pay = new Payments('134', '1768523');
+//echo $pay->isDue();
 ?>

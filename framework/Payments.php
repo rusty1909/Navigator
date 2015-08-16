@@ -204,8 +204,6 @@ class Payments {
         return $this->getDaysCountSinceVehicleActivation() +  $this->getMonthsCountOfVehicleRun();
     }
 
-    
-    
     function getTotalAmount(){
        return DEF_MEM_AMOUNT; //$this->totalpayment;// return 6000; //default for each vehicle...
     }
@@ -274,8 +272,4 @@ class Payments {
 	}
     
 }
-
-$pay = new Payments('134', '1768523');
-echo $pay->isDue();
-//Payments::add('600', '1', 'qw', '121');
 ?>
