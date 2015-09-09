@@ -85,7 +85,7 @@ if(!isset($_SESSION['user']))
 	
 	function setGCMKey(key){
 		gcmKey = key;
-		alert(gcmKey);
+		//alert(gcmKey);
 	}
 	
 	function fetchNotification(){
@@ -279,7 +279,7 @@ if(!isset($_SESSION['user']))
           position:new google.maps.LatLng(latitude, longitude),
           title:vehicle_number
 	  });
-	  marker.setAnimation(google.maps.Animation.BOUNCE);
+	  //marker.setAnimation(google.maps.Animation.BOUNCE);
       //map.panTo(marker.getPosition());
 	  marker.setMap(map);
 	  
@@ -516,7 +516,7 @@ if(!isset($_SESSION['user']))
 	  }); 
 
 	  google.maps.event.addListener(marker, 'click', function() {
-        alert(contentString);
+        //alert(contentString);
 		infowindow.open(map,marker);
 	  });
 /*      window.setTimeout(function() {
