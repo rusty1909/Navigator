@@ -639,7 +639,7 @@ class Vehicle {
 	}
 
 	function getMakeYear(){
-		return strftime("%b %d, %Y", strtotime($this->makeYear));
+		return strftime("%Y", strtotime($this->makeYear));
 	}
 	
 	function isDeployed(){
