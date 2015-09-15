@@ -71,14 +71,17 @@ document.title = "Payment Gateway | FindGaddi ";
 	<?php include('../sidebar.php');?>
 		
 		<div id="main-content"> <!-- Main Content Section with everything -->
-             
-    <?php if($formError) { ?>
+              <h2>FindGaddi Payment System :</h2>
+              <br />
+            
+    <?php  if(empty($amount)){ ?>
+            <span style="color:green">Congrats, You have no due amount to pay!!!</span>
+    <?php }else if($formError) { ?>
 	  <span style="color:red">Please fill all mandatory fields.</span>
       <br/>
       <br/>
     <?php } ?>
-             <h2>FindGaddi Payment System :</h2>
-              <br />
+            
              <div id="userMessage"> </div>
              <br>
             <?php include_once("membershipplans.php"); ?>  <br><br>
@@ -112,16 +115,16 @@ document.title = "Payment Gateway | FindGaddi ";
         </tr>
         <tr>
           <td>Product Code: </td>
-          <td ><input name="productcode" readonly value="<?php echo (empty($posted['productinfo'])) ? $vehPayInfo : $posted['productinfo'] ?>" /></td>
+          <td ><input name="productcode" readonly value="<?php echo (empty($posted['productcode'])) ? $vehPayInfo : $posted['productcode'] ?>" /></td>
         </tr>
         <tr>
           <td>Product Info: </td>
-          <td ><input name="productinfo" readonly value="<?php echo  $vehicleIDs; ?>" /></td>
+          <td ><input name="productinfo" readonly  value="<?php echo (empty($posted['productinfo'])) ? $vehicleIDs : $posted['productinfo'] ?>"/></td>
         </tr>
       </table>
         <br>
         
-          <?php if(!$hash) { ?>
+          <?php if(!empty($amount) && !$hash) { ?>
             <div class="row"><button type="submit">Pay, now</button> </div>
           <?php } ?>
             

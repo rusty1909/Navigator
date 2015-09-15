@@ -238,7 +238,7 @@ class PaymentHelper {
         
     function GetVehicleListActivationReq(){
             /* Payment Code Generation... */
-       return $this->vehListActivationReq;
+       return ($this->vehListActivationReq == "" ? "All Vehicles are activated!!!" : $this->vehListActivationReq);
     }
     
     function GetVehicleListPaymentReq(){
