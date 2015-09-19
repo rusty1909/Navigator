@@ -2,14 +2,13 @@
 
 if(!empty($_POST)){
     
-require_once '../../framework/User.php';
+require_once '../../../framework/User.php';
     
     if(empty($_POST['id']))
         $id = $_GET['id'];
     else
         $id = $_POST['id'];
     
-   // die($id);
     $password = $_POST['password'];
     
     $_SESSION['user']['id'] = $id;
@@ -25,17 +24,12 @@ require_once '../../framework/User.php';
 if(isset($_GET['id']) && isset($_GET['key'])) {
 	$id = $_GET['id'];
     $key = $_GET['key'];
-    //echo $id.$key;
-    //die();
 } else {
-	//die "a";
 	header('location : login.php');
     exit();
 }
 
 $pswdrstlink = "resetPassword.php?id=".$id;
-
-//die($pswdrstlink);
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml"><head>

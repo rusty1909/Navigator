@@ -1,16 +1,12 @@
 <?php
-	require_once "../../framework/User.php";
-	require_once "../../framework/Vehicle.php";
-	require_once "../../framework/Job.php";
-	require_once "../../framework/Driver.php";
-	require_once "../../framework/Company.php";
-    require_once "../../framework/PaymentHelper.php";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-	$mUser = new User();
+	require_once "../../../utility/helper/Company/CompanyHelper.php"; 
+	require_once "../../master/headerhomephp.php";
+
 	$isCompanyAdmin = $mUser->isCompanyAdmin();
 
-	$mCompany = new Company($mUser->getCompany());
-	
 	$mEmployeeList = $mCompany->getEmployeeList();
 
     $payHelper = new PaymentHelper();
@@ -20,199 +16,13 @@
     $vehPayInfo = $payHelper->GetPaymentCode();
 
     $vehicleList = $payHelper->GetVehicleList();
+
+	require_once "../../master/headerhomehtml.php"; 
+
 ?>
-
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-		
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-		
-		<title>FindGaddi</title>
-		
-		<!--                       CSS                       -->
-	  
-		<!-- Reset Stylesheet -->
-		<link rel="stylesheet" href="../../res/reset.css" type="text/css" media="screen">
-	  
-		<!-- Main Stylesheet -->
-		<link rel="stylesheet" href="../../res/style.css" type="text/css" media="screen">
-		
-		<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
-		<link rel="stylesheet" href="../../res/invalid.css" type="text/css" media="screen">	
+ <script type="text/javascript" src="http://www.findgaddi.com/navigator/Ver2.0/js/companyindex.js"></script>
   
-		<!-- jQuery -->
-		<script type="text/javascript" src="../../res/jquery-1.js"></script>
-		
-		<!-- jQuery Configuration -->
-		<script type="text/javascript" src="../../res/simpla.js"></script>
-		
-		<!-- Facebox jQuery Plugin -->
-		<script type="text/javascript" src="../../res/facebox.js"></script>
-		
-		<!-- jQuery WYSIWYG Plugin -->
-		<script type="text/javascript" src="../../res/jquery_002.js"></script>
-		
-		<!-- jQuery Datepicker Plugin -->
-		<script type="text/javascript" src="../../res/jquery.htm"></script>
-		<script type="text/javascript" src="../../res/jquery.js"></script>
-
-    	  <!--  //modal box jquery -->
-		<link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    
-		<script>
-		
-	function fetchNotification(){
-		//alert(id+" "+driver_id);
-		var data = "";
-        jQuery.ajax({
-            type: 'POST',
-            url: 'timeline.php',
-            cache: false,
-            success: function(response){
-				if(response == 0){
-				}
-				else {					
-					var notiList = JSON.parse(response);
-					for(var i=0; i<50 && i<notiList.length; i++){
-						var image = notiList[i].image;
-						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
-						console.log(image);
-					}
-					//alert(data);
-					document.getElementById("timeline_body").innerHTML = data;
-					//$("#noti_table").find("tbody").find('#main-content table').;
-					data="";
-				}
-            }
-        }); 
-	}
 	
-	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
-		
-		$(document).ready(function(){
-			$('#emp_id').blur(checkEmpID); //use keyup,blur, or change
-		});
-            
-		function checkEmpID(){
-			var tin = $('#emp_id').val();
-			if(tin == "") return;
-			jQuery.ajax({
-					type: 'POST',
-					url: 'checkDuplicates.php',
-					data: 'emp_id='+ tin,
-					cache: false,
-					success: function(response){
-						if(response == 0){
-							document.getElementById("emp_id_error").innerHTML = "";
-							document.getElementById("emp_id_success").innerHTML = "<b>available ! ! !<b>";
-						}
-						else {
-							document.getElementById("emp_id").value = "";
-							document.getElementById("emp_id_success").innerHTML = "";
-							document.getElementById("emp_id_error").innerHTML = "<b><i>'"+tin+"'</i></b>  already exists!";	
-						}
-					}
-				});
-		}
-		
-	
-        function validate(){
-			var name = document.getElementById("name").value;
-			var tin = document.getElementById("emp_id").value;
-			var address1 = document.getElementById("address_1").value;
-			var city = document.getElementById("city").value;
-			var state = document.getElementById("state").value;
-			var pin = document.getElementById("pincode").value;
-			var phone = document.getElementById("phone").value;
-						
-            if(name=="" || tin=="" || address1=="" || state=="" || city=="" || pin=="" || phone=="") {
-                alert("Please fill all mandatory details");
-                return false;
-            } else {
-                return true;
-            }
-
-		}
-		
-		$("#edit_button").click(function(){
-			alert("clock");
-			$("#basic").hide();
-			$("#edit").show();
-		});
-		</script>
-    
-    <script>
-		$(document).ready(function () {
-			console.log("clicked");
-			$('#dialog_link').click(function () {
-				$('#dialog').dialog('open');
-				return false;
-			});
-			
-			//$("#edit-form").load("edit.php");
-		});
-
-		$(function(){
-			console.log("started");
-			var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
-
-			$('a[data-modal-id]').click(function(e) {
-				e.preventDefault();
-				$("body").append(appendthis);
-				$(".modal-overlay").fadeTo(500, 0.7);
-				//$(".js-modalbox").fadeIn(500);
-				var modalBox = $(this).attr('data-modal-id');
-				if(modalBox == "detail-popup"){
-					//alert("sdvdskvds");
-					//$('#'+modalBox).load("edit.php");
-				}
-				$('#'+modalBox).fadeIn($(this).data());
-				});  
-
-
-			$(".js-modal-close, .modal-overlay").click(function() {
-				$(".modal-box, .modal-overlay").fadeOut(500, function() {
-					$(".modal-overlay").remove();
-				});
-			});
-
-			$(window).resize(function() {
-				$(".modal-box").css({
-					top: ($(window).height() - $(".modal-box").outerHeight()) / 3,
-					left: ($(window).width() - $(".modal-box").outerWidth()) / 2
-				});
-			});
-
-			$(window).resize();
-		 
-		});
-        
-        function onDelete(id){
-            if(confirm("You really want to delete this staff? This action cannot be reverted."))
-                window.location.href = "action.php?action=delete&id="+id;
-        }
-        
-	</script>
-    
-    
-</head>
-  
-	<body onload='fetchNotification()'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
-		
-	<?php include('../sidebar.php');?>
-		
-		<div id="main-content"> <!-- Main Content Section with everything -->
-			
-			<noscript> <!-- Show a notification if the user has disabled javascript -->
-				<div class="notification error png_bg">
-					<div>
-						Javascript is disabled or is not supported by your browser. Please <a href="http://browsehappy.com/" title="Upgrade to a better browser">upgrade</a> your browser or <a href="http://www.google.com/support/bin/answer.py?answer=23852" title="Enable Javascript in your browser">enable</a> Javascript to navigate the interface properly.
-					</div>
-				</div>
-			</noscript>
-			
-			<div class="clear"></div> <!-- End .clear -->
 			
 			<div class="content-box column-left" style="width:63%">				
 				<div class="content-box-header">
@@ -331,14 +141,14 @@
 								for($i=0; $i<sizeof($mEmployeeList); $i++) {
 									$mEmployee = new User($mEmployeeList[$i]);
 									echo "<tr>";
-									echo "<td><img height='15' width='15' src='../../res/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getFullName()."</b></td>";
+									echo "<td><img height='15' width='15' src='http://www.findgaddi.com/navigator/Ver2.0/images/driver_icon.png'>&nbsp;&nbsp;<b>".$mEmployee->getFullName()."</b></td>";
 									echo "<td>".$mEmployee->getPhoneMobile()."</td>";
 									echo "<td>".$mEmployee->getAddress()."</td>";
 									if($mUser->isCompanyAdmin() && $mUser->getId() != $mEmployee->getId()) {
 										echo "<td>
 											<!-- Icons -->
-											 <a href='#' title='Edit'><img src='../../res/pencil.png' alt='Edit'></a>
-											 <a href='#' title='Delete' onClick='onDelete(".$mEmployee->getId().")'><img src='../../res/cross.png' alt='Delete'></a>
+											 <a href='#' title='Edit'><img src='http://www.findgaddi.com/navigator/Ver2.0/images/pencil.png' alt='Edit'></a>
+											 <a href='#' title='Delete' onClick='onDelete(".$mEmployee->getId().")'><img src='http://www.findgaddi.com/navigator/Ver2.0/images/cross.png' alt='Delete'></a>
 										</td>";
 									} else{
 										echo "<td></td>";
@@ -390,8 +200,6 @@
 				</div> <!-- End .content-box-content -->
 				
 			</div>
-
-			<div class="clear"></div>
             
             <!-- //////////////// POP UP Box for adding employee-->
     <div id="add-employee" class="modal-box" style="width:50%;">  
@@ -401,7 +209,7 @@
 		<div class="modal-body" id="item-list">
 						
      <!---------------------------------------------------------------------------------------------------------------------------------->       
-            <form action="action.php?action=registerEmployee" method="POST" onSubmit="return validate()">
+            <form action="http://www.findgaddi.com/navigator/Ver2.0/utility/helper/Company/CompanyActionHelper.php?action=registerEmployee" method="POST" onSubmit="return validate()">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 							
@@ -475,11 +283,4 @@
 		</div>		
 	</div>
 			
-			<!-- End Notifications -->
-			
-<?php include("../footer.php")?>
-			
-		</div> <!-- End #main-content -->
-		
-	</div>
- </body></html>
+<?php require_once "../../master/footerhome.php"; ?>

@@ -9,10 +9,8 @@ require_once '../../../framework/Driver.php';
 require_once '../../../framework/Vehicle.php';
 
 if(isset($_GET['action'])) {
-	//die "p";
 	$action = $_GET['action'];
 } else {
-	//die "a";
 	$action = "";
 }
 
@@ -28,15 +26,13 @@ switch($action) {
 			if($mUser->getActivatedState()==1) {
 				if($rememberme) $mUser->SetCookieforUser($username, $password, $mUser->getCompany());
 				echo "Redirecting to dashboard.";
-				echo "<script>window.location.href = 'index.php'</script>";
-				//header('Location:index.php');
+				echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/index.php'</script>";
 			} else{
-                echo "<script>window.location.href = 'activate.php'</script>";
+                echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/activate.php'</script>";
 			}
 		} else {
 			echo "<script>alert('Username or Password incorrect. Please try again.');</script>";
-			echo "<script>window.location.href = 'login.php'</script>";
-			//header('Location:login.php');
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 		}
 		break;
 	case "register" : 
@@ -57,22 +53,22 @@ switch($action) {
         
 		if(User::add($firstname, $lastname, $username, $password, $phone_m, $phone_o, $email, $address_1, $address_2, $landmark, $city, $state, $pincode)) {
 			echo "<script>alert('User registered successfully!!!');</script>";
-			echo "<script>window.location.href = '../user/login.php'</script>";
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 		} else {
 			echo "<script>alert('Sorry, some error occured.');</script>";
-			echo "<script>window.location.href = 'register.php'</script>";
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/register.php'</script>";
 		}
 		break;
 	case "logout" : if($mUser->logout()) {
-			header('Location:login.php');
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 			exit();
 		} else {
-			header('Location:abc.php');
+            echo "<script>window.location.href = 'http://www.findgaddi.com/'</script>";
 			exit();
 		}
 		break;
 	case "activate" : if(!isset($_GET['email']) || !isset($_GET['key'])) {
-			echo "<script>window.location.href = '../user/login.php'</script>";
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 			break;
 		}		
 		$email = $_GET['email'];
@@ -80,17 +76,15 @@ switch($action) {
         $id = User::getIdByEmail($email);
 		$securityKey = Security::getSecurityKey($id);
 		if($key == $securityKey){
-            //die("match!!");
-			if(User::activate($id))
-				header('Location:activate.php?q=1');
+            if(User::activate($id))
+				echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/activate.php?q=1'</script>";
 		} else {
-            //die("sorry!!");
-			echo "<script>window.location.href = '../user/login.php'</script>";
+           echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 		}
 		break;
     
     case "resetpassword" : if(!isset($_POST['email_id'])) {
-			echo "<script>window.location.href = '../user/login.php'</script>";
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 			break;
 		}		
     
@@ -99,16 +93,16 @@ switch($action) {
     
         if($id == -1){
             echo "<script>alert('Email ID does not exist in our database...\n Please use proper id or create a new account with us. !!!');</script>";
-			echo "<script>window.location.href = '../user/login.php'</script>";
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
         	break;
         }
         
         if(User::resetpasswordmail($email)){
             echo "<script>alert('We have sent a mail, Please click on the link in mail to reset your mail.  !!!');</script>";
-            echo "<script>window.location.href = '../user/login.php'</script>";
+            echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
         }else{
                echo "<script>alert('There was some error, please try again...  !!!');</script>";
-               echo "<script>window.location.href = '../user/login.php'</script>";
+               echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 
         }
 		break;

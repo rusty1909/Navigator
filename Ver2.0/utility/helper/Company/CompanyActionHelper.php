@@ -1,13 +1,9 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-require_once '../../framework/Company.php';
-require_once '../../framework/User.php';
+require_once '../../../framework/Company.php';
+require_once '../../../framework/User.php';
 
 
 if(isset($_GET['action'])) {
-	//die "q";
 	$action = $_GET['action'];
 } else {
 	$action = "";
@@ -36,12 +32,9 @@ switch($action) {
 			$password = $_SESSION['user']['password'];
 			$mUser->login($username, $password);
 			echo "<script>alert('Company added successfully!!!');</script>";
-			echo "<script>window.location.href = '../user/login.php'</script>";
-			//header('Location:../user/login.php');
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 		} else {
 			echo "<script>alert('Sorry, some error occured.');</script>";
-			//echo "<script>window.location.href = 'register.php'</script>";
-			//header('Location:register.php?error=1');
 		}
 		break;
     case "registerEmployee" : 
@@ -65,15 +58,15 @@ switch($action) {
          } else {
             echo "<script> var retVal = " .$retCode. " alert(retVal);</script>";
 		  }
-        echo "<script>window.location.href = '../user/login.php'</script>";
+        echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 		
 		break;
 	case "nocompany" :
         $mUser = new User();
 		if($mUser->setIndividualAccount()) {
-			header('Location:../user/');
+			 echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/'</script>";
 		} else {
-			header('Location:register.php');
+			 echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/company/register.php'</script>";
 		}
 		break;
     case "delete" :
@@ -81,9 +74,9 @@ switch($action) {
 		$mUser = new User($id);
 
 		if($mUser->delete())
-			header('Location:index.php');
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/company/index.php'</script>";
 		else {
-            header('Location:index.php');
+            echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/company/index.php'</script>";
         }
 			
         break;
@@ -106,12 +99,11 @@ switch($action) {
 		
 		
 		if($mCompany->update(/*$name, $tin_number, */$address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){
-			//echo 'changes completed..';
 			echo "<script>alert('Updated Successfully!!!')</script>";
-			echo "<script>window.location.href = '../company/'</script>";			
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/company/'</script>";			
 		}else {
 			echo "<script>alert('Some problem occured!!!')</script>";
-			echo "<script>window.location.href = '../company/'</script>";
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/company/'</script>";
 		}
 		break;
 }

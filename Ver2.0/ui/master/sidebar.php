@@ -1,10 +1,5 @@
 <?php
-// ISSUE_2 {sidebar not updating, means its not highlighting the current page.}
-// START [
 $url = explode("/", $_SERVER['REQUEST_URI']); 
-//echo "-----------------------------------------------------------------------------------------------------------------------------";
-//print_r($url);
-// ] END
 
 $mIsCompanyRegistered =  Company::isCompanyRegistered($mUser->getCompany());
 
@@ -17,7 +12,7 @@ if($mIsCompanyRegistered){
 ?>
 		<div id="sidebar"><div id="sidebar-wrapper"> <!-- Sidebar with logo and menu -->
 			
-			<h1 id="sidebar-title"><a href="http://www.findgaddi.com">FindGaddi</a></h1>
+			<h1 id="sidebar-title"><a href="http://www.findgaddi.com/">FindGaddi</a></h1>
 		  
 			<!-- Logo (221px wide) -->
 			<a target='_blank' href='http://www.findgaddi.com'><img id="logo" src="http://www.findgaddi.com/navigator/Ver2.0/images/logo.png" alt="FindGaddi logo"></a>
@@ -36,7 +31,7 @@ if($mIsCompanyRegistered){
 					}
 				?>
 				<br>
-				<!--<a href="#" title="View the Site">View the Site</a> | --><a href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/action.php?action=logout" title="Sign Out">Sign Out</a>
+				<!--<a href="#" title="View the Site">View the Site</a> | --><a href="http://www.findgaddi.com/navigator/Ver2.0/utility/helper/User/UserActionHelper.php?action=logout" title="Sign Out">Sign Out</a>
 			</div>        
 			<br><br>
 			<ul id="main-nav">  <!-- Accordion Menu -->
@@ -53,7 +48,6 @@ if($mIsCompanyRegistered){
 					</a>
 					<ul style="display: block;">
 						<li><a class="<?php if(($url[3] == 'vehicle') && ($url[4] == '' || $url[4] == 'index.php' || $url[4] == 'edit.php' || explode("?", $url[4])[0] == 'detail.php')) echo 'current'; ?>" href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/">Manage Vehicles</a></li>
-						<!--<li><a href="#">Servicing Details</a></li>-->
 					</ul>
 				</li>
 				
@@ -61,7 +55,6 @@ if($mIsCompanyRegistered){
 					<a href="#" class="nav-top-item <?php if($url[3] == 'driver') echo 'current'; ?>"> Drivers </a>
 					<ul style="display: none;">
 						<li><a href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/driver/">Manage Drivers</a></li>
-						<!--<li><a href="#">Previous Drivers</a></li>-->
 					</ul>
 				</li>  
 			<?php 

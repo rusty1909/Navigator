@@ -122,3 +122,5 @@
 	}
 	
 	var notificationUpdates = setInterval(function(){ fetchNotification() }, 2000);
+	
+	$(document).ready(fetchNotification);

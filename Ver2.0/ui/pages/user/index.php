@@ -1,4 +1,5 @@
-<?php require_once "../../../utility/helper/UserHelper.php"; 
+<?php
+    require_once "../../../utility/helper/User/UserHelper.php"; 
 	
     if(!User::isLoggedIn())
 	       header('Location: login.php');
@@ -24,16 +25,15 @@
 
 <?php require_once "../../master/headerhomehtml.php"; ?>
 
- <script type="text/javascript" src="../../../js/userindex.js"></script>
- <script> body.onload=fetchNotification(); </script> 
-		
+ <script type="text/javascript" src="http://www.findgaddi.com/navigator/Ver2.0/js/userindex.js"></script>
+ 		
 	<div style="width:59%;height:88%;float:left">
 				<div class="column-left" style="width:100%;height:50%">				
 					<ul class="shortcut-buttons-set">
 				
 						<li><a class="shortcut-button" href="../vehicle/"><span>
 							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">VEHICLES</span></b>
-							<img src="../../../images/truck.png" alt="icon"><br>
+							<img src="http://www.findgaddi.com/navigator/Ver2.0/images/truck.png" alt="icon"><br>
 							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mAllVehicleList) ?></span></b> registered<br>drivers<br><br>
 							<b><?php echo sizeof($mOnJobVehicleList) ?></b> on-road<br><br>
 							<b><?php echo sizeof($mWaitingVehicleList) ?></b> waiting<br>
@@ -41,14 +41,14 @@
 						
 						<li><a class="shortcut-button" href="../driver/"><span>
 							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">DRIVERS</span></b>
-							<img src="../../../images/drivers.png" alt="icon"><br>
+							<img src="http://www.findgaddi.com/navigator/Ver2.0/images/drivers.png" alt="icon"><br>
 							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mDriverList) ?></span></b> registered<br>drivers<br><br>
 							<b><?php echo sizeof($mAvailableDriverList) ?></b> available<br>
 						</span></a></li>
 						
 						<li><a class="shortcut-button" href="<?php if($mUser->getCompany()==-1){echo "#";} else {echo "../company/index.php?page=staff";}?>"><span>
 							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">STAFFS</span></b>
-							<img src="../../../images/staff.png" alt="icon"><br>
+							<img src="http://www.findgaddi.com/navigator/Ver2.0/images/staff.png" alt="icon"><br>
 							<?php
 							if($mUser->getCompany()==-1){
 							?>
@@ -61,7 +61,7 @@
 						
 						<li><a class="shortcut-button" href="#"><span>
 							<b><span style="font-size:15px;border: none; display:block; padding: 0px;">ALERTS</span></b>
-							<img src="../../../images/alerts.png" alt="icon"><br>
+							<img src="http://www.findgaddi.com/navigator/Ver2.0/images/alerts.png" alt="icon"><br>
 							<b><span style="font-size:30px;border: none; display:block; padding: 0px;"><?php echo sizeof($mMonthlyAlertList) ?></span></b> reported<br>this month<br><br>
 							<b><?php echo sizeof($mAlertList) ?></b> total reported<br>
 						</span></a></li>
@@ -98,7 +98,7 @@
 											<td style='width:30%'><b><a href='../driver/detail.php?id=".$mDriver->getId()."'>".$mDriver->getName()."</a></b></td>
 											<td>".$reason."</td>
 											<td><b>Rs.".$amount."</b></td>
-											<td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='../../../images/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td>
+											<td><a class='js-open-modal' href='#' data-modal-id='bill_popup' onClick='fetchBillDetails(".$mExpense->getId().")'><img src='http://www.findgaddi.com/navigator/Ver2.0/images/more_detail.png' width=20 height=20 style='cursor:hand;'/></a></td>
 										</tr>";
 								}
 							?>
@@ -135,10 +135,8 @@
 				</div> <!-- End .content-box-content -->
 				
 			</div> <!-- End .content-box -->
-	
-<?php require_once "../../master/footerhome.php"; ?>
 
-<div id="bill_popup" class="modal-box" style="width:40%;">  
+	<div id="bill_popup" class="modal-box" style="width:40%;">  
 	  <header>
 		<h3>Bill Details</h3>
 	  </header>
@@ -171,3 +169,6 @@
 		<a href="#" class="js-modal-close" style="color:#D3402B"><b>LATER</b></a>
 	  </footer>
 	</div>
+
+<?php require_once "../../master/footerhome.php"; ?>
+

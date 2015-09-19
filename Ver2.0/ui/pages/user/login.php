@@ -1,9 +1,15 @@
-<?php require_once "../../master/headerhomephp.php"; ?>
-<?php require_once "../../master/headerhomehtml.php"; ?>
+<?php
+require_once "../../master/headerhomephp.php"; 
+ 
+if(User::isLoggedIn())
+	       header('Location: index.php');
+
+require_once "../../master/headerhomehtml.php";
+?>
 		<div id="login-wrapper" class="png_bg">
 			
 			<div id="login-content">
-				<form action="action.php?action=login" method="POST">
+				<form action="../../../utility/helper/User/UserActionHelper.php?action=login" method="POST">
                     <p>
 						<label>Username</label>
 						<input class="text-input" type="text"  name="username" id="username">
@@ -41,7 +47,7 @@
 	  </header>
 	  <div class="modal-body" id="item-list">		
 <!-------------------------------------------------------------------------------------------------------------------------->
-						<form action="action.php?action=resetpassword" method="POST">
+						<form action="../../../utility/helper/User/UserActionHelper.php?action=resetpassword" method="POST">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 								<p>

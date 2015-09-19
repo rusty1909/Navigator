@@ -1,6 +1,4 @@
 $(document).ready(function () {
-		//$('#dialog').dialog(); 
-		console.log("clicked");
 		$('#dialog_link').click(function () {
 			$('#dialog').dialog('open');
 			return false;
@@ -14,7 +12,6 @@ $(document).ready(function () {
 		e.preventDefault();
 		$("body").append(appendthis);
 		$(".modal-overlay").fadeTo(500, 0.7);
-		//$(".js-modalbox").fadeIn(500);
 		var modalBox = $(this).attr('data-modal-id');
 		$('#'+modalBox).fadeIn($(this).data());
 	  });  
