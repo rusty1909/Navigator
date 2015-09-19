@@ -1,21 +1,11 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-	require_once "../../framework/User.php";
-	require_once "../../framework/Vehicle.php";
-	require_once "../../framework/Company.php";
-	require_once "../../framework/Driver.php";
-	require_once "../../framework/Expense.php";
+<?php require_once "../../../utility/helper/UserHelper.php"; 
 	
+    if(!User::isLoggedIn())
+	       header('Location: login.php');
 
-if(!isset($_SESSION['user']))
-	header('Location:../user/login.php');
+    require_once "../../master/headerhomephp.php"; 
 
-	$mUser = new User();
-
-	$mCompany = new Company($mUser->getCompany());
-	$mEmployeeList = $mCompany->getEmployeeList();
+    $mEmployeeList = $mCompany->getEmployeeList();
 	
 	$mAlertList = $mUser->getAlerts();
 	$mMonthlyAlertList = $mUser->getMonthlyAlerts();
@@ -30,27 +20,14 @@ if(!isset($_SESSION['user']))
 	
 	$mDriverList = $mUser->getCurrentDriverList();
 	$mAvailableDriverList = $mUser->getAvailableDriverList();
-	?>
-<?php require_once "../../master/headerhome.php"; ?>
+?>
+
+<?php require_once "../../master/headerhomehtml.php"; ?>
 
  <script type="text/javascript" src="../../../js/userindex.js"></script>
-  
-	<body onload='fetchNotification()'><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+ <script> body.onload=fetchNotification(); </script> 
 		
-	<?php include('../sidebar.php');?>
-		
-		<div id="main-content"> <!-- Main Content Section with everything -->
-			
-			<noscript> <!-- Show a notification if the user has disabled javascript -->
-				<div class="notification error png_bg">
-					<div>
-						Javascript is disabled or is not supported by your browser. Please <a href="http://browsehappy.com/" title="Upgrade to a better browser">upgrade</a> your browser or <a href="http://www.google.com/support/bin/answer.py?answer=23852" title="Enable Javascript in your browser">enable</a> Javascript to navigate the interface properly.
-					</div>
-				</div>
-			</noscript>
-			
-			<div class="clear"></div> <!-- End .clear -->
-			<div style="width:59%;height:88%;float:left">
+	<div style="width:59%;height:88%;float:left">
 				<div class="column-left" style="width:100%;height:50%">				
 					<ul class="shortcut-buttons-set">
 				
@@ -131,37 +108,8 @@ if(!isset($_SESSION['user']))
 					
 					</div> <!-- End .content-box-content -->			
 				</div> <!-- End .content-box -->
-				<!----------------- REMINDER TAB -------------------------------------------------------------------------------------
-				<div class="content-box column-right" style="width:49%;height:50%">				
-					<div class="content-box-header">					
-						<h3 style="cursor: s-resize;">Reminders</h3>
-						<a href="#" style="color:#57a000; float:right;padding:15px 10px 0 0 !important"><b>Add Reminder</b></a>		
-					</div> 
-					
-					
-					<div style="display: block;padding:0px;height:85%;overflow-y:auto" class="content-box-content">
-					
-						<div style="display:block;overflow-y:auto" class="tab-content default-tab" id="item-list">
-						
-							<table id="noti_table">
-							<thead>
-							<tr></tr>
-							</thead>
-							<tbody style="border-bottom:0px" id="rem_body">
-							<tr><td><b>Coming soon...</b></td></tr>
-							</tbody>
-							</table>
-						</div>      
-					
-					</div> 
-					
-				</div>
-				---------------------------------------------------------------------------------------------------------------------------->
 			</div>
-			
-			
-
-			<div class="content-box column-right" style="width:40%;height:88%;">
+    <div class="content-box column-right" style="width:40%;height:88%;">
 			
 				
 				<div class="content-box-header"> <!-- Add the class "closed" to the Content box header to have it closed by default -->
@@ -187,14 +135,10 @@ if(!isset($_SESSION['user']))
 				</div> <!-- End .content-box-content -->
 				
 			</div> <!-- End .content-box -->
-			<div class="clear"></div>
-			<?php include("../footer.php")?>
-			
-		</div> <!-- End #main-content -->
-		
-	</div>
 	
-	<div id="bill_popup" class="modal-box" style="width:40%;">  
+<?php require_once "../../master/footerhome.php"; ?>
+
+<div id="bill_popup" class="modal-box" style="width:40%;">  
 	  <header>
 		<h3>Bill Details</h3>
 	  </header>
@@ -227,4 +171,3 @@ if(!isset($_SESSION['user']))
 		<a href="#" class="js-modal-close" style="color:#D3402B"><b>LATER</b></a>
 	  </footer>
 	</div>
-<?php require_once "../../master/footerhome.php"; ?>

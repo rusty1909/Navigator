@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 // ISSUE_2 {sidebar not updating, means its not highlighting the current page.}
 // START [
 $url = explode("/", $_SERVER['REQUEST_URI']); 
@@ -9,10 +6,6 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 //print_r($url);
 // ] END
 
-//github
-
-
-require_once "../../framework/Company.php";
 $mIsCompanyRegistered =  Company::isCompanyRegistered($mUser->getCompany());
 
 if($mIsCompanyRegistered){
@@ -24,10 +17,10 @@ if($mIsCompanyRegistered){
 ?>
 		<div id="sidebar"><div id="sidebar-wrapper"> <!-- Sidebar with logo and menu -->
 			
-			<h1 id="sidebar-title"><a href="#">FindGaddi</a></h1>
+			<h1 id="sidebar-title"><a href="http://www.findgaddi.com">FindGaddi</a></h1>
 		  
 			<!-- Logo (221px wide) -->
-			<a target='_blank' href='http://www.findgaddi.com'><img id="logo" src="../../res/logo.png" alt="FindGaddi logo"></a>
+			<a target='_blank' href='http://www.findgaddi.com'><img id="logo" src="http://www.findgaddi.com/navigator/Ver2.0/images/logo.png" alt="FindGaddi logo"></a>
 		  
 			<!-- Sidebar Profile links -->
 			<?php
@@ -36,20 +29,20 @@ if($mIsCompanyRegistered){
 				//header('Location')
 			?>
 			<div id="profile-links">
-				Hello, <a href="/navigator/ui/setting/" title="Edit your profile"><?php echo $mUser->getFullName(); ?></a><br>
-				<?php if($mIsCompanyRegistered && $mCompany->getName() !="") echo "<a href='/navigator/ui/company/'>".$mCompany->getName()."<a><br>";
+				Hello, <a href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/setting/" title="Edit your profile"><?php echo $mUser->getFullName(); ?></a><br>
+				<?php if($mIsCompanyRegistered && $mCompany->getName() !="") echo "<a href='http://www.findgaddi.com/navigator/Ver2.0/ui/pages/company/'>".$mCompany->getName()."<a><br>";
 					else {
-						echo '<a href="/navigator/ui/company/register.php">&ltClick to Register Your Company&gt</a><br>';
+						echo '<a href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/company/register.php">&ltClick to Register Your Company&gt</a><br>';
 					}
 				?>
 				<br>
-				<!--<a href="#" title="View the Site">View the Site</a> | --><a href="/navigator/ui/user/action.php?action=logout" title="Sign Out">Sign Out</a>
+				<!--<a href="#" title="View the Site">View the Site</a> | --><a href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/action.php?action=logout" title="Sign Out">Sign Out</a>
 			</div>        
 			<br><br>
 			<ul id="main-nav">  <!-- Accordion Menu -->
 				
 				<li>
-					<a href="/navigator/ui/user/" class="nav-top-item no-submenu <?php if($url[3] == 'user') echo 'current'; ?>"> <!-- Add the class "no-submenu" to menu items with no sub menu -->
+					<a href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/" class="nav-top-item no-submenu <?php if($url[3] == 'user') echo 'current'; ?>"> <!-- Add the class "no-submenu" to menu items with no sub menu -->
 						Dashboard
 					</a> 					
 				</li>
@@ -59,39 +52,18 @@ if($mIsCompanyRegistered){
 					Vehicles
 					</a>
 					<ul style="display: block;">
-						<li><a class="<?php if(($url[3] == 'vehicle') && ($url[4] == '' || $url[4] == 'index.php' || $url[4] == 'edit.php' || explode("?", $url[4])[0] == 'detail.php')) echo 'current'; ?>" href="/navigator/ui/vehicle/">Manage Vehicles</a></li>
+						<li><a class="<?php if(($url[3] == 'vehicle') && ($url[4] == '' || $url[4] == 'index.php' || $url[4] == 'edit.php' || explode("?", $url[4])[0] == 'detail.php')) echo 'current'; ?>" href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/">Manage Vehicles</a></li>
 						<!--<li><a href="#">Servicing Details</a></li>-->
 					</ul>
 				</li>
 				
 				<li>
-					<a href="#" class="nav-top-item <?php if($url[3] == 'driver') echo 'current'; ?>">
-						Drivers
-					</a>
+					<a href="#" class="nav-top-item <?php if($url[3] == 'driver') echo 'current'; ?>"> Drivers </a>
 					<ul style="display: none;">
-						<li><a href="/navigator/ui/driver/">Manage Drivers</a></li>
+						<li><a href="http://www.findgaddi.com/navigator/Ver2.0/ui/pages/driver/">Manage Drivers</a></li>
 						<!--<li><a href="#">Previous Drivers</a></li>-->
 					</ul>
 				</li>  
-				
-<!--				<li>
-					<a href="#" class="nav-top-item <?php if($url[3] == 'setting') echo 'current'; ?>">
-						Settings
-					</a>
-					<ul style="display: none;">
-						<li><a class="<?php if(($url[3] == 'setting') && ($url[4] == '' || $url[4] == 'index.php')) echo 'current'; ?>" href="/navigator/ui/setting/">Your Profile</a></li>
-						<li><a href="#">Manage Staff</a></li>
-					</ul>
-				</li>     -->
-				
-				<!--<li>
-					<a href="#" class="nav-top-item">
-						Issues
-					</a>
-					<ul style="display: none;">
-						<li><a href="/navigator/admin/issue/"  target="_admin">Issue List</a></li>
-					</ul>
-				</li> -->
 			<?php 
 			if($mUser->getUsername() == "rusty" || $mUser->getUsername() == "dheerajagrawal19@live.com" || $mUser->getUsername() == "sumshri") {
 			?>
@@ -115,9 +87,7 @@ if($mIsCompanyRegistered){
 				</li>
 							
 			</ul> <!-- End #main-nav -->
-			<?php
-			}
-			?>
+			<?php 			} 			?>
 			
 			
 			

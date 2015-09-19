@@ -1,20 +1,20 @@
 <?php
 if(strtolower($_SERVER['SERVER_NAME']) === strtolower("localhost") ){
-	
 	define('DB_USERNAME', 'root');
 	define('DB_PASSWORD', '');
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'navigator');
 
 }else{
-	//die "qwerty";
 	define ("DB_HOST", "localhost"); // set database host
 	define ("DB_USERNAME", "findgz8e_admin"); // set database user
 	define ("DB_PASSWORD","Sk2Lq4fW1q$("); // set database password
 	define('DB_NAME', 'findgz8e_navigator');
 } 
+
 date_default_timezone_set("Asia/Kolkata");
 require_once 'Security.php';	
+
 class Connection {
  
     private $conn;

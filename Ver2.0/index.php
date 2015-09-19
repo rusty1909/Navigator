@@ -1,3 +1,3 @@
 <?php
-	header('Location:ui/user/login.php');
+	header('Location:ui/pages/user/login.php');
 ?>
