@@ -23,7 +23,7 @@ switch($action) {
 		$fax = $_POST['fax'];
 		$phone = $_POST['phone'];
 		$website = $_POST['website'];
-		$description = "";//$_POST['description'];
+		$description = "";
 		
 		
 		if(Company::add($name, $tin_number, $address_1, $address_2, $landmark, $city, $state, $pincode, $phone, $fax, $email, $website, $description)){

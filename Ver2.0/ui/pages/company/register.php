@@ -1,6 +1,5 @@
 <?php
-	require_once "../../../utility/helper/Company/CompanyHelper.php"; 
-	require_once "../../master/headerhomephp.php";
+	require_once "../../../utility/helper/Common/CommonHelper.php";
 	require_once "../../master/headerhomehtml.php"; 
 ?>
 
@@ -8,7 +7,7 @@
  
 				<div class="content-box-header">					
 					<h3 style="cursor: s-resize;">Register Company</h3>					
-				</div> <!-- End .content-box-header -->				
+				</div> 				
 				<div class="content-box-content">					
 					<div style="display: block;" class="tab-content default-tab">					
 <form action="http://www.findgaddi.com/navigator/Ver2.0/utility/helper/Company/CompanyActionHelper.php?action=register" method="POST" onSubmit="return validate()">

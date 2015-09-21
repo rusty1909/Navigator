@@ -6,7 +6,7 @@ $(document).ready(function(){
 			if(username == "") return;
 			jQuery.ajax({
 					type: 'POST',
-					url: 'checkDuplicates.php',
+					url: '../../../utility/helper/User/checkDuplicates.php',
 					data: 'username='+ username,
 					cache: false,
 					success: function(response){
@@ -31,7 +31,7 @@ $(document).ready(function(){
 			if(email == "") return;
 			jQuery.ajax({
 					type: 'POST',
-					url: 'checkDuplicates.php',
+					url: '../../../utility/helper/User/checkDuplicates.php',
 					data: 'email='+ email,
 					cache: false,
 					success: function(response){

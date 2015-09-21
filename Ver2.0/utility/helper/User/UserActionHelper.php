@@ -28,7 +28,7 @@ switch($action) {
 				echo "Redirecting to dashboard.";
 				echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/index.php'</script>";
 			} else{
-                echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/activate.php'</script>";
+                echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/utility/helper/User/activate.php'</script>";
 			}
 		} else {
 			echo "<script>alert('Username or Password incorrect. Please try again.');</script>";
@@ -77,7 +77,7 @@ switch($action) {
 		$securityKey = Security::getSecurityKey($id);
 		if($key == $securityKey){
             if(User::activate($id))
-				echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/activate.php?q=1'</script>";
+				echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/utility/helper/User/activate.php?q=1'</script>";
 		} else {
            echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 		}

@@ -6,7 +6,7 @@ $(document).ready(function(){
 			if(name == "") return;
 			jQuery.ajax({
 					type: 'POST',
-					url: 'checkDuplicates.php',
+					url: '../../../utility/helper/Company/checkDuplicates.php',
 					data: 'name='+ name,
 					cache: false,
 					success: function(response){
@@ -31,7 +31,7 @@ $(document).ready(function(){
 			if(tin == "") return;
 			jQuery.ajax({
 					type: 'POST',
-					url: 'checkDuplicates.php',
+					url: '../../../utility/helper/Company/checkDuplicates.php',
 					data: 'tin='+ tin,
 					cache: false,
 					success: function(response){

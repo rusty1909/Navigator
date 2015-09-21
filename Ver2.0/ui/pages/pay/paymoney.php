@@ -1,15 +1,9 @@
 <?php
-require_once "../../framework/User.php";
-require_once "../../framework/Vehicle.php";
-require_once "../../framework/Job.php";
-require_once "../../framework/Driver.php";
-require_once "../../framework/Company.php";
-require_once "../../framework/PaymentHelper.php";
-require_once "sensitivepayinfo.php";
-
-$mUser = new User();
-$payHelper = new PaymentHelper();
-
+ require_once "../../../utility/helper/Pay/PayHelper.php"; 
+	
+if(!User::isLoggedIn())
+	   header('Location: ../user/login.php');
+	   
 if(!empty($_GET)) {
     $vehPayInfo = $_GET['id'];         
 }else{ 
@@ -21,38 +15,6 @@ $amount = $payHelper->GetPaymentByPayCode($vehPayInfo);
 $vehicleIDs = $payHelper->GetVehicleListByPayCode($vehPayInfo);
 
 ?>
-<html>
-  <head>
-  		<!-- Reset Stylesheet -->
-		<link rel="stylesheet" href="../../res/reset.css" type="text/css" media="screen">
-	  
-		<!-- Main Stylesheet -->
-		<link rel="stylesheet" href="../../res/style.css" type="text/css" media="screen">
-		
-		<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
-		<link rel="stylesheet" href="../../res/invalid.css" type="text/css" media="screen">	
-  
-		<!-- jQuery -->
-		<script type="text/javascript" src="../../res/jquery-1.js"></script>
-		
-		<!-- jQuery Configuration -->
-		<script type="text/javascript" src="../../res/simpla.js"></script>
-		
-		<!-- Facebox jQuery Plugin -->
-		<script type="text/javascript" src="../../res/facebox.js"></script>
-		
-		<!-- jQuery WYSIWYG Plugin -->
-		<script type="text/javascript" src="../../res/jquery_002.js"></script>
-		
-		<!-- jQuery Datepicker Plugin -->
-		<script type="text/javascript" src="../../res/jquery.htm"></script>
-		<script type="text/javascript" src="../../res/jquery.js"></script>
-
-    	  <!--  //modal box jquery -->
-		<link rel="stylesheet"  href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-      
       <script>
     var hash = '<?php echo $hash ?>';
     function submitPayuForm() {
@@ -64,12 +26,9 @@ $vehicleIDs = $payHelper->GetVehicleListByPayCode($vehPayInfo);
     }
  
 document.title = "Payment Gateway | FindGaddi "; 
+$(document).ready(submitPayuForm);
   </script>
-      
-  </head>
-   <body onload="submitPayuForm()">
-	<?php include('../sidebar.php');?>
-		
+
 		<div id="main-content"> <!-- Main Content Section with everything -->
               <h2>FindGaddi Payment System :</h2>
               <br />
@@ -84,7 +43,7 @@ document.title = "Payment Gateway | FindGaddi ";
             
              <div id="userMessage"> </div>
              <br>
-            <?php include_once("membershipplans.php"); ?>  <br><br>
+            <?php include_once("../../../utility/helper/Pay/membershipplans.php"); ?>  <br><br>
             
     <form action="<?php echo $action; ?>" method="post" name="payuForm">
       <input type="hidden" name="key" value="<?php echo $MERCHANT_KEY ?>" />
@@ -129,9 +88,6 @@ document.title = "Payment Gateway | FindGaddi ";
           <?php } ?>
             
     </form>
-			
-<?php include("../footer.php")?>
-			
-		</div> <!-- End #main-content -->
-		
- </body></html>
+			</div>
+
+<?php require_once "../../master/footerhome.php"; ?>

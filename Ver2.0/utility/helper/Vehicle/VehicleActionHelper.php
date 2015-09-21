@@ -1,9 +1,8 @@
 <?php
-require_once '../../framework/Vehicle.php';
-require_once '../../framework/VehicleMailer.php';
+require_once '../../../framework/Vehicle.php';
+require_once '../../../framework/VehicleMailer.php';
 
 if(isset($_GET['action'])) {
-	//die "q";
 	$action = $_GET['action'];
 } else {
 	$action = "";
@@ -16,14 +15,13 @@ switch($action) {
 		$vehicle_number = $_POST['vehicle_number'];
 		$description = $_POST['description'];
 		if(Vehicle::add($type, $model, $vehicle_number, $make_year, $description)){
-            //mail to admin..
             $veh_id = Vehicle::getIdByNumber($vehicle_number);
             $adder = new VehicleMailer($veh_id);
             $adder->sendVehicleAddedMessage();
-            
-			header('Location:index.php');
+			
+            echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/index.php'</script>";
 		} else {
-			header('Location:abc.php');
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/abc.php'</script>";
 		}
 		break;
     
@@ -37,7 +35,7 @@ switch($action) {
             echo 'alert("Vehicle is on Job, can\'t delte now !!!")';
             echo '</script>';
             
-            header('Location:index.php');
+             echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/index.php'</script>";
             
             break;
         }
@@ -45,16 +43,14 @@ switch($action) {
 		if($mVehicle->delete()){
             $adder = new VehicleMailer($id);
             $adder->sendVehicleDeletedMessage();
-            header('Location:index.php');
+            echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/index.php'</script>";
         }else {
-            header('Location:index.php');
+            echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/index.php'</script>";
         }
-			//header('Location:abc.php');
-        break;
+		break;
 
 	case "set_driver" : $id = $_GET['id'];
 		$driver_id = $_GET['driverid'];
-		//echo $_GET['id'];
 		$mVehicle = new Vehicle($id);
 		if($mVehicle->setDriver($driver_id)){
 			echo 1;
@@ -64,14 +60,11 @@ switch($action) {
         break;
     
     case "removedriver" : $id = $_GET['id'];
-		//echo $_GET['id'];
 		$mVehicle = new Vehicle($id);
-    if($mVehicle->removeDriver()){
-        //echo "<script>window.history.back()</script>";
-        header('Location:detail.php');
-    }else {}
-			//header('Location:abc.php');
-        break;
+		if($mVehicle->removeDriver()){
+			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/vehicle/detail.php'</script>";
+		}else {}
+			break;
 		
 
 }

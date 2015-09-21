@@ -1,5 +1,5 @@
 <?php
-require_once "../../master/headerhomephp.php"; 
+require_once "../../../utility/helper/Common/CommonHelper.php"; 
  
 if(User::isLoggedIn())
 	       header('Location: index.php');

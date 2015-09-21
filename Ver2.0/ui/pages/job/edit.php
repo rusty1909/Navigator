@@ -1,13 +1,8 @@
 <?php
-	require_once "../../framework/User.php";
-	require_once "../../framework/Client.php";
-	require_once "../../framework/Vehicle.php";
-	require_once "../../framework/Driver.php";
-	
-	$mUser = new User();
+	require_once "../../../utility/helper/Job/JobHelper.php"; 
+	require_once "../../../utility/helper/Common/CommonHelper.php";
 	$mVehicleList = $mUser->getDeployedVehicleList();
 	$mDriverList = $mUser->getDriverList();
-	//echo sizeof($mClientList);
 ?>
 <html>
 <head><title>Navigator</title>
@@ -24,7 +19,7 @@
 		</div>
 		<div id="content" style="float:right;width:85%;">
 			Add Order
-			<form action="action.php?action=add" method="POST">
+			<form action="../../../utility/helper/Job/JobActionHelper.php?action=add" method="POST">
 			<table>
 				<tr><td>Title</td><td><input type="text" name="title" id="title"></td></tr>
 				<tr><td>Vehicle</td>

@@ -1,17 +1,7 @@
 <?php
+require_once "../../../utility/helper/Common/CommonHelper.php"; 
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-	require_once '../../framework/Vehicle.php';
-	require_once '../../framework/User.php';
-	require_once '../../framework/Notification.php';
-	require_once '../../framework/Company.php';
-	
-	$mUser = new User();
 	$companyId = $mUser->getCompany();
-	//echo $companyId;
-	$mCompany = new Company($companyId);
 	
 	$mNotiResourceList = array();
 	if(!isset($_GET['id'])){
@@ -19,21 +9,17 @@ ini_set('display_errors', 1);
 			$mNotificationList = $mCompany->getAllNotifications();
 		else
 			$mNotificationList = $mUser->getAllNotifications();
-		//echo sizeof($mNotificationList);
 		for($i=0;$i<sizeof($mNotificationList);$i++){
 			$noti = new Notification($mNotificationList[$i]);
 			$temp = $noti->getResource();
 			if($temp['priority'] != 1)
 				array_push($mNotiResourceList, $temp);
-			
-			//echo $temp['string']."<br>";
 		}
-	} else{
+	} else {
 		$id = $_GET['id'];
 		$mVehicle = new Vehicle($id);
 		
 		$mNotificationList = $mVehicle->getNotifications();
-		//echo sizeof($mNotificationList);
 		for($i=0;$i<sizeof($mNotificationList);$i++){
 			$noti = new Notification($mNotificationList[$i]);
 			$temp = $noti->getResource();

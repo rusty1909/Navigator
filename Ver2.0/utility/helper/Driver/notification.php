@@ -1,16 +1,8 @@
 <?php
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-	require_once '../../framework/Driver.php';
-	require_once '../../framework/User.php';
-	require_once '../../framework/Notification.php';
-	require_once '../../framework/Company.php';
+    require_once "../../../utility/helper/Driver/DriverHelper.php"; 
+    require_once "../../../utility/helper/Common/CommonHelper.php"; 
 	
-	$mUser = new User();
-	$companyId = $mUser->getCompany();
-	$mCompany = new Company($companyId);
+    $companyId = $mUser->getCompany();
 	
 	$mNotiResourceList = array();
 	if(!isset($_GET['id'])){
@@ -24,8 +16,6 @@ ini_set('display_errors', 1);
 			$temp = $noti->getResource();
 			if($temp['priority'] != 1)
 				array_push($mNotiResourceList, $temp);
-			
-			//echo $temp['string']."<br>";
 		}
 	} else{
 		$id = $_GET['id'];

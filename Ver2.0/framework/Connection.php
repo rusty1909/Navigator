@@ -2,7 +2,7 @@
 if(strtolower($_SERVER['SERVER_NAME']) === strtolower("localhost") ){
 	
 	define('DB_USERNAME', 'root');
-	define('DB_PASSWORD', '');
+	define('DB_PASSWORD', 'sn123456');
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'navigator');
 

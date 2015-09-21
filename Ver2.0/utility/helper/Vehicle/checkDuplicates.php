@@ -1,9 +1,5 @@
 <?php
-require_once '../../framework/Vehicle.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-//echo $_POST['vehicle_number'];
+require_once '../../../framework/Vehicle.php';
 if(isset($_POST['vehicle_number'])) {
 	
 	$vehicle_number = $_POST['vehicle_number'];

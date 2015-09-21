@@ -1,9 +1,7 @@
 <?php
 	require_once "../../framework/User.php";
 	require_once "../../framework/Client.php";
-	$mUser = new User();
 	$mClientList = $mUser->getClientList();
-	//echo sizeof($mVehicleList);
 ?>
 <html>
 <head><title>Navigator</title>

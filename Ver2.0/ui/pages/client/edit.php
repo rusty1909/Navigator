@@ -1,5 +1,5 @@
 <?php
-	require_once "../../framework/User.php";
+	require_once "../../../framework/User.php";
 	$mUser = new User();
 ?>
 <html>
@@ -17,7 +17,7 @@
 		</div>
 		<div id="content" style="float:right;width:85%;">
 			Add Client
-			<form action="action.php?action=add" method="POST">
+			<form action="../../../utility/helper/Client/ClientActionHelper.php?action=add" method="POST">
 			<table>
 				<tr><td>Name</td><td><input type="text" name="name" id="name"></td></tr>
 				<tr><td>Contact Person</td><td><input type="text" name="contact_person" id="contact_person"></td></tr>

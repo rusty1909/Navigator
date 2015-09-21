@@ -1,23 +1,11 @@
 <?php
-	require_once "../../framework/User.php";
-	$mUser = new User();
+	 require_once "../../../utility/helper/Common/CommonHelper.php"; 
+     require_once "../../master/headerhomehtml.php";
 ?>
-<html>
-<head><title>Navigator</title>
-</head>
-<body>
-	<div id="header">
-	<?php
-		include('../header.php');
-	?>
-	</div>
-	<div id="container">
-		<div id="sidebar" style="float:left;width:15%;">
-		<?php include('sidebar.php'); ?>
-		</div>
+
 		<div id="content" style="float:right;width:85%;">
 			Add Driver
-			<form action="action.php?action=add" method="POST">
+			<form action="../../../utility/helper/Driver/DriverActionHelper.php?action=add" method="POST">
 			<table>
 				<tr><td>Name</td><td><input type="text" name="name" id="name"></td></tr>
 				<tr><td>Phone</td><td><input type="text" name="phone" id="phone"></td></tr>
@@ -27,7 +15,5 @@
 				<tr><td><input type="submit" value="Add Driver"></td></tr>
 			</table>
 			</form>
-		<div>
-	</div>
-	
-</body> 
+		</div>
+	<?php require_once "../../master/footerhome.php"; ?>

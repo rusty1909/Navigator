@@ -1,9 +1,8 @@
 <?php
-require_once '../../framework/Driver.php';
+require_once '../../../framework/Driver.php';
 
 
 if(isset($_GET['action'])) {
-	//die "q";
 	$action = $_GET['action'];
 } else {
 	$action = "";
@@ -18,9 +17,7 @@ switch($action) {
 		$description = $_POST['description'];
 		if(Driver::add($name, $phone, $address, $description, $dateJoin)){
 			header('Location:index.php');
-		} else {
-			//header('Location:abc.php');
-		}
+		} 
 		break;
 	case "update" : $id = $_POST['id'];
 		$phone = $_POST['phone'];

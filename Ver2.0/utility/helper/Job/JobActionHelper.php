@@ -1,9 +1,8 @@
 <?php
-require_once '../../framework/Job.php';
+require_once '../../../framework/Job.php';
 
 
 if(isset($_GET['action'])) {
-	//die "q";
 	$action = $_GET['action'];
 } else {
 	$action = "";
@@ -19,8 +18,6 @@ switch($action) {
 		
 		if(Job::add($title, $vehicle, $driver, $start_date, $destination, $description)){
 			header('Location:index.php');
-		} else {
-			//header('Location:abc.php');
 		}
 		break;
 }

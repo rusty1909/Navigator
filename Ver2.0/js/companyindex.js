@@ -1,10 +1,9 @@
 
 	function fetchNotification(){
-		//alert(id+" "+driver_id);
 		var data = "";
         jQuery.ajax({
             type: 'POST',
-            url: 'timeline.php',
+            url: '../../../utility/helper/Company/timeline.php',
             cache: false,
             success: function(response){
 				if(response == 0){
@@ -13,12 +12,10 @@
 					var notiList = JSON.parse(response);
 					for(var i=0; i<50 && i<notiList.length; i++){
 						var image = notiList[i].image;
-						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../res/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
+						data += "<tr style='background:#fff;border-bottom: 1px solid #ddd;'><td ><img height='20' width='20' src='../../../images/"+image+".png' title='Location' alt='Location'></td><td style='padding:10px;line-height:1em;vertical-align:12px;'><span style='vertical-align:5px;'>"+notiList[i].string+"</span></td></tr>";
 						console.log(image);
 					}
-					//alert(data);
 					document.getElementById("timeline_body").innerHTML = data;
-					//$("#noti_table").find("tbody").find('#main-content table').;
 					data="";
 				}
             }
@@ -36,7 +33,7 @@
 			if(tin == "") return;
 			jQuery.ajax({
 					type: 'POST',
-					url: 'checkDuplicates.php',
+					url: '../../../utility/helper/Company/checkDuplicates.php',
 					data: 'emp_id='+ tin,
 					cache: false,
 					success: function(response){

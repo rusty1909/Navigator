@@ -32,7 +32,7 @@ if(isset($_GET['id']) && isset($_GET['key'])) {
 
 $pswdrstlink = "resetPassword.php?id=".$id;
 
-require_once "../../master/headerhomephp.php"; 
+require_once "../../../utility/helper/Common/CommonHelper.php"; 
 require_once "../../master/headerhomehtml.php";
 ?>
     <script>

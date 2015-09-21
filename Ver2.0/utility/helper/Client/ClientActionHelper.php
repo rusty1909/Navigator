@@ -1,5 +1,5 @@
 <?php
-require_once '../../framework/Client.php';
+require_once '../../../framework/Client.php';
 
 
 if(isset($_GET['action'])) {
