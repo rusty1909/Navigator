@@ -1,53 +1,23 @@
 <?php
-/*success : 
-{
-    status : "SUCCESS"
-    request : "setup"
-    result : {
-        vehicle : {
-            id : "142763"
-            type : "Truck"
-            number : "DL12T3426"
-            year : "2012"
-            date_added : "15-06-2015"
-        }
-        company : {
-            id : "4725"
-            name : "Enroute India Pvt Ltd"
-            phone : "8756345472"
-            admin : {
-                id : "2648"
-                name : "Prateek Srivastava"
-                phone : "8354627345"
-            }
-        }
-    }
-} */
+require_once '../../../../framework/Vehicle.php';
+require_once '../../../../framework/Company.php';
+require_once '../../../../framework/User.php';
 
-/*fail : 
-{
-    status : "FAILURE"
-    request : "setup"
-    result : {
-		error : {
-			reason : "FAIL_VEHICLE"
-			message : "No such vehicle available!!!"
-		}
-    }
-}*/
-
-private class SetupResponse {
+class SetupResponse {
 	public $status;
 	public $request = "setup";
 	public $result;
 }
 
-private class Error {
+class Error {
 	public $reason;
 	public $message;
 }
 
-private class Vehicle {
+class Result {
+}
+
+class TempVehicle {
 	public $id;
 	public $number;
 	public $type;
@@ -55,35 +25,92 @@ private class Vehicle {
 	public $date_added;
 }
 
-private class Company {
+class TempCompany {
 	public $id;
 	public $name;
 	public $phone;
 	public $admin;
 }
 
-private class Admin {
+class TempAdmin {
 	public $id;
 	public $name;
 	public $phone;
 }
 
 $setupResponse = new SetupResponse();
+$setupResponse->request = "setup";
+$result = new Result();
 
 if(isset($_GET['vehicle']) && isset($_GET['type']) && isset($_GET['imei']) && isset($_GET['mac'])) {
 	$vehicle = trim($_GET['vehicle']);
 	$type = trim($_GET['type']);
 	$imei = trim($_GET['imei']);
 	$mac = trim($_GET['mac']);
+	
+	$vehicleId = Vehicle::getIdByNumber($vehicle);
+	if($vehicleId==null) {
+        $setupResponse->status = "FAILURE";
+		$error = new Error();
+		$error->reason = "VEHICLE";
+		$error->message = "No such vehicle registered.";
+		$result->error = $error;
+    } else{
+		$mVehicle = new Vehicle($vehicleId);
+		if($mVehicle->getType()!=$type){
+			$setupResponse->status = "FAILURE";
+			$error = new Error();
+			$error->reason = "VEHICLE_TYPE";
+			$error->message = "Vehicle type does not match";
+			$result->error = $error;
+		} else{
+			if($mVehicle->isDeployed()==1){
+				$setupResponse->status = "FAILURE";
+				
+				$error = new Error();
+				$error->reason = "VEHICLE";
+				$error->message = $vehicle." is already deployed";
+				$result->error = $error;
+			} else {
+				if($mVehicle->deploy()) {
+					$setupResponse->status = "SUCCESS";
+					
+					$vehicle = new TempVehicle();
+					$vehicle->id = $mVehicle->getId();
+					$vehicle->number = $mVehicle->getVehicleNumber();
+					$vehicle->type = $mVehicle->getType();
+					$vehicle->year = $mVehicle->getMakeYear();
+					$vehicle->date_added = $mVehicle->getDateAdded();
+					$result->vehicle = $vehicle;
+					
+					$mCompany = new Company($mVehicle->getCompany());
+					$company = new TempCompany();
+					$company->id = $mVehicle->getCompany();
+					$company->name = $mCompany->getName();
+					$company->phone = $mCompany->getPhone();
+					
+					$mAdmin = new User($mCompany->getAdmin());
+					$admin = new TempAdmin();
+					$admin->id = $mAdmin->getId();
+					$admin->name = $mAdmin->getFullName();
+					$admin->phone = $mAdmin->getPhoneMobile();
+					$company->admin = $admin;
+					$result->company = $company;
+				}
+			}
+		}
+	}
 } else {
 	$setupResponse->status = "FAILURE";
-	$setupResponse->request = "setup";
-	
+
 	$error = new Error();
 	$error->reason = "INSUFFICIENT DATA";
-	$error->message = "Please provide complete information."
+	$error->message = "Please provide complete information.";
 	
-	$setupResponse->error = $error;
-	echo json_encode($setupResponse);
+	$result = new Result();
+	
+	$result->error = $error;
 }
+$setupResponse->result = $result;
+echo json_encode($setupResponse);
 ?>

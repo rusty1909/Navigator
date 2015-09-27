@@ -20,6 +20,8 @@ class Vehicle {
 	private $LatLong;
 	private $driver;
 	private $gcmKey;
+	private $mac;
+	private $imei;
 	
 	function __construct($id){
 		
@@ -49,6 +51,8 @@ class Vehicle {
 				$this->driver = $row['driver'];
 				$this->city = $row['city'];
 				$this->gcmKey = $row['gcm_regkey'];
+				$this->imei = $row['imei'];
+				$this->mac = $row['mac'];
 				$this->LatLong["lat"] = $row['lattitude'];
 				$this->LatLong["long"] = $row['longitude'];
 			}
@@ -657,6 +661,14 @@ class Vehicle {
     }    
 	function isOnTrip(){
 		return $this->isOnJob;
+	}
+	
+	function getIMEI(){
+		return $this->imei;
+	}
+	
+	function getMAC() {
+		return $this->mac;
 	}
 	
 /*	function getAddress() {
