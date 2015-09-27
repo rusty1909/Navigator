@@ -46,7 +46,7 @@ if(isset($_GET['vehicle'])&& isset($_GET['imei']) && isset($_GET['mac'])) {
 			Notification::addLocationNotification($driver, $vehicleId, $lattitude, $longitude, $city);
 		}
 		if($mVehicle->setLocation($lattitude, $longitude, $address, $city) && $mVehicle->addTrack($lattitude, $longitude, $address)) {
-			$setupResponse->status = "SUCESS";	
+			$setupResponse->status = "SUCCESS";	
 		}
 	} else {
 		$setupResponse->status = "FAILURE";
