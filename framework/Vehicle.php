@@ -541,7 +541,7 @@ class Vehicle {
     function getAllExpenseList(){
     }
 
-    function deploy() {
+    function deploy($imei, $mac) {
 		$db = new Connection();
 		$conn = $db->connect();
 		
@@ -552,7 +552,7 @@ class Vehicle {
 		$this->isDeployed = 1;
 		$fgDate = $db->getTimeNow();
 		
-		$sql = "UPDATE vehicle SET deployed = '1', date_deployed = '$fgDate' WHERE id = '$this->id'";
+		$sql = "UPDATE vehicle SET deployed = '1', imei = '$imei', mac = '$mac', date_deployed = '$fgDate' WHERE id = '$this->id'";
 		//print_r($sql);
 
 		if (mysqli_query($conn, $sql)) {

@@ -72,7 +72,7 @@ if(isset($_GET['vehicle']) && isset($_GET['type']) && isset($_GET['imei']) && is
 				$error->message = $vehicle." is already deployed";
 				$result->error = $error;
 			} else {
-				if($mVehicle->deploy()) {
+				if($mVehicle->deploy($imei, $mac)) {
 					$setupResponse->status = "SUCCESS";
 					
 					$vehicle = new TempVehicle();
