@@ -59,6 +59,8 @@ if((isset($_GET) && !empty($_GET)) || (isset($_POST) && !empty($_POST))){
                var_dump($_REQUEST);
                $message = $keyword.$mobile.$mess;
                SendMessage('9910065699', $message);
+               $sms = new SMSReceiver();
+               $sms->ProcessData($keyword, $mobile, $mess);
            } 
            else { 
               echo "ERROR : Message not sent -- Text parameter is missing!\r\n"; 
@@ -76,27 +78,3 @@ else {
 }
 
 ?>
-
-
-<HTML> 
-<HEAD><TITLE>Send SMS</TITLE></HEAD> 
-<BODY> 
-<form method="post" action="sendsms.php"> 
-<table border="1"> 
-<tr> 
-<td>Mobile Number:</td> 
-<td><input type="text" name="phone" size="40"><?php echo $mobile; ?></td> 
-</tr> 
-<tr> 
-<td valign="top">Text Message:</td> 
-<td><textarea name="text" cols="80" rows="10"><?php echo $mess; ?></textarea> 
-</tr> 
-<tr> 
-<td colspan="2" align="center"> 
-<input type="submit" value="Send"> 
-</td> 
-</tr> 
-</table> 
-</form> 
-</BODY> 
-</HTML> 
