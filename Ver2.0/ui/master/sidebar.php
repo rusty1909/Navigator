@@ -15,7 +15,7 @@ if($mIsCompanyRegistered){
 			<h1 id="sidebar-title"><a href="http://www.findgaddi.com/">FindGaddi</a></h1>
 		  
 			<!-- Logo (221px wide) -->
-			<a target='_blank' href='http://www.findgaddi.com'><img id="logo" src="http://www.findgaddi.com/navigator/Ver2.0/images/logo.png" alt="FindGaddi logo"></a>
+			<a target='_blank' href='http://web.findgaddi.com'><img id="logo" src="http://images.findgaddi.com/logo.png" alt="FindGaddi logo"></a>
 		  
 			<!-- Sidebar Profile links -->
 			<?php
