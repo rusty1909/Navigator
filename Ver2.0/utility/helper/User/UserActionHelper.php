@@ -2,6 +2,22 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
+/*$arr = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+$arr = '1';*/
+$arr = array();
+$arr['success'] = 'passed';
+$arr['val'] = '1';
+echo $_GET['callback'] . '('.json_encode($arr).')';
+
+exit();
+
+function ReturnValue($arr){
+   // header('content-type: application/json; charset=utf-8');
+    echo $_GET['callback'] . '('.json_encode($arr).')';
+    exit();
+}
+
 require_once '../../../framework/User.php';
 require_once '../../../framework/Mailer.php';
 require_once '../../../framework/Expense.php';
@@ -14,6 +30,7 @@ if(isset($_GET['action'])) {
 	$action = "";
 }
 
+
 $mUser = User::getCurrentUser(); 
 
 switch($action) {
@@ -25,12 +42,33 @@ switch($action) {
 			$mUser = new User();
 			if($mUser->getActivatedState()==1) {
 				if($rememberme) $mUser->SetCookieforUser($username, $password, $mUser->getCompany());
+                $arr['success'] = 'passed';
+                $arr['val'] = '1';
+             //   echo $_GET['callback'] . '('.json_encode($arr).')';
+               // return;
+                 ReturnValue($arr);
+                break;
+                //return 1;
 				echo "Redirecting to dashboard.";
 				echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/index.php'</script>";
 			} else{
+                $arr['success'] = 'failed';
+                $arr['val'] = '2';
+               // echo $_GET['callback'] . '('.json_encode($arr).')';
+             //   return;
+               ReturnValue($arr);
+                break;
+                //return 2;
                 echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/utility/helper/User/activate.php'</script>";
 			}
 		} else {
+                $arr['success'] = 'failed';
+                $arr['val'] = '0';
+               // echo $_GET['callback'] . '('.json_encode($arr).')';
+              //  return;
+                 ReturnValue($arr);
+                break;
+                //return 0;
 			echo "<script>alert('Username or Password incorrect. Please try again.');</script>";
 			echo "<script>window.location.href = 'http://www.findgaddi.com/navigator/Ver2.0/ui/pages/user/login.php'</script>";
 		}

@@ -1,4 +1,5 @@
-<?php
+<?php 
+//header('content-type: application/json; charset=utf-8');
 require_once "../../../utility/helper/Common/CommonHelper.php"; 
  
 if(User::isLoggedIn())
@@ -6,10 +7,93 @@ if(User::isLoggedIn())
 
 require_once "../../master/headerhomehtml.php";
 ?>
-		<div id="login-wrapper" class="png_bg">
+<script>
+    
+window.jsonpcallback = function (data) { 
+if(data == null){
+    console.log("data is null");
+    return;
+}
+	alert(data);
+    JSON.stringify(data);
+    console.log("logged"+data);
+    if(data == 1){
+        alert(data);
+        window.location.href = 'http://portal.findgaddi.com/';
+    }else if(data == 1){
+        alert('Please activate your account.');
+    }else {
+        alert('Username or Password incorrect. Please try again.');
+    }
+};
+
+var LoginFunction = function(){
+    var username = $("#username").val();
+    var password = $("#password").val();
+    var rememberme = $("#rememberme").val();
+    var postData = $("#your_form_id").serializeArray();
+
+        // do the extra stuff here
+        $.ajax({
+            type: "POST",
+            cache: false,
+            dataType: "jsonp",
+            jsonp: "callback",
+            async: false,
+            crossDomain : true,
+            url: "http://utility.findgaddi.com/helper/User/UserActionHelper.php?action=login",
+            data: postData, // { password: password, username: username, rememberme: rememberme },
+            jsonpCallback: function (data) { 
+                if(data == null){
+                    console.log("data is null");
+                    return;
+                }
+                    alert(data);
+                    console.log("logged"+data);
+                    if(data == 1){
+                        alert(data);
+                        window.location.href = 'http://portal.findgaddi.com/';
+                    }else if(data == 1){
+                        alert('Please activate your account.');
+                    }else {
+                        alert('Username or Password incorrect. Please try again.');
+                    }
+                },
+            success: function(data) {
+                alert(data);
+                console.log("logged "+data);
+                if(data == 1){
+                    window.location.href = 'http://portal.findgaddi.com/';
+                }else if(data == 1){
+                    alert('Please activate your account.');
+                }else {
+                    alert('Username or Password incorrect. Please try again.');
+                }
+            },
+            error: function(XMLHttpRequest, status, error) {
+            //  var err = eval("(" + xhr.responseText + ")");
+                console.log("failed "+status);
+                console.log("failed "+error);
+              alert(error);
+            }
+          /*  error: function () {
+                //your error code
+                
+                console.log("failed");
+            }*/
+        });
+
+};
+    
+$(document).ready(function() {
+  $("#login-form").submit(LoginFunction);
+});
+
+</script>
+<div id="login-wrapper" class="png_bg">
 			
 			<div id="login-content">
-				<form action="../../../utility/helper/User/UserActionHelper.php?action=login" method="POST">
+				<form action="" method="POST" id="login-form">
                     <p>
 						<label>Username</label>
 						<input class="text-input" type="text"  name="username" id="username">
